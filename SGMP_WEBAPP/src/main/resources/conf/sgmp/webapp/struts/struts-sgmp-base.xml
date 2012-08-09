@@ -49,4 +49,7 @@
 
     <!-- ======================================== /开发模式/ ======================================== -->
 
+    <include file="conf/sgmp/webapp/struts/struts-sgmp-mainframe.xml" />
+    <include file="conf/sgmp/webapp/struts/struts-sgmp-module.xml" />
+
 </struts>

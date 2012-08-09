@@ -7,9 +7,9 @@
 <script type="text/javascript" src="${ctx_webstatic}/framework/extjs-4.1.1/locale/ext-lang-zh_CN.js"></script>
 
 <script type="text/javascript">
-Ext.BLANK_IMAGE_URL = '${ctx_webstatic}/style/ext-lightblue/img/blank.gif';
+Ext.BLANK_IMAGE_URL = '${cxt_webstyle}/img/blank.gif';
 
 var ctx_webapp = "${ctx_webapp}";
 var ctx_webstatic = "${ctx_webstatic}";
-var ctx_webstyle = "${ctx_webstyle}";
+var ctx_webstyle = "${cxt_webstyle}";
 </script>

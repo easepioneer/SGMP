@@ -34,25 +34,151 @@ p {
 }
 
 .function {
-    background-image: url(${ctx_webstatic}/style/default/img/icons/application_go.png);
+    background-image: url(${cxt_webstyle}/img/icons/application_go.png);
 }
 
 .selection {
-    background-image: url(${ctx_webstatic}/style/default/img/icons/application_view_list.png);
+    background-image: url(${cxt_webstyle}/img/icons/application_view_list.png);
 }
 
 .setting {
-    background-image: url(${ctx_webstatic}/style/default/img/icons/folder_wrench.png);
+    background-image: url(${cxt_webstyle}/img/icons/folder_wrench.png);
 }
 
 .reading {
-    background-image: url(${ctx_webstatic}/style/default/img/icons/folder_go.png);
+    background-image: url(${cxt_webstyle}/img/icons/folder_go.png);
 }
 </style>
 <%@ include file="/WEB-INF/page/layout/pureextjs/include/scripts.jsp" %>
 
+<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/homepage.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/archivesManagement.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/parameterManagement.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/collectionManagement.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/onlineMonitoring.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/dataQuery.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/logQuery.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/systemManagement.js"></script>
+<script type="text/javascript">
+Ext.require(['*']);
+
+Ext.onReady(function() {
+    Ext.QuickTips.init();
+
+    Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider'));
+
+    var functionContents = [];
+    Ext.Object.each(getHomepageFunctions(), function(name, content) {
+        functionContents.push(content);
+    });
+    Ext.Object.each(getArchivesManagementFunctions(), function(name, content) {
+        functionContents.push(content);
+    });
+    Ext.Object.each(getParameterManagementFunctions(), function(name, content){
+        functionContents.push(content);
+    });
+    Ext.Object.each(getCollectionManagementFunctions(), function(name, content){
+        functionContents.push(content);
+    });
+    Ext.Object.each(getOnlineMonitoringFunctions(), function(name, content){
+        functionContents.push(content);
+    });
+    Ext.Object.each(getDataQueryFunctions(), function(name, content){
+        functionContents.push(content);
+    });
+    Ext.Object.each(getLogQueryFunctions(), function(name, content){
+        functionContents.push(content);
+    });
+    Ext.Object.each(getSystemManagementFunctions(), function(name, content){
+        functionContents.push(content);
+    });
+
+    var contentPanel = {
+        id: 'content-panel',
+        region: 'center',
+        layout: 'card',
+        margins: '5 5 5 5',
+        activeItem: 0,
+        border: false,
+        items: functionContents
+    };
+
+    var functionMenuTreeStore = Ext.create('Ext.data.TreeStore', {
+        root: {
+            expanded: true
+        },
+        proxy: {
+            type: 'ajax',
+            url: '${ctx_webstatic}/customized/project/hd/data/function-menu-tree-data.json'
+        }
+    });
+    var functionMenuTreePanel = Ext.create('Ext.tree.Panel', {
+        id: 'function-menu-tree-panel',
+        title: '功能菜单区',
+        rootVisible: false,
+        autoScroll: true,
+        store: functionMenuTreeStore
+    });
+    functionMenuTreePanel.getSelectionModel().on('select', function(selModel, record) {
+        if(record.get('leaf')) {
+            Ext.getCmp('content-panel').layout.setActiveItem(record.getId() + 'ContentPanel');
+        }
+    });
+
+    var selectionObjectTreeStore = Ext.create('Ext.data.TreeStore', {
+        root: {
+            expanded: true
+        },
+        proxy: {
+            type: 'ajax',
+            url: '${ctx_webstatic}/customized/project/hd/data/selection-object-tree-data.json'
+        }
+    });
+    var selectionObjectTreePanel = Ext.create('Ext.tree.Panel', {
+        id: 'selection-object-tree-panel',
+        title: '对象选择区',
+        rootVisible: false,
+        autoScroll: true,
+        store: selectionObjectTreeStore
+    });
+    selectionObjectTreePanel.getSelectionModel().on('select', function(selModel, record) {
+        Ext.MessageBox.alert('提示', 'id : ' + record.get('id'), function() {
+            
+        });
+    });
+
+    Ext.create('Ext.Viewport', {
+        id: 'layout-top',
+        layout: 'border',
+        items: [
+        // create instance immediately
+        Ext.create('Ext.Component', {
+            region: 'north',
+            id: 'panel-north',
+            height: 60,
+            autoEl: {
+                tag: 'div',
+                html:'<h1>浙江豪顿电气有限公司</h1><h2>低压配电网络信息一体化平台</h2>'
+            }
+        }), {
+            region: 'west',
+            stateId: 'navigation-panel',
+            id: 'panel-west',
+            title: ' ',
+            split: false,
+            width: 200,
+            minWidth: 200,
+            maxWidth: 200,
+            collapsible: true,
+            animCollapse: true,
+            margins: '5 0 5 5',
+            layout: 'accordion',
+            items: [functionMenuTreePanel, selectionObjectTreePanel]
+        }, contentPanel]
+    });
+});
+</script>
 </head>
 <body>
-Layout Main
 </body>
 </html>
