@@ -1004,3 +1004,9 @@ Caused by: java.lang.ClassNotFoundException: org.exolab.castor.xml.MarshalExcept
 83390 [http-bio-7070-exec-6] DEBUG com.opensymphony.xwork2.config.ConfigurationManager  - Checking ConfigurationProviders for reload.
 83390 [http-bio-7070-exec-6] DEBUG com.opensymphony.xwork2.conversion.impl.InstantiatingNullHandler  - Entering nullPropertyValue [target=[com.opensymphony.xwork2.DefaultTextProvider@7e41986c], property=encodingFilter]
 83390 [http-bio-7070-exec-6] DEBUG com.opensymphony.xwork2.conversion.impl.InstantiatingNullHandler  - Entering nullPropertyValue [target=[com.opensymphony.xwork2.DefaultTextProvider@7e41986c], property=org]
+416922 [http-bio-7070-exec-9] DEBUG com.opensymphony.xwork2.config.ConfigurationManager  - Checking ConfigurationProviders for reload.
+416922 [http-bio-7070-exec-9] DEBUG com.opensymphony.xwork2.conversion.impl.InstantiatingNullHandler  - Entering nullPropertyValue [target=[com.opensymphony.xwork2.DefaultTextProvider@7e41986c], property=struts]
+416922 [http-bio-7070-exec-9] DEBUG com.opensymphony.xwork2.config.ConfigurationManager  - Checking ConfigurationProviders for reload.
+416922 [http-bio-7070-exec-9] DEBUG com.opensymphony.xwork2.config.ConfigurationManager  - Checking ConfigurationProviders for reload.
+416922 [http-bio-7070-exec-9] DEBUG com.opensymphony.xwork2.conversion.impl.InstantiatingNullHandler  - Entering nullPropertyValue [target=[com.opensymphony.xwork2.DefaultTextProvider@7e41986c], property=encodingFilter]
+416922 [http-bio-7070-exec-9] DEBUG com.opensymphony.xwork2.conversion.impl.InstantiatingNullHandler  - Entering nullPropertyValue [target=[com.opensymphony.xwork2.DefaultTextProvider@7e41986c], property=org]

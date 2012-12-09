@@ -9,6 +9,7 @@
 <script type="text/javascript">
 Ext.BLANK_IMAGE_URL = '${ctx_webstatic}/style/ext-lightblue/img/blank.gif';
 
-var ctx_webstatic = "${ctx_webstatic}";
 var ctx_webapp = "${ctx_webapp}";
+var ctx_webstatic = "${ctx_webstatic}";
+var ctx_webstyle = "${ctx_webstyle}";
 </script>
