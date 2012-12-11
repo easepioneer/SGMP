@@ -1,5 +1,5 @@
 /SGMP_COMMON/bin
 /SGMP_EXTINF/bin
 /SGMP_INTINF/bin
-/SGMP_WEBAPP/webapp/WEB-INF/classes
 /SGMP_WEBAPP/webapp/logs
+/SGMP_WEBAPP/webapp/WEB-INF/classes
