@@ -6,6 +6,11 @@
 
 <struts>
 
-    
+    <!-- |主框架| -->
+    <package name="main" namespace="/" extends="struts-default">
+        <!-- |左边视图| -->
+        <action name="left" class="leftViewAction">
+        </action>
+    </package>
 
 </struts>

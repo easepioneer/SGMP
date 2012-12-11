@@ -6,10 +6,42 @@
 
 <struts>
 
-    <!-- 参数管理 -->
-    <package name="pm" extends="struts-default">
-        <action name="tps" class="terminalParameterSetupAction">
-        </action>
+    <!-- |档案管理| -->
+    <package name="am" namespace="/am" extends="struts-default">
+        <!-- |台区档案管理| -->
+        <action name="tam" class="tgArchivesManagementAction" />
+    </package>
+
+    <!-- |参数管理| -->
+    <package name="pm" namespace="/pm" extends="struts-default">
+        <!-- |集中器参数设置| -->
+        <action name="tps" class="terminalParameterSetupAction" />
+        <!-- |保护器参数设置| -->
+        <action name="pps" class="protectorParameterSetupAction" />
+    </package>
+
+    <!-- |数据查询| -->
+    <package name="dq" namespace="/dq" extends="struts-default">
+        <!-- |台区考核表数据查询| -->
+        <action name="tmdq" class="tgMeterDataQueryAction" />
+        <!-- |保护器数据查询| -->
+        <action name="pdq" class="protectorDataQueryAction" />
+        <!-- |台区用电量查询| -->
+        <action name="tpcq" class="tgPowerConsumptionQueryAction" />
+        <!-- |集中器事件查询| -->
+        <action name="teq" class="terminalEventsQueryAction" />
+        <!-- |保护器跳闸事件查询| -->
+        <action name="pteq" class="protectorTripEventsQueryAction" />
+    </package>
+
+    <!-- |参数管理| -->
+    <package name="sm" namespace="/sm" extends="struts-default">
+        <!-- |组织机构管理| -->
+        <action name="orgm" class="orgnizationManagementAction" />
+        <!-- |操作员管理| -->
+        <action name="opem" class="operatorManagementAction" />
+        <!-- |角色管理| -->
+        <action name="rolm" class="roleManagementAction" />
     </package>
 
 </struts>

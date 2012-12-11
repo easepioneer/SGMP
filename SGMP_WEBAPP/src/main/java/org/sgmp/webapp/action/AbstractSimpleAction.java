@@ -1,6 +1,7 @@
 package org.sgmp.webapp.action;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.interceptor.SessionAware;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.sgmp.webapp.ActionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,26 +59,79 @@ public class AbstractSimpleAction extends ActionSupport implements ServletReques
 
     /**
      * 
-     * @param text
+     * @param s
      * @throws ActionException
      */
-    public void responseText(String text) throws ActionException {
+    public void responseText(String s) throws ActionException {
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/plain; charset=UTF-8");
-        logger.debug("text : " + text);
 
-        if(StringUtils.isBlank(text)) {
-            text = "";
+        if(StringUtils.isBlank(s)) {
+            s = "";
         }
 
         try {
-            response.getOutputStream().write(text.getBytes("UTF-8"));
+            response.getOutputStream().write(s.getBytes("UTF-8"));
         }
         catch(IOException _ioe) {
             logger.error("responseText error", _ioe);
             throw new ActionException("ActionException", _ioe.getCause());
         }
         finally {
-            text = null;
+            s = null;
+        }
+    }
+
+    /**
+     * 
+     * @param o
+     * @throws ActionException
+     */
+    public void responseJson(Object o) throws ActionException {
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/json; charset=UTF-8");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        StringWriter stringWriter = new StringWriter();
+        JsonGenerator jsonGenerator = null;
+        try {
+            jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(stringWriter);
+            objectMapper.writeValue(jsonGenerator, o);
+        }
+        catch(IOException _ioe) {
+            logger.error("responseJson error", _ioe);
+            throw new ActionException("ActionException", _ioe.getCause());
+        }
+        finally {
+            if(jsonGenerator != null) {
+                try {
+                    jsonGenerator.close();
+                }
+                catch(IOException _ioe) {
+                    logger.error("responseJson error", _ioe);
+                    throw new ActionException("ActionException", _ioe.getCause());
+                }
+            }
+        }
+        String jsonString = stringWriter.toString();
+        logger.debug("jsonString : " + jsonString);
+
+        try {
+            response.getOutputStream().write(jsonString.getBytes("UTF-8"));
+        }
+        catch(IOException _ioe) {
+            logger.error("responseJson error", _ioe);
+        }
+        finally {
+            try {
+                stringWriter.close();
+            }
+            catch(IOException _ioe) {
+                logger.error("responseJson error", _ioe);
+                throw new ActionException("ActionException", _ioe.getCause());
+            }
+            objectMapper = null;
+            jsonString = null;
         }
     }
 

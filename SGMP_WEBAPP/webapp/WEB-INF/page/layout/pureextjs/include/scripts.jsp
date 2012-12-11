@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!-- ExtJS library: all widgets -->
-<script type="text/javascript" src="${ctx_webstatic}/framework/extjs-4.1.1/ext-all-debug.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/framework/extjs-4.1.1/ext-all.js"></script>
 <!-- ExtJS library: zh_CN/lang -->
 <script type="text/javascript" src="${ctx_webstatic}/framework/extjs-4.1.1/locale/ext-lang-zh_CN.js"></script>
 

@@ -51,26 +51,28 @@ p {
 </style>
 <%@ include file="/WEB-INF/page/layout/pureextjs/include/scripts.jsp" %>
 
-<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/homepage.js"></script>
-<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/archivesManagement.js"></script>
-<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/parameterManagement.js"></script>
-<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/collectionManagement.js"></script>
-<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/onlineMonitoring.js"></script>
-<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/dataQuery.js"></script>
-<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/logQuery.js"></script>
-<script type="text/javascript" src="${ctx_webstatic}/customized/project/hd/script/systemManagement.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/script/pureextjs/module/homepage.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/script/pureextjs/module/archivesManagement.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/script/pureextjs/module/parameterManagement.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/script/pureextjs/module/collectionManagement.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/script/pureextjs/module/onlineMonitoring.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/script/pureextjs/module/dataQuery.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/script/pureextjs/module/logQuery.js"></script>
+<script type="text/javascript" src="${ctx_webstatic}/script/pureextjs/module/systemManagement.js"></script>
 <script type="text/javascript">
 Ext.require(['*']);
 
+var activeItemId;
+var selectedSoRecord;
 Ext.onReady(function() {
     Ext.QuickTips.init();
 
     Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider'));
 
     var functionContents = [];
-    Ext.Object.each(getHomepageFunctions(), function(name, content) {
+    /* Ext.Object.each(getHomepageFunctions(), function(name, content) {
         functionContents.push(content);
-    });
+    }); */
     Ext.Object.each(getArchivesManagementFunctions(), function(name, content) {
         functionContents.push(content);
     });
@@ -122,10 +124,27 @@ Ext.onReady(function() {
     functionMenuTreePanel.getSelectionModel().on('select', function(selModel, record) {
         if(record.get('leaf')) {
             Ext.getCmp('content-panel').layout.setActiveItem(record.getId() + 'ContentPanel');
+            //alert(record.getId());
         }
     });
 
+    Ext.define('selection-object-treestore-model', {
+        extend: 'Ext.data.Model',
+        fields: [
+                 {name: 'id', type: 'string'},
+                 {name: 'text', type: 'string'},
+                 {name: 'soType', type: 'string'},
+                 {name: 'soId', type: 'string'},
+                 {name: 'soName', type: 'string'},
+                 {name: 'soOrgId', type: 'string'},
+                 {name: 'soTgId', type: 'string'},
+                 {name: 'soTermId', type: 'string'},
+                 {name: 'soGpId', type: 'string'}
+        ],
+        idProperty: 'id'
+    });
     var selectionObjectTreeStore = Ext.create('Ext.data.TreeStore', {
+        model: 'selection-object-treestore-model',
         root: {
             expanded: true
         },
@@ -142,9 +161,15 @@ Ext.onReady(function() {
         store: selectionObjectTreeStore
     });
     selectionObjectTreePanel.getSelectionModel().on('select', function(selModel, record) {
-        Ext.MessageBox.alert('提示', 'id : ' + record.get('id'), function() {
+        /* Ext.MessageBox.alert('提示', 'depth : ' + record.get('depth'), function() {
             
-        });
+        }); */
+        //alert(Ext.getCmp('content-panel').layout.getActiveItem().id);
+        selectedSoRecord = record;
+        activeItemId = Ext.getCmp('content-panel').layout.getActiveItem().id;
+        if(activeItemId == 'actionTgMeterDataQueryContentPanel') {
+            Ext.getCmp('tmdq-filter-form').getForm().loadRecord(selectedSoRecord);
+        }
     });
 
     Ext.create('Ext.Viewport', {
@@ -155,10 +180,12 @@ Ext.onReady(function() {
         Ext.create('Ext.Component', {
             region: 'north',
             id: 'panel-north',
-            height: 60,
+            height: 0,
             autoEl: {
                 tag: 'div',
-                html:'<h1>浙江豪顿电气有限公司</h1><h2>低压配电网络信息一体化平台</h2>'
+                /* html: '<h1>浙江豪顿电气有限公司</h1><h2>低压配电网络信息一体化平台</h2>' */
+                /* html: '<h1>SGMP</h1><h2>Smart Grid Management Platform</h2>' */
+                html: ''
             }
         }), {
             region: 'west',

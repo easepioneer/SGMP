@@ -1,5 +1,6 @@
 package org.sgmp.webapp.action.module;
 
+import org.sgmp.webapp.ActionException;
 import org.sgmp.webapp.action.AbstractSimpleAction;
 
 /**
@@ -14,5 +15,17 @@ public class ProtectorTripEventsQueryAction extends AbstractSimpleAction impleme
      * ProtectorTripEventsQuery
      */
     private static final long serialVersionUID = -2475334611384812979L;
+
+    @Override
+    public void getGrid() throws ActionException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void getChart() throws ActionException {
+        // TODO Auto-generated method stub
+        
+    }
 
 }

@@ -1,0 +1,109 @@
+{ 
+    text: '.',
+    children: [{
+        text: '首页',
+        id: 'actionHomepage',
+        leaf: true
+    }, {
+        text: '档案管理',
+        children: [{
+            text: '台区档案管理',
+            id: 'actionTgArchivesManagement',
+            leaf: true
+        }]
+    }, {
+        text: '参数管理',
+        children: [{
+            text: '集中器参数设置',
+            id: 'actionTerminalParameterSetup',
+            leaf: true
+        },{
+            text: '保护器参数设置',
+            id: 'actionProtectorParameterSetup',
+            leaf: true
+        }]
+    }, {
+        text: '采集管理',
+        children: [{
+            text: '采集任务管理',
+            id: 'actionCollectionTaskManagement',
+            leaf: true
+        }, {
+            text: '台区考核表数据召测',
+            id: 'actionTgMeterDataReading',
+            leaf: true
+        }, {
+            text: '保护器数据召测',
+            id: 'actionProtectorDataReading',
+            leaf: true
+        }]
+    }, {
+        text: '在线监测',
+        children: [{
+            text: '台区监测',
+            id: 'actionTgMonitoring',
+            leaf: true
+        }, {
+            text: '保护器监测',
+            id: 'actionProtectorMonitoring',
+            leaf: true
+        }]
+    }, {
+        text: '数据查询',
+        children: [{
+            text: '台区考核表数据查询',
+            id: 'actionTgMeterDataQuery',
+            leaf: true
+        }, {
+            text: '保护器数据查询',
+            id: 'actionProtectorDataQuery',
+            leaf: true
+        }, {
+            text: '台区用电量查询',
+            id: 'actionTgPowerConsumptionQuery',
+            leaf: true
+        }, {
+            text: '集中器事件查询',
+            id: 'actionTerminalEventsQuery',
+            leaf: true
+        }, {
+            text: '保护器跳闸事件查询',
+            id: 'actionProtectorTripEventsQuery',
+            leaf: true
+        }]
+    }, {
+        text: '日志查询',
+        children: [{
+            text: '系统日志',
+            id: 'actionSystemLogQuery',
+            leaf: true
+        }, {
+            text: '操作日志',
+            id: 'actionOperationLogQuery',
+            leaf: true
+        }, {
+            text: '通信日志',
+            id: 'actionCommunicationLogQuery',
+            leaf: true
+        }, {
+            text: '接口日志',
+            id: 'actionInterfaceLogQuery',
+            leaf: true
+        }]
+    }, {
+        text: '系统管理',
+        children: [{
+            text: '组织机构管理',
+            id: 'actionOrgnizationManagement',
+            leaf: true
+        }, {
+            text: '操作员管理',
+            id: 'actionOperatorManagement',
+            leaf: true
+        }, {
+            text: '角色管理',
+            id: 'actionRoleManagement',
+            leaf: true
+        }]
+    }]
+}

@@ -23,15 +23,21 @@
         <property name="configLocation" value="classpath:conf/sgmp/webapp/mybatis/mybatis-config.xml" />
         <property name="mapperLocations">
             <list>
-                <value>classpath:org/sgmp/webapp/dao/mapper/**/*Mapper.xml</value>
+                <value>classpath:org/sgmp/webapp/mapper/**/*Mapper.xml</value>
             </list>
         </property>
+    </bean>
+
+    <!-- 配置sqlSessionTemplate -->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory" />
     </bean>
 
     <!-- 配置事务管理器 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
+    <tx:annotation-driven transaction-manager="txManager" />
 
     <!-- 配置事务的传播特性 -->
     <bean id="baseTransactionProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean" abstract="true">
@@ -48,6 +54,11 @@
                 <prop key="*">readOnly</prop>
             </props>
         </property>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="org.sgmp.webapp.dao"/>
+        <property name="markerInterface" value="org.sgmp.webapp.dao.BaseDao"/>
     </bean>
 
 </beans>
