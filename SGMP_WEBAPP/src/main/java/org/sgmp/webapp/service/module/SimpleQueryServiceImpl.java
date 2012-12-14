@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.sgmp.webapp.ServiceException;
 import org.sgmp.webapp.dao.module.SimpleQueryDao;
+import org.sgmp.webapp.mapper.module.SimpleQueryMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.opensymphony.xwork2.inject.Inject;
 
 /**
  * 
@@ -18,16 +18,23 @@ import com.opensymphony.xwork2.inject.Inject;
  */
 @Service
 public class SimpleQueryServiceImpl implements SimpleQueryService {
+
     private static final Logger logger = LoggerFactory.getLogger(SimpleQueryServiceImpl.class);
 
-    @Inject
-    private SimpleQueryDao simpleQueryDao;
+    @Autowired
+    public SimpleQueryDao simpleQueryDao;
 
     @Override
-    public List<?> getList(String namespace, String statement, Map<?, ?> params, 
+    public List<?> getList(Class<? extends SimpleQueryMapper> mapperClass, Map<String, Object> params, 
             String start, String limit, String sort, String dir) throws ServiceException {
-        logger.info(namespace + "." + statement);
-        return simpleQueryDao.getList(namespace, statement, params, start, limit, sort, dir);
+        logger.debug(this.getClass().getName() + "." + "getList");
+        return simpleQueryDao.getList(mapperClass, params, start, limit, sort, dir);
+    }
+
+    @Override
+    public Integer getCount(Class<? extends SimpleQueryMapper> mapperClass, Map<String, Object> params) throws ServiceException {
+        logger.debug(this.getClass().getName() + "." + "getCount");
+        return simpleQueryDao.getCount(mapperClass, params);
     }
 
 }

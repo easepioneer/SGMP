@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PagingQuery">
+
+    <sql id="queryHeader">
+        select T_.* from ( select TT_.*, rownum as SN from (
+    </sql>
+
+    <sql id="queryFooter">
+         ) TT_ ) T_ where T_.SN &gt; #{_start} and T_.SN &lt;= #{_end}
+    </sql>
+
+    <sql id="querySort">
+        <choose>
+            <when test="_sort != null and _sort != ''">
+                order by ${_sort}
+                <choose>
+                    <when test="_dir != null and _dir != ''">
+                        ${_dir}
+                    </when>
+                </choose>
+            </when>
+        </choose>
+    </sql>
+
+</mapper>

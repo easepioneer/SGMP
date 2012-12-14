@@ -1,5 +1,7 @@
 function getDataQueryFunctions() {
     var defaultPageSize = 20;
+    var defaultDataTable = 'D_EI_CURV_C';
+    var currentDataTable = defaultDataTable;
     /**
      * ================  台区考核表数据查询  =======================
      */
@@ -132,9 +134,42 @@ function getDataQueryFunctions() {
         buttons: [{
             text: '查询',
             handler: function() {
-                tmdq_eicurve_gridstore.load({
-                    params: tmdq_filter_formpanel.getForm().getValues(false)
-                });
+                if(currentDataTable == 'D_EI_CURV_C') {
+                    var query_eicurve_params = {
+                            dataTable: currentDataTable
+                    };
+                    Ext.apply(query_eicurve_params, tmdq_filter_formpanel.getForm().getValues(false));
+                    tmdq_eicurve_gridstore.load({
+                        params: query_eicurve_params
+                    });
+                }
+                else if(currentDataTable == 'D_POWER_CRUV_C') {
+                    var query_powercurve_params = {
+                            dataTable: currentDataTable
+                    };
+                    Ext.apply(query_powercurve_params, tmdq_filter_formpanel.getForm().getValues(false));
+                    tmdq_powercurve_gridstore.load({
+                        params: query_powercurve_params
+                    });
+                }
+                else if(currentDataTable == 'D_PF_CRUV_C') {
+                    var query_pfcurve_params = {
+                            dataTable: currentDataTable
+                    };
+                    Ext.apply(query_pfcurve_params, tmdq_filter_formpanel.getForm().getValues(false));
+                    tmdq_pfcurve_gridstore.load({
+                        params: query_pfcurve_params
+                    });
+                }
+                else if(currentDataTable == 'D_EC_CURV_C') {
+                    var query_eccurve_params = {
+                            dataTable: currentDataTable
+                    };
+                    Ext.apply(query_eccurve_params, tmdq_filter_formpanel.getForm().getValues(false));
+                    tmdq_eccurve_gridstore.load({
+                        params: query_eccurve_params
+                    });
+                }
             }
         }]
     });
@@ -147,14 +182,14 @@ function getDataQueryFunctions() {
             {name: 'TG_NAME', type: 'string'},                                  /* 台区名称 */
             {name: 'MP_NAME', type: 'string'},                                  /* 考核表名称 */
             {name: 'ASSET_NO', type: 'string'},                                 /* 资产编号 */
-            {name: 'CT_TIMES', type: 'float'},                                  /* CT倍率 */
-            {name: 'PT_TIMES', type: 'float'},                                  /* PT倍率 */
-            {name: 'TOTAL_TIMES', type: 'float'},                               /* 总倍率 */
+            {name: 'CT_TIMES', type: 'number', defaultValue: ' '},              /* CT倍率 */
+            {name: 'PT_TIMES', type: 'number', defaultValue: ' '},              /* PT倍率 */
+            {name: 'TOTAL_TIMES', type: 'number', defaultValue: ' '},           /* 总倍率 */
             {name: 'DATA_TIME', type: 'date', dateFormat: 'Y-m-d H:i:s'},       /* 数据时间 */
-            {name: 'P_ACT_TOTAL', type: 'float'},                               /* 正向有功总电能示值 */
-            {name: 'I_ACT_TOTAL', type: 'float'},                               /* 反向有功总电能示值 */
-            {name: 'P_REACT_TOTAL', type: 'float'},                             /* 正向无功总电能示值 */
-            {name: 'I_REACT_TOTAL', type: 'float'}                              /* 反向无功总电能示值 */
+            {name: 'P_ACT_TOTAL', type: 'number', defaultValue: ' '},           /* 正向有功总电能示值 */
+            {name: 'I_ACT_TOTAL', type: 'number', defaultValue: ' '},           /* 反向有功总电能示值 */
+            {name: 'P_REACT_TOTAL', type: 'number', defaultValue: ' '},         /* 正向无功总电能示值 */
+            {name: 'I_REACT_TOTAL', type: 'number', defaultValue: ' '}          /* 反向无功总电能示值 */
         ],
         idProperty: 'SN'
     });
@@ -172,7 +207,7 @@ function getDataQueryFunctions() {
             reader: {
                 type: 'json',
                 root: 'records',
-                totalProperty: 'count'
+                totalProperty: 'totalCount'
             },
             // sends single sort as multi parameter
             simpleSortMode: true
@@ -212,6 +247,7 @@ function getDataQueryFunctions() {
         listeners: {
             beforeselect: function(combo, record, index, eOpts) {
                 if(tmdq_eicurve_gridstore.pageSize != record.data.value) {
+                    tmdq_eicurve_gridstore.currentPage = 1;
                     tmdq_eicurve_gridstore.pageSize = record.data.value;
                     tmdq_eicurve_gridstore.load();
                 }
@@ -233,19 +269,19 @@ function getDataQueryFunctions() {
         store: tmdq_eicurve_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", width: 50, sortable: false, dataIndex: 'SN'},
-            {text: "所属机构", width: 120, sortable: true, dataIndex: 'ORG_NAME'},
-            {text: "台区名称", width: 120, sortable: true, dataIndex: 'TG_NAME'},
-            {text: "数据时间", width: 150, sortable: true, dataIndex: 'DATA_TIME'},
-            {text: "正向有功总电能示值", width: 135, sortable: true, dataIndex: 'P_ACT_TOTAL'},
-            {text: "反向有功总电能示值", width: 135, sortable: true, dataIndex: 'I_ACT_TOTAL'},
-            {text: "正向无功总电能示值", width: 135, sortable: true, dataIndex: 'P_REACT_TOTAL'},
-            {text: "反向无功总电能示值", width: 135, sortable: true, dataIndex: 'I_REACT_TOTAL'},
-            {text: "考核表名称", width: 100, sortable: true, dataIndex: 'MP_NAME'},
-            {text: "资产编号", width: 100, sortable: true, dataIndex: 'ASSET_NO'},
-            {text: "CT倍率", width: 80, sortable: true, dataIndex: 'CT_TIMES'},
-            {text: "PT倍率", width: 80, sortable: true, dataIndex: 'PT_TIMES'},
-            {text: "总倍率", width: 80, sortable: true, dataIndex: 'TOTAL_TIMES'}
+            {text: "序号", dataIndex: 'SN', width: 50, sortable: false},
+            {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
+            {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
+            {text: "数据时间", dataIndex: 'DATA_TIME', width: 135, sortable: true, xtype: 'datecolumn', format:'Y-m-d H:i:s'},
+            {text: "正向有功总电能示值", dataIndex: 'P_ACT_TOTAL', width: 135, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "反向有功总电能示值", dataIndex: 'I_ACT_TOTAL', width: 135, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "正向无功总电能示值", dataIndex: 'P_REACT_TOTAL', width: 135, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "反向无功总电能示值", dataIndex: 'I_REACT_TOTAL', width: 135, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "考核表名称", dataIndex: 'MP_NAME', width: 100, sortable: true},
+            {text: "资产编号", dataIndex: 'ASSET_NO', width: 80, sortable: true},
+            {text: "CT倍率", dataIndex: 'CT_TIMES', width: 60, sortable: true},
+            {text: "PT倍率", dataIndex: 'PT_TIMES', width: 60, sortable: true},
+            {text: "总倍率", dataIndex: 'TOTAL_TIMES', width: 60, sortable: true}
         ],
         columnLines: true,
         // paging bar on the bottom
@@ -255,6 +291,378 @@ function getDataQueryFunctions() {
             xtype: 'toolbar',
             dock: 'top',
             items: ['->', '单位：kWh（有功电能示值），kvarh（无功电能示值）']
+        }]
+    });
+    // 功率数据数据源
+    Ext.define('tmdq-powercurve-gridstore-model', {
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'SN', type: 'int'},                                          /* 序号 */
+            {name: 'ORG_NAME', type: 'string'},                                 /* 所属机构 */
+            {name: 'TG_NAME', type: 'string'},                                  /* 台区名称 */
+            {name: 'MP_NAME', type: 'string'},                                  /* 考核表名称 */
+            {name: 'ASSET_NO', type: 'string'},                                 /* 资产编号 */
+            {name: 'CT_TIMES', type: 'number', defaultValue: ' '},              /* CT倍率 */
+            {name: 'PT_TIMES', type: 'number', defaultValue: ' '},              /* PT倍率 */
+            {name: 'TOTAL_TIMES', type: 'number', defaultValue: ' '},           /* 总倍率 */
+            {name: 'DATA_TIME', type: 'date', dateFormat: 'Y-m-d H:i:s'},       /* 数据时间 */
+            {name: 'ACT_POWER', type: 'number', defaultValue: ' '},             /* 有功功率 */
+            {name: 'ACT_POWER_A', type: 'number', defaultValue: ' '},           /* A相有功功率 */
+            {name: 'ACT_POWER_B', type: 'number', defaultValue: ' '},           /* B相有功功率 */
+            {name: 'ACT_POWER_C', type: 'number', defaultValue: ' '},           /* C相有功功率 */
+            {name: 'REACT_POWER', type: 'number', defaultValue: ' '},           /* 无功功率 */
+            {name: 'REACT_POWER_A', type: 'number', defaultValue: ' '},         /* A相无功功率 */
+            {name: 'REACT_POWER_B', type: 'number', defaultValue: ' '},         /* B相无功功率 */
+            {name: 'REACT_POWER_C', type: 'number', defaultValue: ' '}          /* C相无功功率 */
+        ],
+        idProperty: 'SN'
+    });
+    var tmdq_powercurve_gridstore = Ext.create('Ext.data.Store', {
+        pageSize: defaultPageSize,
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'tmdq-powercurve-gridstore-model',
+        remoteSort: true,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/dq/tmdq!getGrid.do',
+            reader: {
+                type: 'json',
+                root: 'records',
+                totalProperty: 'totalCount'
+            },
+            // sends single sort as multi parameter
+            simpleSortMode: true
+        },
+        sorters: [{
+            property: 'DATA_TIME',
+            direction: 'DESC'
+        }],
+        // 
+        autoLoad: false
+    });
+    // 功率数据列表
+    var tmdq_powercurve_grid_pc = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: '每页记录数',
+        store: Ext.create('Ext.data.Store', {
+            fields: ['value', 'label'],
+            data: [
+                {"value": 10, "label": "10"},
+                {"value": 20, "label": "20"},
+                {"value": 50, "label": "50"},
+                {"value": 100, "label": "100"},
+                {"value": 200, "label": "200"},
+                {"value": 500, "label": "500"}
+            ]
+        }),
+        valueField: 'value',
+        displayField: 'label',
+        queryMode: 'local',
+        forceSelection : true,
+        triggerAction : 'all',
+        editable: false,
+        labelWidth: 70,
+        width: 125,
+        minWidth: 125,
+        maxWidth: 125,
+        value: tmdq_powercurve_gridstore.pageSize,
+        listeners: {
+            beforeselect: function(combo, record, index, eOpts) {
+                if(tmdq_powercurve_gridstore.pageSize != record.data.value) {
+                    tmdq_powercurve_gridstore.currentPage = 1;
+                    tmdq_powercurve_gridstore.pageSize = record.data.value;
+                    tmdq_powercurve_gridstore.load();
+                }
+            }
+        }
+    });
+    var tmdq_powercurve_grid_pt = Ext.create('Ext.PagingToolbar', {
+        store: tmdq_powercurve_gridstore,
+        displayInfo: true,
+        displayMsg: '显示第&nbsp;{0}&nbsp;条到&nbsp;{1}&nbsp;条记录,共&nbsp;{2}&nbsp;条记录',
+        emptyMsg: '查询无记录',
+        items: ['-', tmdq_powercurve_grid_pc]
+    });
+    var tmdq_powercurve_gridpanel = Ext.create('Ext.grid.Panel', {
+        id: 'tmdq-powercurve-grid',
+        title: '功率数据',
+        xtype: 'grid',
+        layout: 'fit',
+        store: tmdq_powercurve_gridstore,
+        loadMask: true,
+        columns: [
+            {text: "序号", dataIndex: 'SN', width: 50, sortable: false},
+            {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
+            {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
+            {text: "数据时间", dataIndex: 'DATA_TIME', width: 135, sortable: true, xtype: 'datecolumn', format:'Y-m-d H:i:s'},
+            {text: "有功功率", dataIndex: 'ACT_POWER', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "A相有功功率", dataIndex: 'ACT_POWER_A', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "B相有功功率", dataIndex: 'ACT_POWER_B', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "C相有功功率", dataIndex: 'ACT_POWER_C', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "无功功率", dataIndex: 'REACT_POWER', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "A相无功功率", dataIndex: 'REACT_POWER_A', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "B相无功功率", dataIndex: 'REACT_POWER_B', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "C相无功功率", dataIndex: 'REACT_POWER_C', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "考核表名称", dataIndex: 'MP_NAME', width: 100, sortable: true},
+            {text: "资产编号", dataIndex: 'ASSET_NO', width: 80, sortable: true},
+            {text: "CT倍率", dataIndex: 'CT_TIMES', width: 60, sortable: true},
+            {text: "PT倍率", dataIndex: 'PT_TIMES', width: 60, sortable: true},
+            {text: "总倍率", dataIndex: 'TOTAL_TIMES', width: 60, sortable: true}
+        ],
+        columnLines: true,
+        // paging bar on the bottom
+        bbar: tmdq_powercurve_grid_pt,
+        // inline buttons
+        dockedItems: [{
+            xtype: 'toolbar',
+            dock: 'top',
+            items: ['->', '单位：kW（有功功率），kvar（无功功率）']
+        }]
+    });
+    // 功率因数数据数据源
+    Ext.define('tmdq-pfcurve-gridstore-model', {
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'SN', type: 'int'},                                          /* 序号 */
+            {name: 'ORG_NAME', type: 'string'},                                 /* 所属机构 */
+            {name: 'TG_NAME', type: 'string'},                                  /* 台区名称 */
+            {name: 'MP_NAME', type: 'string'},                                  /* 考核表名称 */
+            {name: 'ASSET_NO', type: 'string'},                                 /* 资产编号 */
+            {name: 'CT_TIMES', type: 'number', defaultValue: ' '},              /* CT倍率 */
+            {name: 'PT_TIMES', type: 'number', defaultValue: ' '},              /* PT倍率 */
+            {name: 'TOTAL_TIMES', type: 'number', defaultValue: ' '},           /* 总倍率 */
+            {name: 'DATA_TIME', type: 'date', dateFormat: 'Y-m-d H:i:s'},       /* 数据时间 */
+            {name: 'POWER_FACTOR', type: 'number', defaultValue: ' '},          /* 功率因数 */
+            {name: 'POWER_FACTOR_A', type: 'number', defaultValue: ' '},        /* A相功率因数 */
+            {name: 'POWER_FACTOR_B', type: 'number', defaultValue: ' '},        /* B相功率因数 */
+            {name: 'POWER_FACTOR_C', type: 'number', defaultValue: ' '}         /* C相功率因数 */
+        ],
+        idProperty: 'SN'
+    });
+    var tmdq_pfcurve_gridstore = Ext.create('Ext.data.Store', {
+        pageSize: defaultPageSize,
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'tmdq-pfcurve-gridstore-model',
+        remoteSort: true,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/dq/tmdq!getGrid.do',
+            reader: {
+                type: 'json',
+                root: 'records',
+                totalProperty: 'totalCount'
+            },
+            // sends single sort as multi parameter
+            simpleSortMode: true
+        },
+        sorters: [{
+            property: 'DATA_TIME',
+            direction: 'DESC'
+        }],
+        // 
+        autoLoad: false
+    });
+    // 功率因数数据列表
+    var tmdq_pfcurve_grid_pc = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: '每页记录数',
+        store: Ext.create('Ext.data.Store', {
+            fields: ['value', 'label'],
+            data: [
+                {"value": 10, "label": "10"},
+                {"value": 20, "label": "20"},
+                {"value": 50, "label": "50"},
+                {"value": 100, "label": "100"},
+                {"value": 200, "label": "200"},
+                {"value": 500, "label": "500"}
+            ]
+        }),
+        valueField: 'value',
+        displayField: 'label',
+        queryMode: 'local',
+        forceSelection : true,
+        triggerAction : 'all',
+        editable: false,
+        labelWidth: 70,
+        width: 125,
+        minWidth: 125,
+        maxWidth: 125,
+        value: tmdq_pfcurve_gridstore.pageSize,
+        listeners: {
+            beforeselect: function(combo, record, index, eOpts) {
+                if(tmdq_pfcurve_gridstore.pageSize != record.data.value) {
+                    tmdq_pfcurve_gridstore.currentPage = 1;
+                    tmdq_pfcurve_gridstore.pageSize = record.data.value;
+                    tmdq_pfcurve_gridstore.load();
+                }
+            }
+        }
+    });
+    var tmdq_pfcurve_grid_pt = Ext.create('Ext.PagingToolbar', {
+        store: tmdq_pfcurve_gridstore,
+        displayInfo: true,
+        displayMsg: '显示第&nbsp;{0}&nbsp;条到&nbsp;{1}&nbsp;条记录,共&nbsp;{2}&nbsp;条记录',
+        emptyMsg: '查询无记录',
+        items: ['-', tmdq_pfcurve_grid_pc]
+    });
+    var tmdq_pfcurve_gridpanel = Ext.create('Ext.grid.Panel', {
+        id: 'tmdq-pfcurve-grid',
+        title: '功率因数数据',
+        xtype: 'grid',
+        layout: 'fit',
+        store: tmdq_pfcurve_gridstore,
+        loadMask: true,
+        columns: [
+            {text: "序号", dataIndex: 'SN', width: 50, sortable: false},
+            {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
+            {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
+            {text: "数据时间", dataIndex: 'DATA_TIME', width: 135, sortable: true, xtype: 'datecolumn', format:'Y-m-d H:i:s'},
+            {text: "功率因数", dataIndex: 'POWER_FACTOR', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "A相功率因数", dataIndex: 'POWER_FACTOR_A', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "B相功率因数", dataIndex: 'POWER_FACTOR_B', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "C相功率因数", dataIndex: 'POWER_FACTOR_C', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "考核表名称", dataIndex: 'MP_NAME', width: 100, sortable: true},
+            {text: "资产编号", dataIndex: 'ASSET_NO', width: 80, sortable: true},
+            {text: "CT倍率", dataIndex: 'CT_TIMES', width: 60, sortable: true},
+            {text: "PT倍率", dataIndex: 'PT_TIMES', width: 60, sortable: true},
+            {text: "总倍率", dataIndex: 'TOTAL_TIMES', width: 60, sortable: true}
+        ],
+        columnLines: true,
+        // paging bar on the bottom
+        bbar: tmdq_pfcurve_grid_pt,
+        // inline buttons
+        dockedItems: [{
+            xtype: 'toolbar',
+            dock: 'top',
+            items: ['->', '单位：%']
+        }]
+    });
+    // 电压电流数据数据源
+    Ext.define('tmdq-eccurve-gridstore-model', {
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'SN', type: 'int'},                                          /* 序号 */
+            {name: 'ORG_NAME', type: 'string'},                                 /* 所属机构 */
+            {name: 'TG_NAME', type: 'string'},                                  /* 台区名称 */
+            {name: 'MP_NAME', type: 'string'},                                  /* 考核表名称 */
+            {name: 'ASSET_NO', type: 'string'},                                 /* 资产编号 */
+            {name: 'CT_TIMES', type: 'number', defaultValue: ' '},              /* CT倍率 */
+            {name: 'PT_TIMES', type: 'number', defaultValue: ' '},              /* PT倍率 */
+            {name: 'TOTAL_TIMES', type: 'number', defaultValue: ' '},           /* 总倍率 */
+            {name: 'DATA_TIME', type: 'date', dateFormat: 'Y-m-d H:i:s'},       /* 数据时间 */
+            {name: 'VOLT_A', type: 'number', defaultValue: ' '},                /* A相电压 */
+            {name: 'VOLT_B', type: 'number', defaultValue: ' '},                /* B相电压 */
+            {name: 'VOLT_C', type: 'number', defaultValue: ' '},                /* C相电压 */
+            {name: 'ECUR_A', type: 'number', defaultValue: ' '},                /* A相电流 */
+            {name: 'ECUR_B', type: 'number', defaultValue: ' '},                /* B相电流 */
+            {name: 'ECUR_C', type: 'number', defaultValue: ' '}                 /* C相电流 */
+        ],
+        idProperty: 'SN'
+    });
+    var tmdq_eccurve_gridstore = Ext.create('Ext.data.Store', {
+        pageSize: defaultPageSize,
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'tmdq-eccurve-gridstore-model',
+        remoteSort: true,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/dq/tmdq!getGrid.do',
+            reader: {
+                type: 'json',
+                root: 'records',
+                totalProperty: 'totalCount'
+            },
+            // sends single sort as multi parameter
+            simpleSortMode: true
+        },
+        sorters: [{
+            property: 'DATA_TIME',
+            direction: 'DESC'
+        }],
+        // 
+        autoLoad: false
+    });
+    // 电压电流数据列表
+    var tmdq_eccurve_grid_pc = Ext.create('Ext.form.ComboBox', {
+        fieldLabel: '每页记录数',
+        store: Ext.create('Ext.data.Store', {
+            fields: ['value', 'label'],
+            data: [
+                {"value": 10, "label": "10"},
+                {"value": 20, "label": "20"},
+                {"value": 50, "label": "50"},
+                {"value": 100, "label": "100"},
+                {"value": 200, "label": "200"},
+                {"value": 500, "label": "500"}
+            ]
+        }),
+        valueField: 'value',
+        displayField: 'label',
+        queryMode: 'local',
+        forceSelection : true,
+        triggerAction : 'all',
+        editable: false,
+        labelWidth: 70,
+        width: 125,
+        minWidth: 125,
+        maxWidth: 125,
+        value: tmdq_eccurve_gridstore.pageSize,
+        listeners: {
+            beforeselect: function(combo, record, index, eOpts) {
+                if(tmdq_eccurve_gridstore.pageSize != record.data.value) {
+                    tmdq_eccurve_gridstore.currentPage = 1;
+                    tmdq_eccurve_gridstore.pageSize = record.data.value;
+                    tmdq_eccurve_gridstore.load();
+                }
+            }
+        }
+    });
+    var tmdq_eccurve_grid_pt = Ext.create('Ext.PagingToolbar', {
+        store: tmdq_eccurve_gridstore,
+        displayInfo: true,
+        displayMsg: '显示第&nbsp;{0}&nbsp;条到&nbsp;{1}&nbsp;条记录,共&nbsp;{2}&nbsp;条记录',
+        emptyMsg: '查询无记录',
+        items: ['-', tmdq_eccurve_grid_pc]
+    });
+    var tmdq_eccurve_gridpanel = Ext.create('Ext.grid.Panel', {
+        id: 'tmdq-eccurve-grid',
+        title: '电压电流数据',
+        xtype: 'grid',
+        layout: 'fit',
+        store: tmdq_eccurve_gridstore,
+        loadMask: true,
+        columns: [
+            {text: "序号", dataIndex: 'SN', width: 50, sortable: false},
+            {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
+            {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
+            {text: "数据时间", dataIndex: 'DATA_TIME', width: 135, sortable: true, xtype: 'datecolumn', format:'Y-m-d H:i:s'},
+            {text: "A相电压", dataIndex: 'VOLT_A', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "B相电压", dataIndex: 'VOLT_B', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "C相电压", dataIndex: 'VOLT_C', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "A相电流", dataIndex: 'ECUR_A', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "B相电流", dataIndex: 'ECUR_B', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "C相电流", dataIndex: 'ECUR_C', width: 80, sortable: true, xtype: 'numbercolumn', format: '0.00'},
+            {text: "考核表名称", dataIndex: 'MP_NAME', width: 100, sortable: true},
+            {text: "资产编号", dataIndex: 'ASSET_NO', width: 80, sortable: true},
+            {text: "CT倍率", dataIndex: 'CT_TIMES', width: 60, sortable: true},
+            {text: "PT倍率", dataIndex: 'PT_TIMES', width: 60, sortable: true},
+            {text: "总倍率", dataIndex: 'TOTAL_TIMES', width: 60, sortable: true}
+        ],
+        columnLines: true,
+        // paging bar on the bottom
+        bbar: tmdq_eccurve_grid_pt,
+        // inline buttons
+        dockedItems: [{
+            xtype: 'toolbar',
+            dock: 'top',
+            items: ['->', '单位：单位：V（电压），A（电流）']
         }]
     });
 
@@ -276,7 +684,60 @@ function getDataQueryFunctions() {
                     region: 'center',
                     margins: '0 5 5 5',
                     activeTab: 0,
-                    items: [tmdq_eicurve_gridpanel]
+                    items: [tmdq_eicurve_gridpanel, tmdq_powercurve_gridpanel, tmdq_pfcurve_gridpanel, tmdq_eccurve_gridpanel],
+                    listeners: {
+                        tabchange: function(tabPanel, newCard, oldCard, eOpts) {
+                            if(newCard.id == 'tmdq-eicurve-grid') {
+                                currentDataTable = 'D_EI_CURV_C';
+                            }
+                            else if(newCard.id == 'tmdq-powercurve-grid') {
+                                currentDataTable = 'D_POWER_CRUV_C';
+                            }
+                            else if(newCard.id == 'tmdq-pfcurve-grid') {
+                                currentDataTable = 'D_PF_CRUV_C';
+                            }
+                            else if(newCard.id == 'tmdq-eccurve-grid') {
+                                currentDataTable = 'D_EC_CURV_C';
+                            }
+
+                            if(currentDataTable == 'D_EI_CURV_C') {
+                                var query_eicurve_params = {
+                                        dataTable: currentDataTable
+                                };
+                                Ext.apply(query_eicurve_params, tmdq_filter_formpanel.getForm().getValues(false));
+                                tmdq_eicurve_gridstore.load({
+                                    params: query_eicurve_params
+                                });
+                            }
+                            else if(currentDataTable == 'D_POWER_CRUV_C') {
+                                var query_powercurve_params = {
+                                        dataTable: currentDataTable
+                                };
+                                Ext.apply(query_powercurve_params, tmdq_filter_formpanel.getForm().getValues(false));
+                                tmdq_powercurve_gridstore.load({
+                                    params: query_powercurve_params
+                                });
+                            }
+                            else if(currentDataTable == 'D_PF_CRUV_C') {
+                                var query_pfcurve_params = {
+                                        dataTable: currentDataTable
+                                };
+                                Ext.apply(query_pfcurve_params, tmdq_filter_formpanel.getForm().getValues(false));
+                                tmdq_pfcurve_gridstore.load({
+                                    params: query_pfcurve_params
+                                });
+                            }
+                            else if(currentDataTable == 'D_EC_CURV_C') {
+                                var query_eccurve_params = {
+                                        dataTable: currentDataTable
+                                };
+                                Ext.apply(query_eccurve_params, tmdq_filter_formpanel.getForm().getValues(false));
+                                tmdq_eccurve_gridstore.load({
+                                    params: query_eccurve_params
+                                });
+                            }
+                        }
+                    }
                 }]
             }]
         }/*,

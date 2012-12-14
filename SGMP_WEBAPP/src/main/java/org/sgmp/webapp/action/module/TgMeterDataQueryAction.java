@@ -7,6 +7,7 @@ import java.util.Map;
 import org.sgmp.webapp.ActionException;
 import org.sgmp.webapp.ServiceException;
 import org.sgmp.webapp.action.AbstractSimpleAction;
+import org.sgmp.webapp.mapper.module.TgMeterDataQueryMapper;
 import org.sgmp.webapp.service.module.SimpleQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ public class TgMeterDataQueryAction extends AbstractSimpleAction implements Simp
     @Autowired
     private SimpleQueryService simpleQueryService;
 
+    private String dataTable;           //
     private String soType;              // selection object type
     private String soId;                // selection object id
     private String soName;              // selection object name
@@ -48,6 +50,7 @@ public class TgMeterDataQueryAction extends AbstractSimpleAction implements Simp
 
     @Override
     public void getGrid() throws ActionException {
+        logger.info(" dataTable               : " + this.dataTable);
         logger.info(" selection object type   : " + this.soType);
         logger.info(" selection object id     : " + this.soId);
         logger.info(" selection object name   : " + this.soName);
@@ -62,6 +65,7 @@ public class TgMeterDataQueryAction extends AbstractSimpleAction implements Simp
         logger.info(" sort                    : " + this.sort);
         logger.info(" dir                     : " + this.dir);
         Map<String, Object> params = new HashMap<String, Object>();
+        params.put("dataTable", dataTable);
         params.put("soType", soType);
         params.put("soId", soId);
         params.put("soName", soName);
@@ -72,8 +76,12 @@ public class TgMeterDataQueryAction extends AbstractSimpleAction implements Simp
         params.put("startDate", startDate);
         params.put("endDate", endDate);
         try {
-            List<?> list = simpleQueryService.getList("TgMeterDataQueryMapper", "getList", params, start, limit, sort, dir);
-            responseJson(list);
+            List<?> records = simpleQueryService.getList(TgMeterDataQueryMapper.class, params, start, limit, sort, dir);
+            Integer totalCount = simpleQueryService.getCount(TgMeterDataQueryMapper.class, params);
+            Map<String, Object> result = new HashMap<String, Object>();
+            result.put("records", records);
+            result.put("totalCount", totalCount);
+            responseJson(result);
         }
         catch(ServiceException _se) {
             logger.error("getGrid error", _se);
@@ -85,6 +93,14 @@ public class TgMeterDataQueryAction extends AbstractSimpleAction implements Simp
     public void getChart() throws ActionException {
         // TODO Auto-generated method stub
         
+    }
+
+    public String getDataTable() {
+        return dataTable;
+    }
+
+    public void setDataTable(String dataTable) {
+        this.dataTable = dataTable;
     }
 
     public String getSoType() {

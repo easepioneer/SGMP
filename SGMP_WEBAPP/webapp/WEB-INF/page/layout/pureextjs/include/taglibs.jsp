@@ -5,5 +5,4 @@
 <c:set var="ctx_webapp" value="/hdweb" />
 <c:set var="ctx_webstatic" value="http://183.129.186.78:7777/hdstatic" />
 <c:set var="cxt_webstyle" value="http://183.129.186.78:7777/hdstatic/style/ext-lightblue" />
-<c:set var="title_system" value="SGMP - Smart Grid Management Platform" />
-<%-- <c:set var="title_system" value="浙江豪顿电气有限公司 - 低压配电网络信息一体化平台" /> --%>
+<c:set var="title_system" value="浙江豪顿电气有限公司 - 低压配电网络信息一体化平台" />

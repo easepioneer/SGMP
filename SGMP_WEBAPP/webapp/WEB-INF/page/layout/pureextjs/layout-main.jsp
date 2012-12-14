@@ -70,9 +70,9 @@ Ext.onReady(function() {
     Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider'));
 
     var functionContents = [];
-    /* Ext.Object.each(getHomepageFunctions(), function(name, content) {
+    Ext.Object.each(getHomepageFunctions(), function(name, content) {
         functionContents.push(content);
-    }); */
+    });
     Ext.Object.each(getArchivesManagementFunctions(), function(name, content) {
         functionContents.push(content);
     });
@@ -180,12 +180,12 @@ Ext.onReady(function() {
         Ext.create('Ext.Component', {
             region: 'north',
             id: 'panel-north',
-            height: 0,
+            height: 60,
             autoEl: {
                 tag: 'div',
-                /* html: '<h1>浙江豪顿电气有限公司</h1><h2>低压配电网络信息一体化平台</h2>' */
+                html: '<h1>浙江豪顿电气有限公司</h1><h2>低压配电网络信息一体化平台</h2>'
                 /* html: '<h1>SGMP</h1><h2>Smart Grid Management Platform</h2>' */
-                html: ''
+                /* html: '' */
             }
         }), {
             region: 'west',

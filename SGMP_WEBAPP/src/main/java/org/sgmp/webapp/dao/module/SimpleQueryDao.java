@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.sgmp.webapp.DaoException;
 import org.sgmp.webapp.dao.BaseDao;
+import org.sgmp.webapp.mapper.module.SimpleQueryMapper;
 
 /**
  * DAO简单查询接口
@@ -17,8 +18,7 @@ public interface SimpleQueryDao extends BaseDao {
 
     /**
      * 
-     * @param namespace
-     * @param statement
+     * @param mapperClass
      * @param params
      * @param start
      * @param limit
@@ -27,6 +27,15 @@ public interface SimpleQueryDao extends BaseDao {
      * @return
      * @throws DaoException
      */
-    public List<?> getList(String namespace, String statement, Map<?, ?> params, String start, String limit, String sort, String dir) throws DaoException;
+    public List<?> getList(Class<? extends SimpleQueryMapper> mapperClass, Map<String, Object> params, String start, String limit, String sort, String dir) throws DaoException;
+
+    /**
+     * 
+     * @param mapperClass
+     * @param params
+     * @return
+     * @throws DaoException
+     */
+    public Integer getCount(Class<? extends SimpleQueryMapper> mapperClass, Map<String, Object> params) throws DaoException;
 
 }

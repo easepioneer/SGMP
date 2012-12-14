@@ -14,8 +14,17 @@
     <!-- Begin JNDI Config  -->
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName" value="java:comp/env/OracleHDServerDataSource" />
+        <!--  -->
+        <property name="resourceRef" value="true" />
+        <property name="defaultObject" ref="nojndi-datasource"></property>
     </bean>
     <!-- End JNDI Config -->
+
+    <!-- fall back data-source if JNDI look up of main data-source fails -->  
+    <bean id="nojndi-datasource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="oracle.jdbc.pool.OracleConnectionPoolDataSource" />
+        <property name="url" value="jdbc:oracle:thin:hduser/hduser2012@192.168.1.11:1521:orcl" />
+    </bean>
 
     <!-- 配置SqlSessionFactoryBean -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -37,18 +46,14 @@
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
-    <tx:annotation-driven transaction-manager="txManager" />
+    <tx:annotation-driven transaction-manager="transactionManager" />
 
     <!-- 配置事务的传播特性 -->
     <bean id="baseTransactionProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean" abstract="true">
         <property name="transactionManager" ref="transactionManager" />
         <property name="transactionAttributes">
             <props>
-                <prop key="add*">PROPAGATION_REQUIRED</prop>
-                <prop key="edit*">PROPAGATION_REQUIRED</prop>
-                <prop key="remove*">PROPAGATION_REQUIRED</prop>
                 <prop key="create*">PROPAGATION_REQUIRED</prop>
-                <prop key="insert*">PROPAGATION_REQUIRED</prop>
                 <prop key="update*">PROPAGATION_REQUIRED</prop>
                 <prop key="delete*">PROPAGATION_REQUIRED</prop>
                 <prop key="*">readOnly</prop>
@@ -57,8 +62,8 @@
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="org.sgmp.webapp.dao"/>
-        <property name="markerInterface" value="org.sgmp.webapp.dao.BaseDao"/>
+        <property name="basePackage" value="org.sgmp.webapp.mapper" />
+        <property name="markerInterface" value="org.sgmp.webapp.mapper.BaseMapper" />
     </bean>
 
 </beans>
