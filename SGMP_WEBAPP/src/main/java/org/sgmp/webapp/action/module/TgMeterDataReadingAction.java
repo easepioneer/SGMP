@@ -1,14 +1,12 @@
 package org.sgmp.webapp.action.module;
 
-import org.sgmp.webapp.action.AbstractSimpleAction;
-
 /**
  * 台区考核表数据召测
  * 
  * @author Nick
  *
  */
-public class TgMeterDataReadingAction extends AbstractSimpleAction implements SimpleInteraction {
+public class TgMeterDataReadingAction extends AbstractSimpleInteractionAction {
 
     /**
      * serialVersionUID

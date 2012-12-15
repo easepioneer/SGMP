@@ -1,14 +1,12 @@
 package org.sgmp.webapp.action.module;
 
-import org.sgmp.webapp.action.AbstractSimpleAction;
-
 /**
  * 台区档案管理
  * 
  * @author Nick
  *
  */
-public class TgArchivesManagementAction extends AbstractSimpleAction implements SimpleCURD {
+public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
 
     /**
      * serialVersionUID

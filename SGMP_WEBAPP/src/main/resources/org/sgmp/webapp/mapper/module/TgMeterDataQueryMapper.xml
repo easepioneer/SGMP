@@ -15,6 +15,12 @@
           and M.METER_ID = MP.METER_ID
           and TG.TG_ID = MP.TG_ID
           and O.ORG_ID = TG.ORG_ID
+          <choose>
+              <when test="soTgId != null and soTgId != 0">and TG.TG_ID = #{soTgId}</when>
+          </choose>
+          <choose>
+              <when test="soGpId != null and soGpId != 0">and GP.GP_ID = #{soGpId}</when>
+          </choose>
           and D.DATA_TIME &gt;= TO_DATE(#{startDate}, 'YYYY-MM-DD')
           and D.DATA_TIME &lt; TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
     </sql>

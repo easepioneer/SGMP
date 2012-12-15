@@ -1,14 +1,12 @@
 package org.sgmp.webapp.action.module;
 
-import org.sgmp.webapp.action.AbstractSimpleAction;
-
 /**
  * 保护器参数设置
  * 
  * @author Nick
  *
  */
-public class ProtectorParameterSetupAction extends AbstractSimpleAction implements SimpleInteraction {
+public class ProtectorParameterSetupAction extends AbstractSimpleInteractionAction {
 
     /**
      * serialVersionUID

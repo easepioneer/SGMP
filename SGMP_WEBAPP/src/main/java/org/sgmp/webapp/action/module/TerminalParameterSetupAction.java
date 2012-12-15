@@ -2,7 +2,6 @@ package org.sgmp.webapp.action.module;
 
 import org.apache.commons.lang3.StringUtils;
 import org.sgmp.webapp.ActionException;
-import org.sgmp.webapp.action.AbstractSimpleAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class TerminalParameterSetupAction extends AbstractSimpleAction implements SimpleInteraction {
+public class TerminalParameterSetupAction extends AbstractSimpleInteractionAction {
 
     /**
      * serialVersionUID

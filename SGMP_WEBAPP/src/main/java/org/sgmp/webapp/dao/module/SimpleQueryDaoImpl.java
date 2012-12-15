@@ -1,10 +1,8 @@
 package org.sgmp.webapp.dao.module;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.sgmp.webapp.DaoException;
 import org.sgmp.webapp.mapper.module.SimpleQueryMapper;
@@ -29,7 +27,6 @@ public class SimpleQueryDaoImpl implements SimpleQueryDao {
     @Override
     public List<?> getList(Class<? extends SimpleQueryMapper> mapperClass, Map<String, Object> params, 
             String start, String limit, String sort, String dir) throws DaoException {
-        params = ObjectUtils.defaultIfNull(params, new HashMap<String, Object>());
         int _start = 0;
         int _limit = PAGE_SIZE_DEFAULT;
         int _end = _start + _limit;

@@ -1,14 +1,12 @@
 package org.sgmp.webapp.action.module;
 
-import org.sgmp.webapp.action.AbstractSimpleAction;
-
 /**
  * 采集任务管理
  * 
  * @author Nick
  *
  */
-public class CollectionTaskManagementAction extends AbstractSimpleAction implements SimpleInteraction {
+public class CollectionTaskManagementAction extends AbstractSimpleInteractionAction {
 
     /**
      * serialVersionUID

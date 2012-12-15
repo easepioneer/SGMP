@@ -1,14 +1,12 @@
 package org.sgmp.webapp.action.module;
 
-import org.sgmp.webapp.action.AbstractSimpleAction;
-
 /**
  * 角色管理
  * 
  * @author Nick
  *
  */
-public class RoleManagementAction extends AbstractSimpleAction implements SimpleCURD {
+public class RoleManagementAction extends AbstractSimpleCURDAction {
 
     /**
      * serialVersionUID

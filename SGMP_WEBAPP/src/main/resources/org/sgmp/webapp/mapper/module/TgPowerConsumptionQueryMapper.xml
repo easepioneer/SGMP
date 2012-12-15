@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.TgPowerConsumptionQueryMapper">
+
+    <sql id="queryFrom">
+        from D_DL_CURV_C D, C_GP GP, C_MP MP, C_METER M, G_TG TG, O_ORG O
+    </sql>
+
+    <sql id="queryWhere">
+        where GP.GP_ID = D.GP_ID
+          and MP.MP_ID = GP.MP_ID
+          and M.METER_ID = MP.METER_ID
+          and TG.TG_ID = MP.TG_ID
+          and O.ORG_ID = TG.ORG_ID
+          <choose>
+              <when test="soTgId != null and soTgId != 0">and TG.TG_ID = #{soTgId}</when>
+          </choose>
+          <choose>
+              <when test="soGpId != null and soGpId != 0">and GP.GP_ID = #{soGpId}</when>
+          </choose>
+          and D.DATA_TIME &gt;= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+          and D.DATA_TIME &lt; TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+    </sql>
+
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.Map">
+        <include refid="PagingQuery.queryHeader" />
+        select O.ORG_NAME, TG.TG_NAME, MP.MP_NAME, M.ASSET_NO, 
+               GP.CT_TIMES, GP.PT_TIMES, GP.CT_TIMES * GP.PT_TIMES as TOTAL_TIMES, 
+               TO_CHAR(D.DATA_TIME, 'YYYY-MM-DD HH24:MI:SS') as DATA_TIME, 
+               D.P_ACT_TOTAL_LAST, D.P_ACT_TOTAL, D.P_ACT_DL
+          <include refid="queryFrom" />
+          <include refid="queryWhere" />
+          <include refid="PagingQuery.querySort" />
+        <include refid="PagingQuery.queryFooter" />
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(1) as CNT
+          <include refid="queryFrom" />
+          <include refid="queryWhere" />
+    </select>
+
+</mapper>
