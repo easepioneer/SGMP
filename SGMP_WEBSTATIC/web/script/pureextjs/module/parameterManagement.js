@@ -1,3 +1,25 @@
+function rendererProtectorControlCommand(code, value) {
+    if(code == '0710') {            // 预约远程分断控制
+        
+    }
+    else if(code == '0711') {       // 取消远程分断控制
+        
+    }
+    else if(code == '0720') {       // 预约远程合闸控制
+        
+    }
+    else if(code == '0721') {       // 取消远程合闸控制
+        
+    }
+    else if(code == '0730') {       // 预约模拟试跳控制
+        
+    }
+    else if(code == '0731') {       // 取消模拟试跳控制
+        
+    }
+    return code + " : " + value;
+}
+
 function getParameterManagementFunctions() {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////// 集中器参数设置 ////////////////////////////////////////////////////
@@ -21,10 +43,32 @@ function getParameterManagementFunctions() {
                 flex: 1,
                 width: 240,
                 items: [{
-                    xtype: 'textfield',
+                    xtype: 'combobox',
+                    name: 'soOrgId',
                     fieldLabel: '所属机构',
                     labelWidth: 60,
-                    name: 'orgName'
+                    allowBlank: false,
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['orgId', 'orgName'],
+                        data: [
+                                {"orgId": "0", "orgName": "请选择所属机构"},
+                                {"orgId": "1", "orgName": "豪顿电气"},
+                                {"orgId": "2", "orgName": "豪顿电气测试部"},
+                                {"orgId": "3", "orgName": "豪顿电气演示部"}
+                        ]
+                    }),
+                    valueField: 'orgId',
+                    displayField: 'orgName',
+                    queryMode: 'local',
+                    forceSelection : true,
+                    triggerAction : 'all',
+                    editable: false,
+                    value: '0',
+                    listeners: {
+                        change: function(combo, newValue, oldValue, eOpts) {
+                            //alert(newValue);
+                        }
+                    }
                 }]
             }, {
                 xtype: 'container',
@@ -32,10 +76,30 @@ function getParameterManagementFunctions() {
                 flex: 1,
                 width: 240,
                 items: [{
-                    xtype: 'textfield',
+                    xtype: 'combobox',
+                    name: 'soTgId',
                     fieldLabel: '台区名称',
                     labelWidth: 60,
-                    name: 'tgName'
+                    allowBlank: false,
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['tgId', 'tgName'],
+                        data: [ 
+                                {"tgId": "0", "tgName": "--- 所有台区 ---"},
+                                {"tgId": "102", "tgName": "测试台区（96123456）"}
+                        ]
+                    }),
+                    valueField: 'tgId',
+                    displayField: 'tgName',
+                    queryMode: 'local',
+                    forceSelection : true,
+                    triggerAction : 'all',
+                    editable: false,
+                    value: '0',
+                    listeners: {
+                        change: function(combo, newValue, oldValue, eOpts) {
+                            //alert(newValue);
+                        }
+                    }
                 }]
             }, {
                 xtype: 'container',
@@ -43,10 +107,29 @@ function getParameterManagementFunctions() {
                 flex: 1,
                 width: 240,
                 items: [{
-                    xtype: 'textfield',
+                    xtype: 'combobox',
+                    name: 'soTermId',
                     fieldLabel: '逻辑地址',
                     labelWidth: 60,
-                    name: 'logicalAddr'
+                    allowBlank: false,
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['termId', 'logicalAddr'],
+                        data: [ 
+                                {"termId": "84", "logicalAddr": "96123456"}
+                        ]
+                    }),
+                    valueField: 'termId',
+                    displayField: 'logicalAddr',
+                    queryMode: 'local',
+                    forceSelection : true,
+                    triggerAction : 'all',
+                    editable: false,
+                    value: '84',
+                    listeners: {
+                        change: function(combo, newValue, oldValue, eOpts) {
+                            //alert(newValue);
+                        }
+                    }
                 }]
             }]
         }]/*,
@@ -62,7 +145,7 @@ function getParameterManagementFunctions() {
     Ext.define('tps-termparam-gridstore-model', {
         extend: 'Ext.data.Model',
         fields: [
-            {name: 'SN', type: 'string'},                          /* 序号 */
+            {name: 'SN', type: 'int'},                          /* 序号 */
             {name: 'P_CODE', type: 'string'},                   /* 参数编码 */
             {name: 'P_NAME', type: 'string'},                   /* 参数名称 */
             {name: 'P_VALUE', type: 'string'},                  /* 参数值 */
@@ -376,7 +459,7 @@ function getParameterManagementFunctions() {
     });
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // 集中器参数设置
+    ///////////////////////////////////////////////// 保护器参数设置 ////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 保护器信息表单
     var pps_filter_formpanel = Ext.create('Ext.form.Panel', {
@@ -397,10 +480,32 @@ function getParameterManagementFunctions() {
                 flex: 1,
                 width: 240,
                 items: [{
-                    xtype: 'textfield',
+                    xtype: 'combobox',
+                    name: 'soOrgId',
                     fieldLabel: '所属机构',
                     labelWidth: 60,
-                    name: 'orgName'
+                    allowBlank: false,
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['orgId', 'orgName'],
+                        data: [
+                                {"orgId": "0", "orgName": "请选择所属机构"},
+                                {"orgId": "1", "orgName": "豪顿电气"},
+                                {"orgId": "2", "orgName": "豪顿电气测试部"},
+                                {"orgId": "3", "orgName": "豪顿电气演示部"}
+                        ]
+                    }),
+                    valueField: 'orgId',
+                    displayField: 'orgName',
+                    queryMode: 'local',
+                    forceSelection : true,
+                    triggerAction : 'all',
+                    editable: false,
+                    value: '0',
+                    listeners: {
+                        change: function(combo, newValue, oldValue, eOpts) {
+                            //alert(newValue);
+                        }
+                    }
                 }]
             }, {
                 xtype: 'container',
@@ -408,10 +513,30 @@ function getParameterManagementFunctions() {
                 flex: 1,
                 width: 240,
                 items: [{
-                    xtype: 'textfield',
+                    xtype: 'combobox',
+                    name: 'soTgId',
                     fieldLabel: '台区名称',
                     labelWidth: 60,
-                    name: 'tgName'
+                    allowBlank: false,
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['tgId', 'tgName'],
+                        data: [ 
+                                {"tgId": "0", "tgName": "--- 所有台区 ---"},
+                                {"tgId": "102", "tgName": "测试台区（96123456）"}
+                        ]
+                    }),
+                    valueField: 'tgId',
+                    displayField: 'tgName',
+                    queryMode: 'local',
+                    forceSelection : true,
+                    triggerAction : 'all',
+                    editable: false,
+                    value: '0',
+                    listeners: {
+                        change: function(combo, newValue, oldValue, eOpts) {
+                            //alert(newValue);
+                        }
+                    }
                 }]
             }, {
                 xtype: 'container',
@@ -419,10 +544,31 @@ function getParameterManagementFunctions() {
                 flex: 1,
                 width: 240,
                 items: [{
-                    xtype: 'textfield',
+                    xtype: 'combobox',
+                    name: 'soGpId',
                     fieldLabel: '保护器名称',
-                    labelWidth: 72,
-                    name: 'psName'
+                    labelWidth: 66,
+                    allowBlank: false,
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['gpId', 'mpName'],
+                        data: [ 
+                                {"gpId": "0", "mpName": "--- 所有保护器 ---"},
+                                {"gpId": "243", "mpName": "总保1"},
+                                {"gpId": "244", "mpName": "支路保1"}
+                        ]
+                    }),
+                    valueField: 'gpId',
+                    displayField: 'mpName',
+                    queryMode: 'local',
+                    forceSelection : true,
+                    triggerAction : 'all',
+                    editable: false,
+                    value: '0',
+                    listeners: {
+                        change: function(combo, newValue, oldValue, eOpts) {
+                            //alert(newValue);
+                        }
+                    }
                 }]
             }]
         }]/*,
@@ -433,6 +579,274 @@ function getParameterManagementFunctions() {
                 
             }
         }]*/
+    });
+    //
+    var pps_param_gridpanel = {
+        title: '保护器参数',
+        html: '<p>保护器参数</p>'
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////// 保护器控制命令下发 //////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 保护器信息表单
+    var pccs_filter_formpanel = Ext.create('Ext.form.Panel', {
+        id: 'pccs-filter-form',
+        region: 'north',
+        title: '保护器信息',
+        frame: true,
+        margins: '5 5 5 5',
+        bodyStyle: 'padding: 5px 5px 0 5px;',
+        split: false,
+        items: [{
+            xtype: 'container',
+            anchor: '100%',
+            layout: 'hbox',
+            items: [{
+                xtype: 'container',
+                layout: 'anchor',
+                flex: 1,
+                width: 240,
+                items: [{
+                    xtype: 'combobox',
+                    name: 'soOrgId',
+                    fieldLabel: '所属机构',
+                    labelWidth: 60,
+                    allowBlank: false,
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['orgId', 'orgName'],
+                        data: [
+                                {"orgId": "0", "orgName": "请选择所属机构"},
+                                {"orgId": "1", "orgName": "豪顿电气"},
+                                {"orgId": "2", "orgName": "豪顿电气测试部"},
+                                {"orgId": "3", "orgName": "豪顿电气演示部"}
+                        ]
+                    }),
+                    valueField: 'orgId',
+                    displayField: 'orgName',
+                    queryMode: 'local',
+                    forceSelection : true,
+                    triggerAction : 'all',
+                    editable: false,
+                    value: '0',
+                    listeners: {
+                        change: function(combo, newValue, oldValue, eOpts) {
+                            //alert(newValue);
+                        }
+                    }
+                }]
+            }, {
+                xtype: 'container',
+                layout: 'anchor',
+                flex: 1,
+                width: 240,
+                items: [{
+                    xtype: 'combobox',
+                    name: 'soTgId',
+                    fieldLabel: '台区名称',
+                    labelWidth: 60,
+                    allowBlank: false,
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['tgId', 'tgName'],
+                        data: [ 
+                                {"tgId": "0", "tgName": "--- 所有台区 ---"},
+                                {"tgId": "102", "tgName": "测试台区（96123456）"}
+                        ]
+                    }),
+                    valueField: 'tgId',
+                    displayField: 'tgName',
+                    queryMode: 'local',
+                    forceSelection : true,
+                    triggerAction : 'all',
+                    editable: false,
+                    value: '0',
+                    listeners: {
+                        change: function(combo, newValue, oldValue, eOpts) {
+                            //alert(newValue);
+                        }
+                    }
+                }]
+            }, {
+                xtype: 'container',
+                layout: 'anchor',
+                flex: 1,
+                width: 240,
+                items: [{
+                    xtype: 'combobox',
+                    name: 'soGpId',
+                    fieldLabel: '保护器名称',
+                    labelWidth: 66,
+                    allowBlank: false,
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['gpId', 'mpName'],
+                        data: [ 
+                                {"gpId": "0", "mpName": "--- 所有保护器 ---"},
+                                {"gpId": "243", "mpName": "总保1"},
+                                {"gpId": "244", "mpName": "支路保1"}
+                        ]
+                    }),
+                    valueField: 'gpId',
+                    displayField: 'mpName',
+                    queryMode: 'local',
+                    forceSelection : true,
+                    triggerAction : 'all',
+                    editable: false,
+                    value: '0',
+                    listeners: {
+                        change: function(combo, newValue, oldValue, eOpts) {
+                            //alert(newValue);
+                        }
+                    }
+                }]
+            }]
+        }]/*,
+        buttonAlign: 'center',
+        buttons: [{
+            text: '查询',
+            handler: function() {
+                
+            }
+        }]*/
+    });
+    // 保护器控制命令列表数据源
+    Ext.define('pccs-control-gridstore-model', {
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'SN', type: 'int'},                          /* 序号 */
+            {name: 'P_CODE', type: 'string'},                   /* 控制命令编码 */
+            {name: 'P_NAME', type: 'string'},                   /* 控制命令名称 */
+            {name: 'P_VALUE', type: 'string'},                  /* 控制命令参数值 */
+            {name: 'OP_RESULT', type: 'string'}                 /* 操作结果 */
+        ],
+        idProperty: 'P_CODE'
+    });
+    var pccs_control_gridstore = Ext.create('Ext.data.Store', {
+        // destroy the store if the grid is destroyed
+        //autoDestroy: true,
+        model: 'pccs-control-gridstore-model',
+        //remoteSort: true,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webstatic + '/customized/project/hd/data/pccs-control-grid-data.json',
+            reader: {
+                type: 'json',
+                root: 'records',
+                totalProperty: 'count'
+            },
+            // sends single sort as multi parameter
+            simpleSortMode: true
+        },
+        /*sorters: [{
+            property: 'P_CODE',
+            direction: 'ACS'
+        }],*/
+        // 
+        autoLoad: true
+    });
+    // 保护器控制命令列表
+    var pccs_control_grid_selections = '';
+    var pccs_control_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
+        checkOnly: true,
+        mode: 'SINGLE',
+        showHeaderCheckbox: false,
+        listeners: {
+            selectionchange: function(sm, selections) {
+                //alert(selections.length);
+                pccs_control_gridpanel.down('#pccs-control-setting-button').setDisabled(selections.length == 0);
+                pccs_control_grid_selections = selections;
+            }
+        }
+    });
+    var tplPValue = new Ext.XTemplate(
+        rendererProtectorControlCommand('{P_CODE}', '{P_VALUE}')
+    );
+    var pccs_control_gridpanel = Ext.create('Ext.grid.Panel', {
+        id: 'pccs-control-grid',
+        title: '保护器控制命令',
+        xtype: 'grid',
+        layout: 'fit',
+        store: pccs_control_gridstore,
+        loadMask: true,
+        columns: [
+            {text: "序号", dataIndex: 'SN', width: 50, sortable: false},
+            {text: "控制命令编码", dataIndex: 'P_CODE', width: 160, sortable: true},
+            {text: "控制命令名称", dataIndex: 'P_NAME', width: 200, sortable: true},
+            {text: "控制命令参数值", dataIndex: 'P_VALUE', width: 240, sortable: true, xtype: 'templatecolumn', tpl: tplPValue},
+            {text: "操作结果", dataIndex: 'OP_RESULT', flex: 1, sortable: true}
+        ],
+        columnLines: true,
+        selModel: pccs_control_grid_selmodel,
+        // inline buttons
+        dockedItems: [{
+            xtype: 'toolbar',
+            dock: 'top',
+            items: [{
+                itemId: 'pccs-control-setting-button',
+                text: '投入',
+                tooltip: '投入保护器控制命令',
+                iconCls: 'setting',
+                disabled: true,
+                handler: function() {
+                    //alert('投入保护器控制命令');
+                    var records = pccs_control_grid_selections;
+                    //alert(records.length);
+                    if(typeof(records) == "undefined" || records.length == 0) {
+                        Ext.MessageBox.alert('提示', '请选择要投入的控制命令', function(btn) {
+                            return;
+                        });
+                    }
+                    else {
+                        var paramsAndValues = '';
+                        for(var i = 0; i < records.length; i++) {
+                            paramsAndValues += records[i].get("P_CODE") + ':' + records[i].get("P_VALUE") + ';';
+                        }
+                        var params = {
+                                action: 'setting',
+                                paramsAndValues: paramsAndValues
+                        };
+                        Ext.apply(params, pccs_filter_formpanel.getForm().getValues(false));
+                        Ext.Ajax.request({
+                            url: ctx_webapp + '/pm/pccs!send.do',
+                            params: params,
+                            method: 'POST',
+                            success: function(response) {
+                                alert(response.responseText);
+                            },
+                            failure: function(response) {
+                                alert(response.responseText);
+                            }
+                        });
+                        /*Ext.MessageBox.show({
+                            title: '正在等待',
+                            msg: 'Loading items...',
+                            progressText: 'Initializing...',
+                            width:300,
+                            progress:true,
+                            closable:false,
+                            animateTarget: 'mb6'
+                        });
+
+                        // this hideous block creates the bogus progress
+                        var f = function(v){
+                             return function(){
+                                 if(v == 12){
+                                     Ext.MessageBox.hide();
+                                     Ext.example.msg('Done', 'Your fake items were loaded!');
+                                 }else{
+                                     var i = v/11;
+                                     Ext.MessageBox.updateProgress(i, Math.round(100*i)+'% completed');
+                                 }
+                            };
+                        };
+                        for(var i = 1; i < 13; i++){
+                            setTimeout(f(i), i*500);
+                        }*/
+                    }
+                }
+            }]
+        }]
     });
 
     return {
@@ -475,10 +889,29 @@ function getParameterManagementFunctions() {
                     region: 'center',
                     margins: '0 5 5 5',
                     activeTab: 0,
-                    items: [{
-                        title: '保护器参数',
-                        html: '<p>保护器参数</p>'
-                    }]
+                    items: [pps_param_gridpanel]
+                }]
+            }]
+        },
+
+        /*
+         * ================  保护器控制命令下发  =======================
+         */
+        actionProtectorControlCommandSending: {
+            xtype: 'tabpanel',
+            id: 'actionProtectorControlCommandSendingContentPanel',
+            activeTab: 0,
+            defaults: {bodyStyle: 'padding: 0'},
+            items: [{
+                title: '保护器控制命令下发',
+                layout: 'border',
+                items: [pccs_filter_formpanel, {
+                    xtype: 'tabpanel',
+                    plain: true,
+                    region: 'center',
+                    margins: '0 5 5 5',
+                    activeTab: 0,
+                    items: [pccs_control_gridpanel]
                 }]
             }]
         }

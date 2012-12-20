@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd"
+       default-autowire="byName" default-lazy-init="false">
+
+    <bean id="protocolConfig" class="fep.bp.realinterface.conf.ProtocolConfig" scope="singleton">
+        <constructor-arg index="0" value="classpath:conf/fep/bp/realinterface/protocol-data-config-mapping.xml" />
+        <constructor-arg index="1" value="classpath:conf/fep/bp/realinterface/protocol-data-config.xml" />
+    </bean>
+
+    <bean id="decoder" class="fep.bp.utils.decoder.Decoder376_02">
+        <property name="config" ref="protocolConfig" />
+    </bean>
+
+    <bean id="encoder" class="fep.bp.utils.encoder.encoder376.Encoder376">
+        <property name="config" ref="protocolConfig" />
+    </bean>
+
+    <bean id="converter" class="fep.bp.utils.Converter">
+        <property name="config" ref="protocolConfig" />
+        <property name="decoder" ref="decoder" />
+    </bean>
+
+    <bean id="rtTaskService" class="fep.bp.dal.RTTaskServiceIMP">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="realTimeProxy376" class="fep.bp.realinterface.RealTimeProxy376">
+        <property name="taskService" ref="rtTaskService" />
+        <property name="decoder" ref="decoder" />
+        <property name="encoder" ref="encoder" />
+    </bean>
+
+</beans>

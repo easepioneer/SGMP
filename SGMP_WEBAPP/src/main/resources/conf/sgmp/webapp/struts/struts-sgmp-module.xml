@@ -18,6 +18,8 @@
         <action name="tps" class="terminalParameterSetupAction" />
         <!-- |保护器参数设置| -->
         <action name="pps" class="protectorParameterSetupAction" />
+        <!-- |保护器参数设置| -->
+        <action name="pccs" class="protectorControlCommandSendingAction" />
     </package>
 
     <!-- |数据查询| -->

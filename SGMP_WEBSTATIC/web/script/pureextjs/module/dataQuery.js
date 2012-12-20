@@ -74,7 +74,8 @@ function getDataQueryFunctions() {
                         fields: ['tgId', 'tgName'],
                         data: [ 
                                 {"tgId": "0", "tgName": "--- 所有台区 ---"},
-                                {"tgId": "102", "tgName": "测试台区（96123456）"}
+                                {"tgId": "1", "tgName": "测试台区（96123456）"},
+                                {"tgId": "2", "tgName": "测试台区（96123458）"}
                         ]
                     }),
                     valueField: 'tgId',
@@ -112,7 +113,7 @@ function getDataQueryFunctions() {
                         fields: ['gpId', 'mpName'],
                         data: [ 
                                 {"gpId": "0", "mpName": "--- 所有考核表 ---"},
-                                {"gpId": "1201", "mpName": "测试台区考核表"}
+                                {"gpId": "1", "mpName": "测试台区考核表"}
                         ]
                     }),
                     valueField: 'gpId',
@@ -742,7 +743,8 @@ function getDataQueryFunctions() {
                         fields: ['tgId', 'tgName'],
                         data: [ 
                                 {"tgId": "0", "tgName": "--- 所有台区 ---"},
-                                {"tgId": "102", "tgName": "测试台区（96123456）"}
+                                {"tgId": "1", "tgName": "测试台区（96123456）"},
+                                {"tgId": "2", "tgName": "测试台区（96123458）"}
                         ]
                     }),
                     valueField: 'tgId',
@@ -780,8 +782,10 @@ function getDataQueryFunctions() {
                         fields: ['gpId', 'mpName'],
                         data: [ 
                                 {"gpId": "0", "mpName": "--- 所有保护器 ---"},
-                                {"gpId": "243", "mpName": "总保1"},
-                                {"gpId": "244", "mpName": "支路保1"}
+                                {"gpId": "2", "mpName": "总保1"},
+                                {"gpId": "3", "mpName": "支路保1"},
+                                {"gpId": "4", "mpName": "总保2"},
+                                {"gpId": "5", "mpName": "支路保2"}
                         ]
                     }),
                     valueField: 'gpId',
@@ -1005,7 +1009,8 @@ function getDataQueryFunctions() {
                         fields: ['tgId', 'tgName'],
                         data: [ 
                                 {"tgId": "0", "tgName": "--- 所有台区 ---"},
-                                {"tgId": "102", "tgName": "测试台区（96123456）"}
+                                {"tgId": "1", "tgName": "测试台区（96123456）"},
+                                {"tgId": "2", "tgName": "测试台区（96123458）"}
                         ]
                     }),
                     valueField: 'tgId',
@@ -1043,7 +1048,7 @@ function getDataQueryFunctions() {
                         fields: ['gpId', 'mpName'],
                         data: [ 
                                 {"gpId": "0", "mpName": "--- 所有考核表 ---"},
-                                {"gpId": "1201", "mpName": "测试台区考核表"}
+                                {"gpId": "1", "mpName": "测试台区考核表"}
                         ]
                     }),
                     valueField: 'gpId',

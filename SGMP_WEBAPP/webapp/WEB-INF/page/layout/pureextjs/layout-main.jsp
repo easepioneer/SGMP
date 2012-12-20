@@ -48,6 +48,10 @@ p {
 .reading {
     background-image: url(${cxt_webstyle}/img/icons/folder_go.png);
 }
+
+.cellEditing {
+    background-image: url(${cxt_webstyle}/img/icons/page_edit.png);
+}
 </style>
 <%@ include file="/WEB-INF/page/layout/pureextjs/include/scripts.jsp" %>
 
@@ -180,7 +184,7 @@ Ext.onReady(function() {
         Ext.create('Ext.Component', {
             region: 'north',
             id: 'panel-north',
-            height: 60,
+            height: 00,
             autoEl: {
                 tag: 'div',
                 html: '<h1>浙江豪顿电气有限公司</h1><h2>低压配电网络信息一体化平台</h2>'

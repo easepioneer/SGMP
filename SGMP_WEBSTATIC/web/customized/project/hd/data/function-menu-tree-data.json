@@ -17,9 +17,13 @@
             text: '集中器参数设置',
             id: 'actionTerminalParameterSetup',
             leaf: true
-        },{
+        }, {
             text: '保护器参数设置',
             id: 'actionProtectorParameterSetup',
+            leaf: true
+        }, {
+            text: '保护器控制命令下发',
+            id: 'actionProtectorControlCommandSending',
             leaf: true
         }]
     }, {
