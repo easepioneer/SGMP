@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.OrgnizationMapper">
+
+    <!-- 定义数据库字段与实体对象的映射关系 -->
+    <resultMap type="org.sgmp.webapp.pojo.module.Orgnization" id="orgnizationResultMap">
+        <id column="ORG_ID" property="id" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="ORG_NO" property="orgNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="ORG_NAME" property="orgName" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="ORG_TYPE" property="orgType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="P_ORG_ID" property="parentId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="SORT_NO" property="sortNo" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
+    </resultMap>
+
+    <insert id="create" parameterType="orgnization">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+            select SEQ_O_ORG.NEXTVAL as ID from DUAL
+        </selectKey>
+        insert into O_ORG(ORG_ID, ORG_NO, ORG_NAME, ORG_TYPE, P_ORG_ID, SORT_NO, LASTTIME_STAMP)
+        values(#{id}, #{orgNo}, #{orgName}, #{orgType}, #{parentId}, #{sortNo}, #{lastTimestamp})
+    </insert>
+
+    <update id="update" parameterType="orgnization">
+        update O_ORG set
+                ORG_NO = #{orgNo},
+                ORG_NAME = #{orgName},
+                ORG_TYPE = #{orgType},
+                P_ORG_ID = #{parentId},
+                SORT_NO = #{sortNo},
+                LASTTIME_STAMP = #{lastTimestamp}
+         where ORG_ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="orgnization">
+        delete from O_ORG
+         where ORG_ID = #{id}
+    </delete>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from O_ORG
+         where ORG_ID = #{id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="orgnization" resultMap="orgnizationResultMap">
+        select ORG_ID, ORG_NO, ORG_NAME, ORG_TYPE, P_ORG_ID, SORT_NO, LASTTIME_STAMP
+          from O_ORG
+         where ORG_ID = #{id}
+    </select>
+
+    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="orgnizationResultMap">
+        select ORG_ID, ORG_NO, ORG_NAME, ORG_TYPE, P_ORG_ID, SORT_NO, LASTTIME_STAMP
+          from O_ORG
+         order by ORG_TYPE, P_ORG_ID, ORG_ID
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="int">
+        select count(1) as CNT
+          from O_ORG
+    </select>
+
+</mapper>

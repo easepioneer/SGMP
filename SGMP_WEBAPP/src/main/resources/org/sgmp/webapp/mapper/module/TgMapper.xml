@@ -3,16 +3,19 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.sgmp.webapp.mapper.module.OrgnizationManagementMapper">
+<mapper namespace="org.sgmp.webapp.mapper.module.TgMapper">
 
     <!-- 定义数据库字段与实体对象的映射关系 -->
-    <resultMap type="org.sgmp.webapp.pojo.module.Orgnization" id="orgnizationResultMap">
-        <id column="ORG_ID" property="id" javaType="java.lang.Long" jdbcType="NUMERIC" />
-        <result column="ORG_NO" property="orgNo" javaType="java.lang.String" jdbcType="VARCHAR" />
-        <result column="ORG_NAME" property="orgName" javaType="java.lang.String" jdbcType="VARCHAR" />
-        <result column="ORG_TYPE" property="orgType" javaType="java.lang.String" jdbcType="VARCHAR" />
-        <result column="P_ORG_ID" property="parentId" javaType="java.lang.Long" jdbcType="NUMERIC" />
-        <result column="SORT_NO" property="sortNo" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+    <resultMap type="org.sgmp.webapp.pojo.module.Tg" id="tgResultMap">
+        <id column="TG_ID" property="id" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="ORG_ID" property="orgId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="TG_NO" property="tgNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="TG_NAME" property="tgName" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="TG_CAP" property="tgCap" javaType="java.lang.Float" jdbcType="NUMERIC" />
+        <result column="INST_ADDR" property="instAddr" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="CHG_DATE" property="chgDate" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="PUB_PRIV_FLAG" property="pubPrivFlag" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="RUN_STATUS_CODE" property="runStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
     </resultMap>
 

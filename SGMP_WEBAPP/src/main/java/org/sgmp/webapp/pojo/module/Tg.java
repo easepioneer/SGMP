@@ -20,7 +20,7 @@ public class Tg implements Serializable {
     private Long orgId;                         // ORG_ID
     private String tgNo;                        // TG_NO
     private String tgName;                      // TG_NAME
-    private String tgCap;                       // TG_CAP
+    private Float tgCap;                        // TG_CAP
     private String instAddr;                    // INST_ADDR
     private Date chgDate;                       // CHG_DATE
     private String pubPrivFlag;                 // PUB_PRIV_FLAG
@@ -62,11 +62,11 @@ public class Tg implements Serializable {
         this.tgName = tgName;
     }
 
-    public String getTgCap() {
+    public Float getTgCap() {
         return tgCap;
     }
 
-    public void setTgCap(String tgCap) {
+    public void setTgCap(Float tgCap) {
         this.tgCap = tgCap;
     }
 
