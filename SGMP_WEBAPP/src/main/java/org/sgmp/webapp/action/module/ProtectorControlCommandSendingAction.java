@@ -5,13 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.sgmp.webapp.ActionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import fep.bp.realinterface.RealTimeProxy376;
 import fep.bp.realinterface.mto.CollectObject_TransMit;
 import fep.bp.realinterface.mto.CommandItem;
 import fep.bp.realinterface.mto.MTO_376;
@@ -36,17 +33,80 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
 
     private static final Logger logger = LoggerFactory.getLogger(ProtectorControlCommandSendingAction.class);
 
-    @Autowired
-    private RealTimeProxy376 realTimeProxy376;
+    @Override
+    public void beforeSend() {
+        logger.info("soType             : " + getSoType());
+        logger.info("soId               : " + getSoId());
+        logger.info("soName             : " + getSoName());
+        logger.info("soOrgId            : " + getSoOrgId());
+        logger.info("soTgId             : " + getSoTgId());
+        logger.info("soTermId           : " + getSoTermId());
+        logger.info("soGpId             : " + getSoGpId());
+        logger.info("type               : " + getType());
+        logger.info("action             : " + getAction());
+        logger.info("paramsAndValues    : " + getParamsAndValues());
+        MTO_376 mto = new MTO_376();
+        List<CollectObject_TransMit> cotList = new ArrayList<CollectObject_TransMit>();
+        CollectObject_TransMit cot = new CollectObject_TransMit();
+        cot.setTerminalAddr("96123458");
+        cot.setEquipProtocol("100");
+        cot.setMeterAddr("000000000002");
+        cot.setMeterType(MeterType.Meter645);
+        cot.setFuncode((byte) 27);
+        cot.setPort((byte) 1);
+        SerialPortPara spp = new SerialPortPara();
+        spp.setBaudrate(BaudRate.bps_2400);
+        try {
+            spp.setStopbit(1);
+            spp.setCheckbit(0);
+            spp.setOdd_even_bit(1);
+            spp.setDatabit(8);
+        }
+        catch(BPException _bpe) {
+            logger.error("send error", _bpe);
+        }
+        cot.setSerialPortPara(spp);
+        try {
+            cot.setWaitforPacket((byte) 10);
+        }
+        catch(BPException _bpe) {
+            logger.error("send error", _bpe);
+        }
+        cot.setWaitforByte((byte) 5);
+        List<CommandItem> ciList = new ArrayList<CommandItem>();
+        CommandItem ci = new CommandItem();
+        ci.setIdentifier("80000710");
+        Map<String, String> datacellParam = new HashMap<String, String>();
+        datacellParam.put("0710", "0200");
+        ci.setDatacellParam(datacellParam);
+        ciList.add(ci);
+        cot.setCommandItems(ciList);
+        cotList.add(cot);
+        mto.setCollectObjects_Transmit(cotList);
+        setMto376(mto);
+    }
 
-    private String action;
-    private String paramsAndValues;
+    @Override
+    public void beforeReceive() {
+        logger.info("taskId             : " + getTaskId());
+        logger.info("type               : " + getType());
+        logger.info("action             : " + getAction());
+        logger.info("paramsAndValues    : " + getParamsAndValues());
+    }
 
-    /**
-     * 
-     * @throws ActionException
-     */
-    public void send() throws ActionException {
+    @Override
+    public void afterSend() {
+        // TODO Auto-generated method stub
+        super.afterSend();
+    }
+
+    @Override
+    public void afterReceive() {
+        // TODO Auto-generated method stub
+        super.afterReceive();
+    }
+
+    /*public void send() throws ActionException {
         logger.info("soType             : " + getSoType());
         logger.info("soId               : " + getSoId());
         logger.info("soName             : " + getSoName());
@@ -62,7 +122,7 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
         CollectObject_TransMit cot = new CollectObject_TransMit();
         cot.setTerminalAddr("96123458");
         cot.setEquipProtocol("100");
-        cot.setMeterAddr("000000000001");
+        cot.setMeterAddr("000000000002");
         cot.setMeterType(MeterType.Meter645);
         cot.setFuncode((byte) 27);
         cot.setPort((byte) 1);
@@ -91,7 +151,7 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
         CommandItem ci = new CommandItem();
         ci.setIdentifier("80000710");
         Map<String, String> datacellParam = new HashMap<String, String>();
-        datacellParam.put("0710", "0002");
+        datacellParam.put("0710", "0200");
         ci.setDatacellParam(datacellParam);
         ciList.add(ci);
         cot.setCommandItems(ciList);
@@ -123,38 +183,6 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
         }
 
         responseText(String.valueOf(collectId));
-    }
-
-    /**
-     * 
-     * @throws ActionException
-     */
-    public void createTask() throws ActionException {
-        
-    }
-
-    /**
-     * 
-     * @throws ActionException
-     */
-    public void getReceiveResult() throws ActionException {
-        
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public String getParamsAndValues() {
-        return paramsAndValues;
-    }
-
-    public void setParamsAndValues(String paramsAndValues) {
-        this.paramsAndValues = paramsAndValues;
-    }
+    }*/
 
 }

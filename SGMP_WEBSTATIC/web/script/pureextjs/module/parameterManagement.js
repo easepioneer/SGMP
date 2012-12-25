@@ -231,13 +231,33 @@ function getParameterManagementFunctions() {
                         Ext.Ajax.request({
                             url: ctx_webapp + '/pm/tps!send.do',
                             params: {
-                                action: 'setting',
-                                logicalAddr: '96123452',
+                                mtoType: '100',
+                                meterType: '100',
+                                type: 'terminal-parameter',
+                                action: 'write',
                                 paramsAndValues: paramsAndValues
                             },
                             method: 'POST',
                             success: function(response) {
-                                //alert(response.responseText);
+                                alert(response.responseText);
+                                // 
+                                Ext.Ajax.request({
+                                    url: ctx_webapp + '/pm/tps!receive.do',
+                                    params: {
+                                        mtoType: '100',
+                                        meterType: '100',
+                                        type: 'terminal-parameter',
+                                        action: 'write',
+                                        taskId: response.responseText
+                                    },
+                                    method: 'POST',
+                                    success: function(response) {
+                                        alert(response.responseText);
+                                    },
+                                    failure: function(response) {
+                                        //alert(response.responseText);
+                                    }
+                                });
                             },
                             failure: function(response) {
                                 //alert(response.responseText);
@@ -293,13 +313,33 @@ function getParameterManagementFunctions() {
                         Ext.Ajax.request({
                             url: ctx_webapp + '/pm/tps!send.do',
                             params: {
-                                action: 'reading',
-                                logicalAddr: '96123452',
+                                mtoType: '100',
+                                meterType: '100',
+                                type: 'terminal-parameter',
+                                action: 'read',
                                 paramsAndValues: paramsAndValues
                             },
                             method: 'POST',
                             success: function(response) {
-                                //alert(response.responseText);
+                                alert(response.responseText);
+                                // 
+                                Ext.Ajax.request({
+                                    url: ctx_webapp + '/pm/tps!receive.do',
+                                    params: {
+                                        mtoType: '100',
+                                        meterType: '100',
+                                        type: 'terminal-parameter',
+                                        action: 'read',
+                                        taskId: response.responseText
+                                    },
+                                    method: 'POST',
+                                    success: function(response) {
+                                        alert(response.responseText);
+                                    },
+                                    failure: function(response) {
+                                        //alert(response.responseText);
+                                    }
+                                });
                             },
                             failure: function(response) {
                                 //alert(response.responseText);
@@ -803,7 +843,10 @@ function getParameterManagementFunctions() {
                             paramsAndValues += records[i].get("P_CODE") + ':' + records[i].get("P_VALUE") + ';';
                         }
                         var params = {
-                                action: 'setting',
+                                mtoType: '100',
+                                meterType: '100',
+                                type: 'protector-control',
+                                action: 'write',
                                 paramsAndValues: paramsAndValues
                         };
                         Ext.apply(params, pccs_filter_formpanel.getForm().getValues(false));
