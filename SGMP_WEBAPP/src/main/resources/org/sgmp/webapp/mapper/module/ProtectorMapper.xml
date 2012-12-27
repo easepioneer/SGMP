@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.ProtectorMapper">
+
+    <!-- 定义数据库字段与实体对象的映射关系 -->
+    <resultMap type="org.sgmp.webapp.pojo.module.Protector" id="protectorResultMap">
+        <id column="PS_ID" property="id" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="TERM_ID" property="termId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="GP_ID" property="gpId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="ASSET_NO" property="assetNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="PS_NAME" property="psName" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MODEL_CODE" property="psModel" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="COMM_MODE_GM" property="commMode" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="BTL" property="baudrate" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="RATED_EC" property="ratedEc" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="PS_TYPE" property="psType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="TEST_DAY" property="testDay" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="TEST_TIME" property="testTime" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="AUTO_TEST" property="autoTest" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
+    </resultMap>
+
+    <insert id="create" parameterType="protector">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+            select SEQ_C_PS.NEXTVAL as ID from DUAL
+        </selectKey>
+        insert into C_PS(PS_ID, TERM_ID, GP_ID, ASSET_NO, PS_NAME, MODEL_CODE, COMM_MODE_GM, BTL, RATED_EC, PS_TYPE, TEST_DAY, TEST_TIME, AUTO_TEST, LASTTIME_STAMP)
+        values(#{id}, #{termId}, #{gpId}, #{assetNo}, #{psName}, #{psModel}, #{commMode}, #{baudrate}, #{ratedEc}, #{psType}, #{testDay}, #{testTime}, #{autoTest}, #{lastTimestamp})
+    </insert>
+
+    <update id="update" parameterType="protector">
+        update C_PS set
+                TERM_ID = #{termId},
+                GP_ID = #{gpId},
+                ASSET_NO = #{assetNo},
+                PS_NAME = #{psName},
+                MODEL_CODE = #{psModel},
+                COMM_MODE_GM = #{commMode},
+                BTL = #{baudrate},
+                RATED_EC = #{ratedEc},
+                PS_TYPE = #{psType},
+                TEST_DAY = #{testDay},
+                TEST_TIME = #{testTime},
+                AUTO_TEST = #{autoTest},
+                LASTTIME_STAMP = #{lastTimestamp}
+         where PS_ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="protector">
+        delete from C_PS
+         where PS_ID = #{id}
+    </delete>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from C_PS
+         where PS_ID = #{id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="protector" resultMap="protectorResultMap">
+        select PS_ID, TERM_ID, GP_ID, ASSET_NO, PS_NAME, MODEL_CODE, COMM_MODE_GM, BTL, RATED_EC, PS_TYPE, TEST_DAY, TEST_TIME, AUTO_TEST, LASTTIME_STAMP
+          from C_PS
+         where PS_ID = #{id}
+    </select>
+
+    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="protectorResultMap">
+        select PS_ID, TERM_ID, GP_ID, ASSET_NO, PS_NAME, MODEL_CODE, COMM_MODE_GM, BTL, RATED_EC, PS_TYPE, TEST_DAY, TEST_TIME, AUTO_TEST, LASTTIME_STAMP
+          from C_PS
+         order by PS_ID
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="int">
+        select count(1) as CNT
+          from C_PS
+    </select>
+
+</mapper>

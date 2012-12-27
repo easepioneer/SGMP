@@ -54,7 +54,8 @@ p {
 }
 </style>
 <%@ include file="/WEB-INF/page/layout/pureextjs/include/scripts.jsp" %>
-
+<!--  -->
+<script type="text/javascript" src="${ctx_webstatic}/script/pureextjs/module/common.js"></script>
 <script type="text/javascript" src="${ctx_webstatic}/script/pureextjs/module/homepage.js"></script>
 <script type="text/javascript" src="${ctx_webstatic}/script/pureextjs/module/archivesManagement.js"></script>
 <script type="text/javascript" src="${ctx_webstatic}/script/pureextjs/module/parameterManagement.js"></script>
@@ -184,7 +185,7 @@ Ext.onReady(function() {
         Ext.create('Ext.Component', {
             region: 'north',
             id: 'panel-north',
-            height: 00,
+            height: 60,
             autoEl: {
                 tag: 'div',
                 html: '<h1>浙江豪顿电气有限公司</h1><h2>低压配电网络信息一体化平台</h2>'

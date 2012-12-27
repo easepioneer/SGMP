@@ -17,8 +17,8 @@ public class Transformer implements Serializable {
     private static final long serialVersionUID = -6523127582876603979L;
 
     private Long id;                            // EQUIP_ID
-    private Long tgId;                          // TG_ID
     private Long orgId;                         // ORG_ID
+    private Long tgId;                          // TG_ID
     private String tranType;                    // TYPE_CODE
     private String tranName;                    // TRAN_NAME
     private String instAddr;                    // INST_ADDR
@@ -31,7 +31,7 @@ public class Transformer implements Serializable {
     private String rvLv;                        // RV_LV
     private String rcHv;                        // RC_HV
     private String rcMv;                        // RC_MV
-    private String rcLv;                        // RV_LV
+    private String rcLv;                        // RC_LV
     private String pr;                          // PR_CODE
     private Date lastTimestamp;                 // LASTTIME_STAMP
 

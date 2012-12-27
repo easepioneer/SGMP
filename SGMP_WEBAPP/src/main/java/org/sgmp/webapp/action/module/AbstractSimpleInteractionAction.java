@@ -28,9 +28,9 @@ public abstract class AbstractSimpleInteractionAction extends AbstractSimpleActi
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSimpleInteractionAction.class);
 
-    public static final String TYPE_TERMINAL_PARAMETER = "terminal-parameter";             // 集中器参数
-    public static final String TYPE_PROTECTOR_PARAMETER = "protector-parameter";           // 保护器参数
-    public static final String TYPE_PROTECTOR_CONTROL = "protector-control";               // 保护器控制
+    protected static final String TYPE_TERMINAL_PARAMETER = "terminal-parameter";             // 集中器参数
+    protected static final String TYPE_PROTECTOR_PARAMETER = "protector-parameter";           // 保护器参数
+    protected static final String TYPE_PROTECTOR_CONTROL = "protector-control";               // 保护器控制
 
     @Autowired
     private SimpleInteractionService simpleInteractionService;
@@ -38,25 +38,25 @@ public abstract class AbstractSimpleInteractionAction extends AbstractSimpleActi
     @Autowired
     private RealTimeInterface realTimeProxy376;
 
-    private MTO_376 mto376;
+    protected MTO_376 mto376;
 
-    private String mtoType;             // 终端（集中器）规约
-    private String meterType;           // 测量点（电表/保护器）规约
+    protected String mtoType;             // 终端（集中器）规约
+    protected String meterType;           // 测量点（电表/保护器）规约
 
-    private String type;
-    private String action;
-    private String paramsAndValues;
+    protected String type;
+    protected String action;
+    protected String paramsAndValues;
 
-    private long taskId;
-    private Map<?, ?> resultMap;
+    protected long taskId;
+    protected Map<?, ?> resultMap;
 
-    private String soType;              // selection object type
-    private String soId;                // selection object id
-    private String soName;              // selection object name
-    private String soOrgId;             // selection object orgId
-    private String soTgId;              // selection object tgId
-    private String soTermId;            // selection object termId
-    private String soGpId;              // selection object gpId
+    protected String soType;              // selection object type
+    protected String soId;                // selection object id
+    protected String soName;              // selection object name
+    protected String soOrgId;             // selection object orgId
+    protected String soTgId;              // selection object tgId
+    protected String soTermId;            // selection object termId
+    protected String soGpId;              // selection object gpId
 
     /**
      * 组数据帧，发送至集中器
@@ -176,28 +176,28 @@ public abstract class AbstractSimpleInteractionAction extends AbstractSimpleActi
     /**
      * 
      */
-    public void beforeSend() {
+    public void beforeSend() throws ActionException {
         
     }
 
     /**
      * 
      */
-    public void beforeReceive() {
+    public void beforeReceive() throws ActionException {
         
     }
 
     /**
      * 
      */
-    public void afterSend() {
+    public void afterSend() throws ActionException {
         
     }
 
     /**
      * 
      */
-    public void afterReceive() {
+    public void afterReceive() throws ActionException {
         
     }
 

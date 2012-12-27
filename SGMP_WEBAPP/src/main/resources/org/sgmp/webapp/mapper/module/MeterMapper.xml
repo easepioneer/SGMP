@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.MeterMapper">
+
+    <!-- 定义数据库字段与实体对象的映射关系 -->
+    <resultMap type="org.sgmp.webapp.pojo.module.Meter" id="meterResultMap">
+        <id column="METER_ID" property="id" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="ORG_ID" property="orgId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="ASSET_NO" property="assetNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="INST_DATE" property="instDate" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="T_FACTOR" property="totalFactor" javaType="java.lang.Float" jdbcType="NUMERIC" />
+        <result column="COMM_NO" property="commNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="BAUDRATE" property="baudrate" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="COMM_MODE" property="commMode" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="create" parameterType="meter">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+            select SEQ_C_METER.NEXTVAL as ID from DUAL
+        </selectKey>
+        insert into C_METER(METER_ID, ORG_ID, ASSET_NO, INST_DATE, T_FACTOR, COMM_NO, BAUDRATE, COMM_MODE)
+        values(#{id}, #{orgId}, #{assetNo}, #{instDate}, #{totalFactor}, #{commNo}, #{baudrate}, #{commMode})
+    </insert>
+
+    <update id="update" parameterType="meter">
+        update C_METER set
+                ORG_ID = #{orgId},
+                ASSET_NO = #{assetNo},
+                INST_DATE = #{instDate},
+                T_FACTOR = #{totalFactor},
+                COMM_NO = #{commNo},
+                BAUDRATE = #{baudrate},
+                COMM_MODE = #{commMode}
+         where METER_ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="meter">
+        delete from C_METER
+         where METER_ID = #{id}
+    </delete>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from C_METER
+         where METER_ID = #{id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="meter" resultMap="meterResultMap">
+        select METER_ID, ORG_ID, ASSET_NO, INST_DATE, T_FACTOR, COMM_NO, BAUDRATE, COMM_MODE
+          from C_METER
+         where METER_ID = #{id}
+    </select>
+
+    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="meterResultMap">
+        select METER_ID, ORG_ID, ASSET_NO, INST_DATE, T_FACTOR, COMM_NO, BAUDRATE, COMM_MODE
+          from C_METER
+         order by ORG_ID, METER_ID
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="int">
+        select count(1) as CNT
+          from C_METER
+    </select>
+
+</mapper>

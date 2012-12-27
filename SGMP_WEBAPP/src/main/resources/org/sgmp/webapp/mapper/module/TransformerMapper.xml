@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.TransformerMapper">
+
+    <!-- 定义数据库字段与实体对象的映射关系 -->
+    <resultMap type="org.sgmp.webapp.pojo.module.Transformer" id="transformerResultMap">
+        <id column="EQUIP_ID" property="id" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="ORG_ID" property="orgId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="TG_ID" property="tgId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="TYPE_CODE" property="tranType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="TRAN_NAME" property="tranName" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="INST_ADDR" property="instAddr" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="INST_DATE" property="instDate" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="PLATE_CAP" property="plateCap" javaType="java.lang.Float" jdbcType="NUMERIC" />
+        <result column="RUN_STATUS_CODE" property="runStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MODEL_NO" property="tranModel" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="RV_HV" property="rvHv" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="RV_MV" property="rvMv" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="RV_LV" property="rvLv" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="RC_HV" property="rcHv" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="RC_MV" property="rcMv" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="RC_LV" property="rcLv" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="PR_CODE" property="pr" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
+    </resultMap>
+
+    <insert id="create" parameterType="transformer">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+            select SEQ_G_TRAN.NEXTVAL as ID from DUAL
+        </selectKey>
+        insert into G_TRAN(EQUIP_ID, ORG_ID, TG_ID, TYPE_CODE, TRAN_NAME, INST_ADDR, INST_DATE, PLATE_CAP, RUN_STATUS_CODE, MODEL_NO, RV_HV, RV_MV, RV_LV, RC_HV, RC_MV, RC_LV, PR_CODE, LASTTIME_STAMP)
+        values(#{id}, #{orgId}, #{tgId}, #{tranType}, #{tranName}, #{instAddr}, #{instDate}, #{plateCap}, #{runStatus}, #{tranModel}, #{rvHv}, #{rvMv}, #{rvLv}, #{rcHv}, #{rcMv}, #{rcLv}, #{pr}, #{lastTimestamp})
+    </insert>
+
+    <update id="update" parameterType="transformer">
+        update G_TRAN set
+                ORG_ID = #{orgId},
+                TG_ID = #{tgId},
+                TYPE_CODE = #{tranType},
+                TRAN_NAME = #{tranName},
+                INST_ADDR = #{instAddr},
+                INST_DATE = #{instDate},
+                PLATE_CAP = #{plateCap},
+                RUN_STATUS_CODE = #{runStatus},
+                MODEL_NO = #{tranModel},
+                RV_HV = #{rvHv},
+                RV_MV = #{rvMv},
+                RV_LV = #{rvLv},
+                RC_HV = #{rcHv},
+                RC_MV = #{rcMv},
+                RC_LV = #{rcLv},
+                PR_CODE = #{pr},
+                LASTTIME_STAMP = #{lastTimestamp}
+         where EQUIP_ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="transformer">
+        delete from G_TRAN
+         where EQUIP_ID = #{id}
+    </delete>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from G_TRAN
+         where EQUIP_ID = #{id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="transformer" resultMap="transformerResultMap">
+        select EQUIP_ID, ORG_ID, TG_ID, TYPE_CODE, TRAN_NAME, INST_ADDR, INST_DATE, PLATE_CAP, RUN_STATUS_CODE, MODEL_NO, RV_HV, RV_MV, RV_LV, RC_HV, RC_MV, RC_LV, PR_CODE, LASTTIME_STAMP
+          from G_TRAN
+         where EQUIP_ID = #{id}
+    </select>
+
+    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="transformerResultMap">
+        select EQUIP_ID, ORG_ID, TG_ID, TYPE_CODE, TRAN_NAME, INST_ADDR, INST_DATE, PLATE_CAP, RUN_STATUS_CODE, MODEL_NO, RV_HV, RV_MV, RV_LV, RC_HV, RC_MV, RC_LV, PR_CODE, LASTTIME_STAMP
+          from G_TRAN
+         order by ORG_ID, TG_ID, EQUIP_ID
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="int">
+        select count(1) as CNT
+          from G_TRAN
+    </select>
+
+</mapper>

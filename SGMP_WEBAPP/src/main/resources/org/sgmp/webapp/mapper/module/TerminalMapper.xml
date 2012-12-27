@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.TerminalMapper">
+
+    <!-- 定义数据库字段与实体对象的映射关系 -->
+    <resultMap type="org.sgmp.webapp.pojo.module.Terminal" id="terminalResultMap">
+        <id column="TERM_ID" property="id" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="ORG_ID" property="orgId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="ASSET_NO" property="assetNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="LOGICAL_ADDR" property="logicalAddr" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="RUN_STATUS" property="runStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="CUR_STATUS" property="curStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="SIM_NO" property="simNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="TERM_TYPE" property="termType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="WIRING_MODE" property="wiringMode" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MODEL_CODE" property="termModel" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="INSTALL_DATE" property="instDate" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="COMM_MODE" property="commMode" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="CHANNEL_TYPE" property="channelType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="PROTOCOL_NO" property="protocolNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="PR" property="pr" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="ISAC" property="isAc" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="PHYSICS_ADDR" property="physicsAddr" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="COMM_PATTERN" property="commPattern" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
+    </resultMap>
+
+    <insert id="create" parameterType="terminal">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+            select SEQ_C_TERMINAL.NEXTVAL as ID from DUAL
+        </selectKey>
+        insert into C_TERMINAL(TERM_ID, ORG_ID, ASSET_NO, LOGICAL_ADDR, RUN_STATUS, CUR_STATUS, SIM_NO, TERM_TYPE, WIRING_MODE, MODEL_CODE, INSTALL_DATE, COMM_MODE, CHANNEL_TYPE, PROTOCOL_NO, PR, ISAC, PHYSICS_ADDR, COMM_PATTERN, LASTTIME_STAMP)
+        values(#{id}, #{orgId}, #{assetNo}, #{logicalAddr}, #{runStatus}, #{curStatus}, #{simNo}, #{termType}, #{wiringMode}, #{termModel}, #{instDate}, #{commMode}, #{channelType}, #{protocolNo}, #{pr}, #{isAc}, #{physicsAddr}, #{commPattern}, #{lastTimestamp})
+    </insert>
+
+    <update id="update" parameterType="terminal">
+        update C_TERMINAL set
+                ORG_ID = #{orgId},
+                ASSET_NO = #{assetNo},
+                LOGICAL_ADDR = #{logicalAddr},
+                RUN_STATUS = #{runStatus},
+                CUR_STATUS = #{curStatus},
+                SIM_NO = #{simNo},
+                TERM_TYPE = #{termType},
+                WIRING_MODE = #{wiringMode},
+                MODEL_CODE = #{termModel},
+                INSTALL_DATE = #{instDate},
+                COMM_MODE = #{commMode},
+                CHANNEL_TYPE = #{channelType},
+                PROTOCOL_NO = #{protocolNo},
+                PR = #{pr},
+                ISAC = #{isAc},
+                PHYSICS_ADDR = #{physicsAddr},
+                COMM_PATTERN = #{commPattern},
+                LASTTIME_STAMP = #{lastTimestamp}
+         where TERM_ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="terminal">
+        delete from C_TERMINAL
+         where TERM_ID = #{id}
+    </delete>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from C_TERMINAL
+         where TERM_ID = #{id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="terminal" resultMap="terminalResultMap">
+        select TERM_ID, ORG_ID, ASSET_NO, LOGICAL_ADDR, RUN_STATUS, CUR_STATUS, SIM_NO, TERM_TYPE, WIRING_MODE, MODEL_CODE, INSTALL_DATE, COMM_MODE, CHANNEL_TYPE, PROTOCOL_NO, PR, ISAC, PHYSICS_ADDR, COMM_PATTERN, LASTTIME_STAMP
+          from C_TERMINAL
+         where TERM_ID = #{id}
+    </select>
+
+    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="terminalResultMap">
+        select TERM_ID, ORG_ID, ASSET_NO, LOGICAL_ADDR, RUN_STATUS, CUR_STATUS, SIM_NO, TERM_TYPE, WIRING_MODE, MODEL_CODE, INSTALL_DATE, COMM_MODE, CHANNEL_TYPE, PROTOCOL_NO, PR, ISAC, PHYSICS_ADDR, COMM_PATTERN, LASTTIME_STAMP
+          from C_TERMINAL
+         order by ORG_ID, TERM_ID
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="int">
+        select count(1) as CNT
+          from C_TERMINAL
+    </select>
+
+</mapper>

@@ -12,6 +12,10 @@
         <typeAlias type="org.sgmp.webapp.pojo.module.Transformer" alias="transformer" />
         <typeAlias type="org.sgmp.webapp.pojo.module.Terminal" alias="terminal" />
         <typeAlias type="org.sgmp.webapp.pojo.module.RelationTerminalAndObject" alias="relationTerminalAndObject" />
+        <typeAlias type="org.sgmp.webapp.pojo.module.GatherPoint" alias="gatherPoint" />
+        <typeAlias type="org.sgmp.webapp.pojo.module.MeasuringPoint" alias="measuringPoint" />
+        <typeAlias type="org.sgmp.webapp.pojo.module.Meter" alias="meter" />
+        <typeAlias type="org.sgmp.webapp.pojo.module.Protector" alias="protector" />
     </typeAliases>
 
     <!-- 定义映射资源 -->

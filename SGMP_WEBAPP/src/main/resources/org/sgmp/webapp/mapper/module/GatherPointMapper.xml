@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.GatherPointMapper">
+
+    <!-- 定义数据库字段与实体对象的映射关系 -->
+    <resultMap type="org.sgmp.webapp.pojo.module.GatherPoint" id="gatherPointResultMap">
+        <id column="GP_ID" property="id" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="OBJECT_ID" property="objectId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="TRAN_ID" property="tranId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="TERM_ID" property="termId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="MP_ID" property="mpId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="GM_ID" property="gmId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="GP_SN" property="gpSn" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+        <result column="GP_CHAR" property="gpChar" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="GP_TYPE" property="gpType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="GP_STATUS" property="gpStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="GP_ADDR" property="gpAddr" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="CT_TIMES" property="ctTimes" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+        <result column="PT_TIMES" property="ptTimes" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+        <result column="PORT" property="port" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="PROTOCOL_NO" property="protocolNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
+    </resultMap>
+
+    <insert id="create" parameterType="gatherPoint">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+            select SEQ_C_GP.NEXTVAL as ID from DUAL
+        </selectKey>
+        insert into C_GP(GP_ID, OBJECT_ID, TRAN_ID, TERM_ID, MP_ID, GM_ID, GP_SN, GP_CHAR, GP_TYPE, GP_STATUS, GP_ADDR, CT_TIMES, PT_TIMES, PORT, PROTOCOL_NO, LASTTIME_STAMP)
+        values(#{id}, #{objectId}, #{tranId}, #{termId}, #{mpId}, #{gmId}, #{gpSn}, #{gpChar}, #{gpType}, #{gpStatus}, #{gpAddr}, #{ctTimes}, #{ptTimes}, #{port}, #{protocolNo}, #{lastTimestamp})
+    </insert>
+
+    <update id="update" parameterType="gatherPoint">
+        update C_GP set
+                OBJECT_ID = #{objectId},
+                TRAN_ID = #{tranId},
+                TERM_ID = #{termId},
+                MP_ID = #{mpId},
+                GM_ID = #{gmId},
+                GP_SN = #{gpSn},
+                GP_CHAR = #{gpChar},
+                GP_TYPE = #{gpType},
+                GP_STATUS = #{gpStatus},
+                GP_ADDR = #{gpAddr},
+                CT_TIMES = #{ctTimes},
+                PT_TIMES = #{ptTimes},
+                PORT = #{port},
+                PROTOCOL_NO = #{protocolNo},
+                LASTTIME_STAMP = #{lastTimestamp}
+         where GP_ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="gatherPoint">
+        delete from C_GP
+         where GP_ID = #{id}
+    </delete>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from C_GP
+         where GP_ID = #{id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="gatherPoint" resultMap="gatherPointResultMap">
+        select GP_ID, OBJECT_ID, TRAN_ID, TERM_ID, MP_ID, GM_ID, GP_SN, GP_CHAR, GP_TYPE, GP_STATUS, GP_ADDR, CT_TIMES, PT_TIMES, PORT, PROTOCOL_NO, LASTTIME_STAMP
+          from C_GP
+         where GP_ID = #{id}
+    </select>
+
+    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="gatherPointResultMap">
+        select GP_ID, OBJECT_ID, TRAN_ID, TERM_ID, MP_ID, GM_ID, GP_SN, GP_CHAR, GP_TYPE, GP_STATUS, GP_ADDR, CT_TIMES, PT_TIMES, PORT, PROTOCOL_NO, LASTTIME_STAMP
+          from C_GP
+         order by GP_ID
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="int">
+        select count(1) as CNT
+          from C_GP
+    </select>
+
+</mapper>

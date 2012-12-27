@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.MeasuringPointMapper">
+
+    <!-- 定义数据库字段与实体对象的映射关系 -->
+    <resultMap type="org.sgmp.webapp.pojo.module.MeasuringPoint" id="measuringPointResultMap">
+        <id column="MP_ID" property="id" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="ORG_ID" property="orgId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="TG_ID" property="tgId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="METER_ID" property="meterId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="MP_NO" property="mpNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MP_NAME" property="mpName" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MP_ADDR" property="mpAddr" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="TYPE_CODE" property="mpType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MP_ATTR_CODE" property="mpAttr" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="USAGE_TYPE_CODE" property="mpUsageType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="SIDE_CODE" property="mpSide" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="VOLT_CODE" property="mpVolt" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="APP_DATE" property="appDate" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="RUN_DATE" property="runDate" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="WIRING_MODE" property="wiringMode" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MEAS_MODE" property="measMode" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="SWITCH_NO" property="switchNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MR_SECT_NO" property="mrSectNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="STATUS_CODE" property="mpStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
+    </resultMap>
+
+    <insert id="create" parameterType="measuringPoint">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+            select SEQ_C_MP.NEXTVAL as ID from DUAL
+        </selectKey>
+        insert into C_MP(MP_ID, ORG_ID, TG_ID, METER_ID, MP_NO, MP_NAME, MP_ADDR, TYPE_CODE, MP_ATTR_CODE, USAGE_TYPE_CODE, SIDE_CODE, VOLT_CODE, APP_DATE, RUN_DATE, WIRING_MODE, MEAS_MODE, SWITCH_NO, MR_SECT_NO, STATUS_CODE, LASTTIME_STAMP)
+        values(#{id}, #{orgId}, #{tgId}, #{meterId}, #{mpNo}, #{mpName}, #{mpAddr}, #{mpType}, #{mpAttr}, #{mpUsageType}, #{mpSide}, #{mpVolt}, #{appDate}, #{runDate}, #{wiringMode}, #{measMode}, #{switchNo}, #{mrSectNo}, #{mpStatus}, #{lastTimestamp})
+    </insert>
+
+    <update id="update" parameterType="measuringPoint">
+        update C_MP set
+                ORG_ID = #{orgId},
+                TG_ID = #{tgId},
+                METER_ID = #{meterId},
+                MP_NO = #{mpNo},
+                MP_NAME = #{mpName},
+                MP_ADDR = #{mpAddr},
+                TYPE_CODE = #{mpType},
+                MP_ATTR_CODE = #{mpAttr},
+                USAGE_TYPE_CODE = #{mpUsageType},
+                SIDE_CODE = #{mpSide},
+                VOLT_CODE = #{mpVolt},
+                APP_DATE = #{appDate},
+                RUN_DATE = #{runDate},
+                WIRING_MODE = #{wiringMode},
+                MEAS_MODE = #{measMode},
+                SWITCH_NO = #{switchNo},
+                MR_SECT_NO = #{mrSectNo},
+                STATUS_CODE = #{mpStatus},
+                LASTTIME_STAMP = #{lastTimestamp}
+         where MP_ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="measuringPoint">
+        delete from C_MP
+         where MP_ID = #{id}
+    </delete>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from C_MP
+         where MP_ID = #{id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="measuringPoint" resultMap="measuringPointResultMap">
+        select MP_ID, ORG_ID, TG_ID, METER_ID, MP_NO, MP_NAME, MP_ADDR, TYPE_CODE, MP_ATTR_CODE, USAGE_TYPE_CODE, SIDE_CODE, VOLT_CODE, APP_DATE, RUN_DATE, WIRING_MODE, MEAS_MODE, SWITCH_NO, MR_SECT_NO, STATUS_CODE, LASTTIME_STAMP
+          from C_MP
+         where MP_ID = #{id}
+    </select>
+
+    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="measuringPointResultMap">
+        select MP_ID, ORG_ID, TG_ID, METER_ID, MP_NO, MP_NAME, MP_ADDR, TYPE_CODE, MP_ATTR_CODE, USAGE_TYPE_CODE, SIDE_CODE, VOLT_CODE, APP_DATE, RUN_DATE, WIRING_MODE, MEAS_MODE, SWITCH_NO, MR_SECT_NO, STATUS_CODE, LASTTIME_STAMP
+          from C_MP
+         order by MP_ID
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="int">
+        select count(1) as CNT
+          from C_MP
+    </select>
+
+</mapper>

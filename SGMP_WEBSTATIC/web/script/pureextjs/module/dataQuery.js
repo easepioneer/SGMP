@@ -30,22 +30,14 @@ function getDataQueryFunctions() {
                     fieldLabel: '所属机构',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['orgId', 'orgName'],
-                        data: [
-                                {"orgId": "0", "orgName": "请选择所属机构"},
-                                {"orgId": "1", "orgName": "豪顿电气"},
-                                {"orgId": "2", "orgName": "豪顿电气测试部"},
-                                {"orgId": "3", "orgName": "豪顿电气演示部"}
-                        ]
-                    }),
+                    store: filterOrgnizationListStore,
                     valueField: 'orgId',
                     displayField: 'orgName',
+                    emptyText: '请选择所属机构...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
                     editable: false,
-                    value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
                             //alert(newValue);
@@ -70,16 +62,10 @@ function getDataQueryFunctions() {
                     fieldLabel: '台区名称',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['tgId', 'tgName'],
-                        data: [ 
-                                {"tgId": "0", "tgName": "--- 所有台区 ---"},
-                                {"tgId": "1", "tgName": "测试台区（96123456）"},
-                                {"tgId": "2", "tgName": "测试台区（96123458）"}
-                        ]
-                    }),
+                    store: filterTgListStoreWithAll,
                     valueField: 'tgId',
                     displayField: 'tgName',
+                    emptyText: '请选择台区...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
@@ -109,15 +95,10 @@ function getDataQueryFunctions() {
                     fieldLabel: '考核表名称',
                     labelWidth: 66,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['gpId', 'mpName'],
-                        data: [ 
-                                {"gpId": "0", "mpName": "--- 所有考核表 ---"},
-                                {"gpId": "1", "mpName": "测试台区考核表"}
-                        ]
-                    }),
+                    store: filterMeterListStoreWithAll,
                     valueField: 'gpId',
                     displayField: 'mpName',
+                    emptyText: '请选择考核表...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
@@ -699,22 +680,14 @@ function getDataQueryFunctions() {
                     fieldLabel: '所属机构',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['orgId', 'orgName'],
-                        data: [
-                                {"orgId": "0", "orgName": "请选择所属机构"},
-                                {"orgId": "1", "orgName": "豪顿电气"},
-                                {"orgId": "2", "orgName": "豪顿电气测试部"},
-                                {"orgId": "3", "orgName": "豪顿电气演示部"}
-                        ]
-                    }),
+                    store: filterOrgnizationListStore,
                     valueField: 'orgId',
                     displayField: 'orgName',
+                    emptyText: '请选择所属机构...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
                     editable: false,
-                    value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
                             //alert(newValue);
@@ -739,16 +712,10 @@ function getDataQueryFunctions() {
                     fieldLabel: '台区名称',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['tgId', 'tgName'],
-                        data: [ 
-                                {"tgId": "0", "tgName": "--- 所有台区 ---"},
-                                {"tgId": "1", "tgName": "测试台区（96123456）"},
-                                {"tgId": "2", "tgName": "测试台区（96123458）"}
-                        ]
-                    }),
+                    store: filterTgListStoreWithAll,
                     valueField: 'tgId',
                     displayField: 'tgName',
+                    emptyText: '请选择台区...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
@@ -778,18 +745,10 @@ function getDataQueryFunctions() {
                     fieldLabel: '保护器名称',
                     labelWidth: 66,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['gpId', 'mpName'],
-                        data: [ 
-                                {"gpId": "0", "mpName": "--- 所有保护器 ---"},
-                                {"gpId": "2", "mpName": "总保1"},
-                                {"gpId": "3", "mpName": "支路保1"},
-                                {"gpId": "4", "mpName": "总保2"},
-                                {"gpId": "5", "mpName": "支路保2"}
-                        ]
-                    }),
+                    store: filterProtectorListStoreWithAll,
                     valueField: 'gpId',
-                    displayField: 'mpName',
+                    displayField: 'psName',
+                    emptyText: '请选择保护器...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
@@ -965,22 +924,14 @@ function getDataQueryFunctions() {
                     fieldLabel: '所属机构',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['orgId', 'orgName'],
-                        data: [
-                                {"orgId": "0", "orgName": "请选择所属机构"},
-                                {"orgId": "1", "orgName": "豪顿电气"},
-                                {"orgId": "2", "orgName": "豪顿电气测试部"},
-                                {"orgId": "3", "orgName": "豪顿电气演示部"}
-                        ]
-                    }),
+                    store: filterOrgnizationListStore,
                     valueField: 'orgId',
                     displayField: 'orgName',
+                    emptyText: '请选择所属机构...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
                     editable: false,
-                    value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
                             //alert(newValue);
@@ -1005,16 +956,10 @@ function getDataQueryFunctions() {
                     fieldLabel: '台区名称',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['tgId', 'tgName'],
-                        data: [ 
-                                {"tgId": "0", "tgName": "--- 所有台区 ---"},
-                                {"tgId": "1", "tgName": "测试台区（96123456）"},
-                                {"tgId": "2", "tgName": "测试台区（96123458）"}
-                        ]
-                    }),
+                    store: filterTgListStoreWithAll,
                     valueField: 'tgId',
                     displayField: 'tgName',
+                    emptyText: '请选择台区...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
@@ -1044,15 +989,10 @@ function getDataQueryFunctions() {
                     fieldLabel: '考核表名称',
                     labelWidth: 66,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['gpId', 'mpName'],
-                        data: [ 
-                                {"gpId": "0", "mpName": "--- 所有考核表 ---"},
-                                {"gpId": "1", "mpName": "测试台区考核表"}
-                        ]
-                    }),
+                    store: filterMeterListStoreWithAll,
                     valueField: 'gpId',
                     displayField: 'mpName',
+                    emptyText: '请选择考核表...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',

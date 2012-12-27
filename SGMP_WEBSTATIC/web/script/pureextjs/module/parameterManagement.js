@@ -17,7 +17,44 @@ function rendererProtectorControlCommand(code, value) {
     else if(code == '0731') {       // 取消模拟试跳控制
         
     }
-    return code + " : " + value;
+    return value;
+}
+
+var totalReceiveCount = 10;
+function receiveProtectorControlCommandResult(taskId) {
+    totalReceiveCount--;
+    Ext.Ajax.request({
+        url: ctx_webapp + '/pm/pccs!receive.do',
+        params: {
+            mtoType: '100',
+            meterType: '100',
+            type: 'protector-control',
+            action: 'write',
+            taskId: taskId
+        },
+        method: 'POST',
+        success: function(response) {
+            //alert(response.responseText);
+            var r = response.responseText;
+            if(totalReceiveCount > 0) {
+                if(r == '......') {
+                    setTimeout('receiveProtectorControlCommandResult(' + taskId + ')', 3000)
+                }
+                else if(r == '1') {
+                    alert('投入成功');
+                }
+                else {
+                    alert('投入失败');
+                }
+            }
+            else {
+                alert('超时');
+            }
+        },
+        failure: function(response) {
+            //alert(response.responseText);
+        }
+    });
 }
 
 function getParameterManagementFunctions() {
@@ -48,22 +85,14 @@ function getParameterManagementFunctions() {
                     fieldLabel: '所属机构',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['orgId', 'orgName'],
-                        data: [
-                                {"orgId": "0", "orgName": "请选择所属机构"},
-                                {"orgId": "1", "orgName": "豪顿电气"},
-                                {"orgId": "2", "orgName": "豪顿电气测试部"},
-                                {"orgId": "3", "orgName": "豪顿电气演示部"}
-                        ]
-                    }),
+                    store: filterOrgnizationListStore,
                     valueField: 'orgId',
                     displayField: 'orgName',
+                    emptyText: '请选择所属机构...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
                     editable: false,
-                    value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
                             //alert(newValue);
@@ -81,15 +110,10 @@ function getParameterManagementFunctions() {
                     fieldLabel: '台区名称',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['tgId', 'tgName'],
-                        data: [ 
-                                {"tgId": "0", "tgName": "--- 所有台区 ---"},
-                                {"tgId": "102", "tgName": "测试台区（96123456）"}
-                        ]
-                    }),
+                    store: filterTgListStoreWithAll,
                     valueField: 'tgId',
                     displayField: 'tgName',
+                    emptyText: '请选择台区...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
@@ -112,19 +136,14 @@ function getParameterManagementFunctions() {
                     fieldLabel: '逻辑地址',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['termId', 'logicalAddr'],
-                        data: [ 
-                                {"termId": "84", "logicalAddr": "96123456"}
-                        ]
-                    }),
+                    store: filterTerminalListStore,
+                    emptyText: '请选择逻辑地址...',
                     valueField: 'termId',
                     displayField: 'logicalAddr',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
                     editable: false,
-                    value: '84',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
                             //alert(newValue);
@@ -181,6 +200,9 @@ function getParameterManagementFunctions() {
     // 集中器参数列表
     var tps_termparam_grid_selections = '';
     var tps_termparam_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
+        checkOnly: true,
+        mode: 'SINGLE',
+        showHeaderCheckbox: false,
         listeners: {
             selectionchange: function(sm, selections) {
                 tps_termparam_gridpanel.down('#tps-termparam-setting-button').setDisabled(selections.length == 0);
@@ -228,18 +250,20 @@ function getParameterManagementFunctions() {
                         for(var i = 0; i < records.length; i++) {
                             paramsAndValues += records[i].get("P_CODE") + ':' + records[i].get("P_VALUE") + ';';
                         }
-                        Ext.Ajax.request({
-                            url: ctx_webapp + '/pm/tps!send.do',
-                            params: {
+                        var params = {
                                 mtoType: '100',
                                 meterType: '100',
                                 type: 'terminal-parameter',
                                 action: 'write',
                                 paramsAndValues: paramsAndValues
-                            },
+                        };
+                        Ext.apply(params, tps_filter_formpanel.getForm().getValues(false));
+                        Ext.Ajax.request({
+                            url: ctx_webapp + '/pm/tps!send.do',
+                            params: params,
                             method: 'POST',
                             success: function(response) {
-                                alert(response.responseText);
+                                //alert(response.responseText);
                                 // 
                                 Ext.Ajax.request({
                                     url: ctx_webapp + '/pm/tps!receive.do',
@@ -252,7 +276,7 @@ function getParameterManagementFunctions() {
                                     },
                                     method: 'POST',
                                     success: function(response) {
-                                        alert(response.responseText);
+                                        //alert(response.responseText);
                                     },
                                     failure: function(response) {
                                         //alert(response.responseText);
@@ -310,18 +334,20 @@ function getParameterManagementFunctions() {
                         for(var i = 0; i < records.length; i++) {
                             paramsAndValues += records[i].get("P_CODE") + ":" + ';';
                         }
-                        Ext.Ajax.request({
-                            url: ctx_webapp + '/pm/tps!send.do',
-                            params: {
+                        var params = {
                                 mtoType: '100',
                                 meterType: '100',
                                 type: 'terminal-parameter',
                                 action: 'read',
                                 paramsAndValues: paramsAndValues
-                            },
+                        };
+                        Ext.apply(params, tps_filter_formpanel.getForm().getValues(false));
+                        Ext.Ajax.request({
+                            url: ctx_webapp + '/pm/tps!send.do',
+                            params: params,
                             method: 'POST',
                             success: function(response) {
-                                alert(response.responseText);
+                                //alert(response.responseText);
                                 // 
                                 Ext.Ajax.request({
                                     url: ctx_webapp + '/pm/tps!receive.do',
@@ -334,7 +360,7 @@ function getParameterManagementFunctions() {
                                     },
                                     method: 'POST',
                                     success: function(response) {
-                                        alert(response.responseText);
+                                        //alert(response.responseText);
                                     },
                                     failure: function(response) {
                                         //alert(response.responseText);
@@ -491,7 +517,7 @@ function getParameterManagementFunctions() {
                 value: 1,
                 listeners: {
                     change: function(combo, newValue, oldValue, eOpts) {
-                        alert(newValue);
+                        //alert(newValue);
                     }
                 }
             }]
@@ -525,22 +551,14 @@ function getParameterManagementFunctions() {
                     fieldLabel: '所属机构',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['orgId', 'orgName'],
-                        data: [
-                                {"orgId": "0", "orgName": "请选择所属机构"},
-                                {"orgId": "1", "orgName": "豪顿电气"},
-                                {"orgId": "2", "orgName": "豪顿电气测试部"},
-                                {"orgId": "3", "orgName": "豪顿电气演示部"}
-                        ]
-                    }),
+                    store: filterOrgnizationListStore,
                     valueField: 'orgId',
                     displayField: 'orgName',
+                    emptyText: '请选择所属机构...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
                     editable: false,
-                    value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
                             //alert(newValue);
@@ -558,16 +576,11 @@ function getParameterManagementFunctions() {
                     fieldLabel: '台区名称',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['tgId', 'tgName'],
-                        data: [ 
-                                {"tgId": "0", "tgName": "--- 所有台区 ---"},
-                                {"tgId": "102", "tgName": "测试台区（96123456）"}
-                        ]
-                    }),
+                    store: filterTgListStoreWithAll,
                     valueField: 'tgId',
                     displayField: 'tgName',
                     queryMode: 'local',
+                    emptyText: '请选择台区...',
                     forceSelection : true,
                     triggerAction : 'all',
                     editable: false,
@@ -589,21 +602,14 @@ function getParameterManagementFunctions() {
                     fieldLabel: '保护器名称',
                     labelWidth: 66,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['gpId', 'mpName'],
-                        data: [ 
-                                {"gpId": "0", "mpName": "--- 所有保护器 ---"},
-                                {"gpId": "243", "mpName": "总保1"},
-                                {"gpId": "244", "mpName": "支路保1"}
-                        ]
-                    }),
+                    store: filterProtectorListStore,
                     valueField: 'gpId',
-                    displayField: 'mpName',
+                    displayField: 'psName',
+                    emptyText: '请选择保护器...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
                     editable: false,
-                    value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
                             //alert(newValue);
@@ -653,22 +659,14 @@ function getParameterManagementFunctions() {
                     fieldLabel: '所属机构',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['orgId', 'orgName'],
-                        data: [
-                                {"orgId": "0", "orgName": "请选择所属机构"},
-                                {"orgId": "1", "orgName": "豪顿电气"},
-                                {"orgId": "2", "orgName": "豪顿电气测试部"},
-                                {"orgId": "3", "orgName": "豪顿电气演示部"}
-                        ]
-                    }),
+                    store: filterOrgnizationListStore,
                     valueField: 'orgId',
                     displayField: 'orgName',
+                    emptyText: '请选择所属机构...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
                     editable: false,
-                    value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
                             //alert(newValue);
@@ -686,15 +684,10 @@ function getParameterManagementFunctions() {
                     fieldLabel: '台区名称',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['tgId', 'tgName'],
-                        data: [ 
-                                {"tgId": "0", "tgName": "--- 所有台区 ---"},
-                                {"tgId": "102", "tgName": "测试台区（96123456）"}
-                        ]
-                    }),
+                    store: filterTgListStoreWithAll,
                     valueField: 'tgId',
                     displayField: 'tgName',
+                    emptyText: '请选择台区...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
@@ -717,16 +710,10 @@ function getParameterManagementFunctions() {
                     fieldLabel: '保护器名称',
                     labelWidth: 66,
                     allowBlank: false,
-                    store: Ext.create('Ext.data.Store', {
-                        fields: ['gpId', 'mpName'],
-                        data: [ 
-                                {"gpId": "0", "mpName": "--- 所有保护器 ---"},
-                                {"gpId": "243", "mpName": "总保1"},
-                                {"gpId": "244", "mpName": "支路保1"}
-                        ]
-                    }),
+                    store: filterProtectorListStore,
                     valueField: 'gpId',
-                    displayField: 'mpName',
+                    displayField: 'psName',
+                    emptyText: '请选择保护器...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
@@ -855,10 +842,13 @@ function getParameterManagementFunctions() {
                             params: params,
                             method: 'POST',
                             success: function(response) {
-                                alert(response.responseText);
+                                //alert(response.responseText);
+                                // 
+                                totalReceiveCount = 10;
+                                setTimeout('receiveProtectorControlCommandResult(' + response.responseText + ')', 3000)
                             },
                             failure: function(response) {
-                                alert(response.responseText);
+                                //alert(response.responseText);
                             }
                         });
                         /*Ext.MessageBox.show({

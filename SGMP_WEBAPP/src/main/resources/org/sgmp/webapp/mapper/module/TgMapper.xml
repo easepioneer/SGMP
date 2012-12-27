@@ -19,50 +19,53 @@
         <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
     </resultMap>
 
-    <insert id="create" parameterType="orgnization">
+    <insert id="create" parameterType="tg">
         <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
-            select SEQ_O_ORG.NEXTVAL as ID from DUAL
+            select SEQ_G_TG.NEXTVAL as ID from DUAL
         </selectKey>
-        insert into O_ORG(ORG_ID, ORG_NO, ORG_NAME, ORG_TYPE, P_ORG_ID, SORT_NO, LASTTIME_STAMP)
-        values(#{id}, #{orgNo}, #{orgName}, #{orgType}, #{parentId}, #{sortNo}, #{lastTimestamp})
+        insert into G_TG(TG_ID, ORG_ID, TG_NO, TG_NAME, TG_CAP, INST_ADDR, CHG_DATE, PUB_PRIV_FLAG, RUN_STATUS_CODE, LASTTIME_STAMP)
+        values(#{id}, #{orgId}, #{tgNo}, #{tgName}, #{tgCap}, #{instAddr}, #{chgDate}, #{pubPrivFlag}, #{runStatus}, #{lastTimestamp})
     </insert>
 
-    <update id="update" parameterType="orgnization">
-        update O_ORG set
-                ORG_NO = #{orgNo},
-                ORG_NAME = #{orgName},
-                ORG_TYPE = #{orgType},
-                P_ORG_ID = #{parentId},
-                SORT_NO = #{sortNo},
+    <update id="update" parameterType="tg">
+        update G_TG set
+                ORG_ID = #{orgId},
+                TG_NO = #{tgNo},
+                TG_NAME = #{tgName},
+                TG_CAP = #{tgCap},
+                INST_ADDR = #{instAddr},
+                CHG_DATE = #{chgDate},
+                PUB_PRIV_FLAG = #{pubPrivFlag},
+                RUN_STATUS_CODE = #{runStatus},
                 LASTTIME_STAMP = #{lastTimestamp}
-         where ORG_ID = #{id}
+         where TG_ID = #{id}
     </update>
 
-    <delete id="delete" parameterType="orgnization">
-        delete from O_ORG
-         where ORG_ID = #{id}
+    <delete id="delete" parameterType="tg">
+        delete from G_TG
+         where TG_ID = #{id}
     </delete>
 
     <delete id="deleteById" parameterType="java.lang.Long">
-        delete from O_ORG
-         where ORG_ID = #{id}
+        delete from G_TG
+         where TG_ID = #{id}
     </delete>
 
-    <select id="getById" parameterType="java.lang.Long" resultType="orgnization" resultMap="orgnizationResultMap">
-        select ORG_ID, ORG_NO, ORG_NAME, ORG_TYPE, P_ORG_ID, SORT_NO, LASTTIME_STAMP
-          from O_ORG
-         where ORG_ID = #{id}
+    <select id="getById" parameterType="java.lang.Long" resultType="tg" resultMap="tgResultMap">
+        select TG_ID, ORG_ID, TG_NO, TG_NAME, TG_CAP, INST_ADDR, CHG_DATE, PUB_PRIV_FLAG, RUN_STATUS_CODE, LASTTIME_STAMP
+          from G_TG
+         where TG_ID = #{id}
     </select>
 
-    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="orgnizationResultMap">
-        select ORG_ID, ORG_NO, ORG_NAME, ORG_TYPE, P_ORG_ID, SORT_NO, LASTTIME_STAMP
-          from O_ORG
-         order by ORG_TYPE, P_ORG_ID, ORG_ID
+    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="tgResultMap">
+        select TG_ID, ORG_ID, TG_NO, TG_NAME, TG_CAP, INST_ADDR, CHG_DATE, PUB_PRIV_FLAG, RUN_STATUS_CODE, LASTTIME_STAMP
+          from G_TG
+         order by ORG_ID, TG_ID
     </select>
 
     <select id="getCount" parameterType="java.util.Map" resultType="int">
         select count(1) as CNT
-          from O_ORG
+          from G_TG
     </select>
 
 </mapper>

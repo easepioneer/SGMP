@@ -2,9 +2,12 @@ package org.sgmp.webapp.action.module;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+import org.sgmp.webapp.ActionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -34,7 +37,7 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
     private static final Logger logger = LoggerFactory.getLogger(ProtectorControlCommandSendingAction.class);
 
     @Override
-    public void beforeSend() {
+    public void beforeSend() throws ActionException {
         logger.info("soType             : " + getSoType());
         logger.info("soId               : " + getSoId());
         logger.info("soName             : " + getSoName());
@@ -48,9 +51,76 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
         MTO_376 mto = new MTO_376();
         List<CollectObject_TransMit> cotList = new ArrayList<CollectObject_TransMit>();
         CollectObject_TransMit cot = new CollectObject_TransMit();
-        cot.setTerminalAddr("96123458");
+        if(StringUtils.equals(getSoGpId(), "11") || StringUtils.equals(getSoGpId(), "12") 
+                || StringUtils.equals(getSoGpId(), "13") || StringUtils.equals(getSoGpId(), "14") 
+                || StringUtils.equals(getSoGpId(), "15") || StringUtils.equals(getSoGpId(), "16")) {
+            cot.setTerminalAddr("96123456");
+            if(StringUtils.equals(getSoGpId(), "11")) {
+                cot.setMeterAddr("000000000001");
+            }
+            else if(StringUtils.equals(getSoGpId(), "12")) {
+                cot.setMeterAddr("000000000002");
+            }
+            else if(StringUtils.equals(getSoGpId(), "13")) {
+                cot.setMeterAddr("000000000003");
+            }
+            else if(StringUtils.equals(getSoGpId(), "14")) {
+                cot.setMeterAddr("000000000004");
+            }
+            else if(StringUtils.equals(getSoGpId(), "15")) {
+                cot.setMeterAddr("000000000005");
+            }
+            else if(StringUtils.equals(getSoGpId(), "16")) {
+                cot.setMeterAddr("000000000006");
+            }
+        }
+        else if(StringUtils.equals(getSoGpId(), "17") || StringUtils.equals(getSoGpId(), "18") 
+                || StringUtils.equals(getSoGpId(), "19") || StringUtils.equals(getSoGpId(), "20") 
+                || StringUtils.equals(getSoGpId(), "21") || StringUtils.equals(getSoGpId(), "22")) {
+            cot.setTerminalAddr("96123457");
+            if(StringUtils.equals(getSoGpId(), "17")) {
+                cot.setMeterAddr("000000000001");
+            }
+            else if(StringUtils.equals(getSoGpId(), "18")) {
+                cot.setMeterAddr("000000000002");
+            }
+            else if(StringUtils.equals(getSoGpId(), "19")) {
+                cot.setMeterAddr("000000000003");
+            }
+            else if(StringUtils.equals(getSoGpId(), "20")) {
+                cot.setMeterAddr("000000000004");
+            }
+            else if(StringUtils.equals(getSoGpId(), "21")) {
+                cot.setMeterAddr("000000000005");
+            }
+            else if(StringUtils.equals(getSoGpId(), "22")) {
+                cot.setMeterAddr("000000000006");
+            }
+        }
+        else if(StringUtils.equals(getSoGpId(), "23") || StringUtils.equals(getSoGpId(), "24") 
+                || StringUtils.equals(getSoGpId(), "25") || StringUtils.equals(getSoGpId(), "26") 
+                || StringUtils.equals(getSoGpId(), "27") || StringUtils.equals(getSoGpId(), "28")) {
+            cot.setTerminalAddr("96123458");
+            if(StringUtils.equals(getSoGpId(), "23")) {
+                cot.setMeterAddr("000000000001");
+            }
+            else if(StringUtils.equals(getSoGpId(), "24")) {
+                cot.setMeterAddr("000000000002");
+            }
+            else if(StringUtils.equals(getSoGpId(), "25")) {
+                cot.setMeterAddr("000000000003");
+            }
+            else if(StringUtils.equals(getSoGpId(), "26")) {
+                cot.setMeterAddr("000000000004");
+            }
+            else if(StringUtils.equals(getSoGpId(), "27")) {
+                cot.setMeterAddr("000000000005");
+            }
+            else if(StringUtils.equals(getSoGpId(), "28")) {
+                cot.setMeterAddr("000000000006");
+            }
+        }
         cot.setEquipProtocol("100");
-        cot.setMeterAddr("000000000002");
         cot.setMeterType(MeterType.Meter645);
         cot.setFuncode((byte) 27);
         cot.setPort((byte) 1);
@@ -73,12 +143,15 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
             logger.error("send error", _bpe);
         }
         cot.setWaitforByte((byte) 5);
+        String param = getParamsAndValues().substring(0, 4);
         List<CommandItem> ciList = new ArrayList<CommandItem>();
         CommandItem ci = new CommandItem();
-        ci.setIdentifier("80000710");
-        Map<String, String> datacellParam = new HashMap<String, String>();
-        datacellParam.put("0710", "0200");
-        ci.setDatacellParam(datacellParam);
+        ci.setIdentifier("8000" +  param);
+        if(StringUtils.equals(param, "0710") || StringUtils.equals(param, "0720") || StringUtils.equals(param, "0730")) {
+            Map<String, String> datacellParam = new HashMap<String, String>();
+            datacellParam.put(param, "0200");
+            ci.setDatacellParam(datacellParam);
+        }
         ciList.add(ci);
         cot.setCommandItems(ciList);
         cotList.add(cot);
@@ -87,7 +160,7 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
     }
 
     @Override
-    public void beforeReceive() {
+    public void beforeReceive() throws ActionException {
         logger.info("taskId             : " + getTaskId());
         logger.info("type               : " + getType());
         logger.info("action             : " + getAction());
@@ -95,15 +168,27 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
     }
 
     @Override
-    public void afterSend() {
+    public void afterSend() throws ActionException {
         // TODO Auto-generated method stub
         super.afterSend();
     }
 
     @Override
-    public void afterReceive() {
-        // TODO Auto-generated method stub
-        super.afterReceive();
+    public void afterReceive() throws ActionException {
+        if(resultMap != null && !resultMap.isEmpty()) {
+            Iterator<?> iterator = resultMap.keySet().iterator();
+            if(iterator != null && iterator.hasNext()) {
+                String key = (String) iterator.next();
+                String value = (String) resultMap.get(key);
+                responseText(value);
+            }
+            else {
+                responseText("......");
+            }
+        }
+        else {
+            responseText("......");
+        }
     }
 
     /*public void send() throws ActionException {
