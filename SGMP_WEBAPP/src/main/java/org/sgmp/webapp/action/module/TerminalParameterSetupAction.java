@@ -84,8 +84,60 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
                     List<DataItem> diList = new ArrayList<DataItem>();
                     DataItem di1 = new DataItem();
                     di1.setDataItemCode("10040010020001");      // 本次配置第XXXX块电能表/交流采样装置序号
-                    di1.setDataItemValue("2");
+                    di1.setDataItemValue("5");
                     diList.add(di1);
+                    DataItem di2 = new DataItem();
+                    di2.setDataItemCode("10040010030001");      // 本次配置第XXXX块电能表/交流采样装置所属测量点号
+                    di2.setDataItemValue("5");
+                    diList.add(di2);
+                    DataItem di3 = new DataItem();
+                    di3.setDataItemCode("10040010040001");      // 本次配置第XXXX块电能表/交流采样装置通信波特率
+                    di3.setDataItemValue("3");
+                    diList.add(di3);
+                    DataItem di4 = new DataItem();
+                    di4.setDataItemCode("10040010050001");      // 本次配置第XXXX块电能表/交流采样装置通信端口号
+                    di4.setDataItemValue("1");
+                    diList.add(di4);
+                    DataItem di5 = new DataItem();
+                    di5.setDataItemCode("10040010060001");      // 本次配置第XXXX块电能表/交流采样装置通信协议类型
+                    di5.setDataItemValue("100");                    // 100 - 
+                    diList.add(di5);
+                    DataItem di6 = new DataItem();
+                    di6.setDataItemCode("10040010070001");      // 本次配置第XXXX块电能表/交流采样装置通信地址
+                    di6.setDataItemValue("000000000005");
+                    diList.add(di6);
+                    DataItem di7 = new DataItem();
+                    di7.setDataItemCode("10040010080001");      // 本次配置第XXXX块电能表/交流采样装置通信密码
+                    di7.setDataItemValue("000000000000");
+                    diList.add(di7);
+                    DataItem di8 = new DataItem();
+                    di8.setDataItemCode("10040010100001");      // 本次配置第XXXX块电能表/交流采样装置电能费率个数
+                    di8.setDataItemValue("000100");
+                    diList.add(di8);
+                    DataItem di9 = new DataItem();
+                    di9.setDataItemCode("10040010120001");      // 本次配置第XXXX块电能表/交流采样装置有功电能示值的整数位个数
+                    di9.setDataItemValue("10");
+                    diList.add(di9);
+                    DataItem di10 = new DataItem();
+                    di10.setDataItemCode("10040010130001");      // 本次配置第XXXX块电能表/交流采样装置有功电能示值的小数位个数
+                    di10.setDataItemValue("11");
+                    diList.add(di10);
+                    DataItem di11 = new DataItem();
+                    di11.setDataItemCode("10040010140001");      // 本次配置第XXXX块电能表/交流采样装置有功电能示值的小数位个数
+                    di11.setDataItemValue("000000000000");
+                    diList.add(di11);
+                    DataItem di12 = new DataItem();
+                    di12.setDataItemCode("10040010140001");      // 本次配置第XXXX块电能表/交流采样装置所属采集器通信地址
+                    di12.setDataItemValue("000000000000");
+                    diList.add(di12);
+                    DataItem di13 = new DataItem();
+                    di13.setDataItemCode("10040010150001");      // 本次配置第XXXX块电能表/交流采样装置所属的用户大类号
+                    di13.setDataItemValue("0000");
+                    diList.add(di13);
+                    DataItem di14 = new DataItem();
+                    di14.setDataItemCode("10040010160001");      // 本次配置第XXXX块电能表/交流采样装置所属的用户小类号
+                    di14.setDataItemValue("0000");
+                    diList.add(di14);
                     dig.setDataItemList(diList);
                     digList.add(dig);
                     circleDataItems.setDataItemGroups(digList);

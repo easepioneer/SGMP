@@ -18,11 +18,13 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class SimpleQueryDaoImpl implements SimpleQueryDao {
-    public static final int PAGE_SIZE_DEFAULT = 20;
+
     private static final Logger logger = LoggerFactory.getLogger(SimpleQueryDaoImpl.class);
 
     @Autowired
     private SqlSessionTemplate sqlSessionTemplate;
+
+    protected static final int PAGE_SIZE_DEFAULT = 20;
 
     @Override
     public List<?> getList(Class<? extends SimpleQueryMapper> mapperClass, Map<String, Object> params, 
