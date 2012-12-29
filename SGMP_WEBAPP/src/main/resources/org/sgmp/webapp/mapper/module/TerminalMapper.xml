@@ -17,7 +17,7 @@
         <result column="TERM_TYPE" property="termType" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="WIRING_MODE" property="wiringMode" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="MODEL_CODE" property="termModel" javaType="java.lang.String" jdbcType="VARCHAR" />
-        <result column="INSTALL_DATE" property="instDate" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="INSTALL_DATE" property="instDate" javaType="java.util.Date" jdbcType="TIMESTAMP" />
         <result column="COMM_MODE" property="commMode" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="CHANNEL_TYPE" property="channelType" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="PROTOCOL_NO" property="protocolNo" javaType="java.lang.String" jdbcType="VARCHAR" />
@@ -25,7 +25,7 @@
         <result column="ISAC" property="isAc" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="PHYSICS_ADDR" property="physicsAddr" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="COMM_PATTERN" property="commPattern" javaType="java.lang.Integer" jdbcType="NUMERIC" />
-        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <insert id="create" parameterType="terminal">
@@ -33,29 +33,29 @@
             select SEQ_C_TERMINAL.NEXTVAL as ID from DUAL
         </selectKey>
         insert into C_TERMINAL(TERM_ID, ORG_ID, ASSET_NO, LOGICAL_ADDR, RUN_STATUS, CUR_STATUS, SIM_NO, TERM_TYPE, WIRING_MODE, MODEL_CODE, INSTALL_DATE, COMM_MODE, CHANNEL_TYPE, PROTOCOL_NO, PR, ISAC, PHYSICS_ADDR, COMM_PATTERN, LASTTIME_STAMP)
-        values(#{id}, #{orgId}, #{assetNo}, #{logicalAddr}, #{runStatus}, #{curStatus}, #{simNo}, #{termType}, #{wiringMode}, #{termModel}, #{instDate}, #{commMode}, #{channelType}, #{protocolNo}, #{pr}, #{isAc}, #{physicsAddr}, #{commPattern}, #{lastTimestamp})
+        values(#{id,jdbcType=NUMERIC}, #{orgId,jdbcType=NUMERIC}, #{assetNo,jdbcType=VARCHAR}, #{logicalAddr,jdbcType=VARCHAR}, #{runStatus,jdbcType=VARCHAR}, #{curStatus,jdbcType=VARCHAR}, #{simNo,jdbcType=VARCHAR}, #{termType,jdbcType=VARCHAR}, #{wiringMode,jdbcType=VARCHAR}, #{termModel,jdbcType=VARCHAR}, #{instDate,jdbcType=TIMESTAMP}, #{commMode,jdbcType=VARCHAR}, #{channelType,jdbcType=VARCHAR}, #{protocolNo,jdbcType=VARCHAR}, #{pr,jdbcType=VARCHAR}, #{isAc,jdbcType=VARCHAR}, #{physicsAddr,jdbcType=VARCHAR}, #{commPattern,jdbcType=NUMERIC}, #{lastTimestamp,jdbcType=TIMESTAMP})
     </insert>
 
     <update id="update" parameterType="terminal">
         update C_TERMINAL set
-                ORG_ID = #{orgId},
-                ASSET_NO = #{assetNo},
-                LOGICAL_ADDR = #{logicalAddr},
-                RUN_STATUS = #{runStatus},
-                CUR_STATUS = #{curStatus},
-                SIM_NO = #{simNo},
-                TERM_TYPE = #{termType},
-                WIRING_MODE = #{wiringMode},
-                MODEL_CODE = #{termModel},
-                INSTALL_DATE = #{instDate},
-                COMM_MODE = #{commMode},
-                CHANNEL_TYPE = #{channelType},
-                PROTOCOL_NO = #{protocolNo},
-                PR = #{pr},
-                ISAC = #{isAc},
-                PHYSICS_ADDR = #{physicsAddr},
-                COMM_PATTERN = #{commPattern},
-                LASTTIME_STAMP = #{lastTimestamp}
+                ORG_ID = #{orgId,jdbcType=NUMERIC},
+                ASSET_NO = #{assetNo,jdbcType=VARCHAR},
+                LOGICAL_ADDR = #{logicalAddr,jdbcType=VARCHAR},
+                RUN_STATUS = #{runStatus,jdbcType=VARCHAR},
+                CUR_STATUS = #{curStatus,jdbcType=VARCHAR},
+                SIM_NO = #{simNo,jdbcType=VARCHAR},
+                TERM_TYPE = #{termType,jdbcType=VARCHAR},
+                WIRING_MODE = #{wiringMode,jdbcType=VARCHAR},
+                MODEL_CODE = #{termModel,jdbcType=VARCHAR},
+                INSTALL_DATE = #{instDate,jdbcType=TIMESTAMP},
+                COMM_MODE = #{commMode,jdbcType=VARCHAR},
+                CHANNEL_TYPE = #{channelType,jdbcType=VARCHAR},
+                PROTOCOL_NO = #{protocolNo,jdbcType=VARCHAR},
+                PR = #{pr,jdbcType=VARCHAR},
+                ISAC = #{isAc,jdbcType=VARCHAR},
+                PHYSICS_ADDR = #{physicsAddr,jdbcType=VARCHAR},
+                COMM_PATTERN = #{commPattern,jdbcType=NUMERIC},
+                LASTTIME_STAMP = #{lastTimestamp,jdbcType=TIMESTAMP}
          where TERM_ID = #{id}
     </update>
 

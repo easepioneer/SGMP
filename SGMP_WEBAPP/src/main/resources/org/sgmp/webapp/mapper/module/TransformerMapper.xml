@@ -13,7 +13,7 @@
         <result column="TYPE_CODE" property="tranType" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="TRAN_NAME" property="tranName" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="INST_ADDR" property="instAddr" javaType="java.lang.String" jdbcType="VARCHAR" />
-        <result column="INST_DATE" property="instDate" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="INST_DATE" property="instDate" javaType="java.util.Date" jdbcType="TIMESTAMP" />
         <result column="PLATE_CAP" property="plateCap" javaType="java.lang.Float" jdbcType="NUMERIC" />
         <result column="RUN_STATUS_CODE" property="runStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="MODEL_NO" property="tranModel" javaType="java.lang.String" jdbcType="VARCHAR" />
@@ -24,7 +24,7 @@
         <result column="RC_MV" property="rcMv" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="RC_LV" property="rcLv" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="PR_CODE" property="pr" javaType="java.lang.String" jdbcType="VARCHAR" />
-        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <insert id="create" parameterType="transformer">
@@ -32,28 +32,28 @@
             select SEQ_G_TRAN.NEXTVAL as ID from DUAL
         </selectKey>
         insert into G_TRAN(EQUIP_ID, ORG_ID, TG_ID, TYPE_CODE, TRAN_NAME, INST_ADDR, INST_DATE, PLATE_CAP, RUN_STATUS_CODE, MODEL_NO, RV_HV, RV_MV, RV_LV, RC_HV, RC_MV, RC_LV, PR_CODE, LASTTIME_STAMP)
-        values(#{id}, #{orgId}, #{tgId}, #{tranType}, #{tranName}, #{instAddr}, #{instDate}, #{plateCap}, #{runStatus}, #{tranModel}, #{rvHv}, #{rvMv}, #{rvLv}, #{rcHv}, #{rcMv}, #{rcLv}, #{pr}, #{lastTimestamp})
+        values(#{id,jdbcType=NUMERIC}, #{orgId,jdbcType=NUMERIC}, #{tgId,jdbcType=NUMERIC}, #{tranType,jdbcType=VARCHAR}, #{tranName,jdbcType=VARCHAR}, #{instAddr,jdbcType=VARCHAR}, #{instDate,jdbcType=TIMESTAMP}, #{plateCap,jdbcType=NUMERIC}, #{runStatus,jdbcType=VARCHAR}, #{tranModel,jdbcType=VARCHAR}, #{rvHv,jdbcType=VARCHAR}, #{rvMv,jdbcType=VARCHAR}, #{rvLv,jdbcType=VARCHAR}, #{rcHv,jdbcType=VARCHAR}, #{rcMv,jdbcType=VARCHAR}, #{rcLv,jdbcType=VARCHAR}, #{pr,jdbcType=VARCHAR}, #{lastTimestamp,jdbcType=TIMESTAMP})
     </insert>
 
     <update id="update" parameterType="transformer">
         update G_TRAN set
-                ORG_ID = #{orgId},
-                TG_ID = #{tgId},
-                TYPE_CODE = #{tranType},
-                TRAN_NAME = #{tranName},
-                INST_ADDR = #{instAddr},
-                INST_DATE = #{instDate},
-                PLATE_CAP = #{plateCap},
-                RUN_STATUS_CODE = #{runStatus},
-                MODEL_NO = #{tranModel},
-                RV_HV = #{rvHv},
-                RV_MV = #{rvMv},
-                RV_LV = #{rvLv},
-                RC_HV = #{rcHv},
-                RC_MV = #{rcMv},
-                RC_LV = #{rcLv},
-                PR_CODE = #{pr},
-                LASTTIME_STAMP = #{lastTimestamp}
+                ORG_ID = #{orgId,jdbcType=NUMERIC},
+                TG_ID = #{tgId,jdbcType=NUMERIC},
+                TYPE_CODE = #{tranType,jdbcType=VARCHAR},
+                TRAN_NAME = #{tranName,jdbcType=VARCHAR},
+                INST_ADDR = #{instAddr,jdbcType=VARCHAR},
+                INST_DATE = #{instDate,jdbcType=TIMESTAMP},
+                PLATE_CAP = #{plateCap,jdbcType=NUMERIC},
+                RUN_STATUS_CODE = #{runStatus,jdbcType=VARCHAR},
+                MODEL_NO = #{tranModel,jdbcType=VARCHAR},
+                RV_HV = #{rvHv,jdbcType=VARCHAR},
+                RV_MV = #{rvMv,jdbcType=VARCHAR},
+                RV_LV = #{rvLv,jdbcType=VARCHAR},
+                RC_HV = #{rcHv,jdbcType=VARCHAR},
+                RC_MV = #{rcMv,jdbcType=VARCHAR},
+                RC_LV = #{rcLv,jdbcType=VARCHAR},
+                PR_CODE = #{pr,jdbcType=VARCHAR},
+                LASTTIME_STAMP = #{lastTimestamp,jdbcType=TIMESTAMP}
          where EQUIP_ID = #{id}
     </update>
 

@@ -7,6 +7,7 @@
 
     <!-- 定义实体类的别名 -->
     <typeAliases>
+        <typeAlias type="org.sgmp.webapp.pojo.module.Operator" alias="operator" />
         <typeAlias type="org.sgmp.webapp.pojo.module.Orgnization" alias="orgnization" />
         <typeAlias type="org.sgmp.webapp.pojo.module.Tg" alias="tg" />
         <typeAlias type="org.sgmp.webapp.pojo.module.Transformer" alias="transformer" />

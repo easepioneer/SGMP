@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.sgmp.webapp.ServiceException;
+import org.sgmp.webapp.mapper.module.SimpleCURDMapper;
 import org.sgmp.webapp.service.BaseService;
 
 /**
@@ -13,61 +14,77 @@ import org.sgmp.webapp.service.BaseService;
  * 
  * @author Nick
  *
+ * @param <E>
  */
-public interface SimpleCURDService<T> extends BaseService {
+public interface SimpleCURDService<E> extends BaseService {
 
     /**
      * 创建实体对象
      * 
+     * @param mapperClass
      * @param entity
      * @return
      * @throws ServiceException
      */
-    public boolean create(T entity) throws ServiceException;
+    public boolean create(Class<? extends SimpleCURDMapper<E>> mapperClass, E entity) throws ServiceException;
 
     /**
      * 更新实体对象
      * 
+     * @param mapperClass
      * @param entity
      * @return
      * @throws ServiceException
      */
-    public boolean update(T entity) throws ServiceException;
+    public boolean update(Class<? extends SimpleCURDMapper<E>> mapperClass, E entity) throws ServiceException;
 
     /**
      * 删除实体对象
      * 
+     * @param mapperClass
      * @param entity
      * @return
      * @throws ServiceException
      */
-    public boolean delete(T entity) throws ServiceException;
+    public boolean delete(Class<? extends SimpleCURDMapper<E>> mapperClass, E entity) throws ServiceException;
 
     /**
      * 删除实体对象
      * 
+     * @param mapperClass
      * @param id
      * @return
      * @throws ServiceException
      */
-    public boolean delete(Long id) throws ServiceException;
+    public boolean deleteById(Class<? extends SimpleCURDMapper<E>> mapperClass, Long id) throws ServiceException;
 
     /**
      * 获取实体对象
      * 
+     * @param mapperClass
      * @param id
      * @return
      * @throws ServiceException
      */
-    public T get(Long id) throws ServiceException;
+    public E getById(Class<? extends SimpleCURDMapper<E>> mapperClass, Long id) throws ServiceException;
 
     /**
      * 获取实体对象列表
      * 
+     * @param mapperClass
      * @param params
      * @return
      * @throws ServiceException
      */
-    public List<T> getList(Map<?, ?> params) throws ServiceException;
+    public List<E> getList(Class<? extends SimpleCURDMapper<E>> mapperClass, Map<?, ?> params) throws ServiceException;
+
+    /**
+     * 
+     * @param mapperClass
+     * @param params
+     * @return
+     * @throws ServiceException
+     */
+    public Integer getCount(Class<? extends SimpleCURDMapper<E>> mapperClass, Map<?, ?> params) throws ServiceException;
 
 }

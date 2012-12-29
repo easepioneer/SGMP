@@ -19,14 +19,14 @@
         <result column="USAGE_TYPE_CODE" property="mpUsageType" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="SIDE_CODE" property="mpSide" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="VOLT_CODE" property="mpVolt" javaType="java.lang.String" jdbcType="VARCHAR" />
-        <result column="APP_DATE" property="appDate" javaType="java.util.Date" jdbcType="DATE" />
-        <result column="RUN_DATE" property="runDate" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="APP_DATE" property="appDate" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+        <result column="RUN_DATE" property="runDate" javaType="java.util.Date" jdbcType="TIMESTAMP" />
         <result column="WIRING_MODE" property="wiringMode" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="MEAS_MODE" property="measMode" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="SWITCH_NO" property="switchNo" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="MR_SECT_NO" property="mrSectNo" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="STATUS_CODE" property="mpStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
-        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <insert id="create" parameterType="measuringPoint">
@@ -34,30 +34,30 @@
             select SEQ_C_MP.NEXTVAL as ID from DUAL
         </selectKey>
         insert into C_MP(MP_ID, ORG_ID, TG_ID, METER_ID, MP_NO, MP_NAME, MP_ADDR, TYPE_CODE, MP_ATTR_CODE, USAGE_TYPE_CODE, SIDE_CODE, VOLT_CODE, APP_DATE, RUN_DATE, WIRING_MODE, MEAS_MODE, SWITCH_NO, MR_SECT_NO, STATUS_CODE, LASTTIME_STAMP)
-        values(#{id}, #{orgId}, #{tgId}, #{meterId}, #{mpNo}, #{mpName}, #{mpAddr}, #{mpType}, #{mpAttr}, #{mpUsageType}, #{mpSide}, #{mpVolt}, #{appDate}, #{runDate}, #{wiringMode}, #{measMode}, #{switchNo}, #{mrSectNo}, #{mpStatus}, #{lastTimestamp})
+        values(#{id,jdbcType=NUMERIC}, #{orgId,jdbcType=NUMERIC}, #{tgId,jdbcType=NUMERIC}, #{meterId,jdbcType=NUMERIC}, #{mpNo,jdbcType=VARCHAR}, #{mpName,jdbcType=VARCHAR}, #{mpAddr,jdbcType=VARCHAR}, #{mpType,jdbcType=VARCHAR}, #{mpAttr,jdbcType=VARCHAR}, #{mpUsageType,jdbcType=VARCHAR}, #{mpSide,jdbcType=VARCHAR}, #{mpVolt,jdbcType=VARCHAR}, #{appDate,jdbcType=TIMESTAMP}, #{runDate,jdbcType=TIMESTAMP}, #{wiringMode,jdbcType=VARCHAR}, #{measMode,jdbcType=VARCHAR}, #{switchNo,jdbcType=VARCHAR}, #{mrSectNo,jdbcType=VARCHAR}, #{mpStatus,jdbcType=VARCHAR}, #{lastTimestamp,jdbcType=TIMESTAMP})
     </insert>
 
     <update id="update" parameterType="measuringPoint">
         update C_MP set
-                ORG_ID = #{orgId},
-                TG_ID = #{tgId},
-                METER_ID = #{meterId},
-                MP_NO = #{mpNo},
-                MP_NAME = #{mpName},
-                MP_ADDR = #{mpAddr},
-                TYPE_CODE = #{mpType},
-                MP_ATTR_CODE = #{mpAttr},
-                USAGE_TYPE_CODE = #{mpUsageType},
-                SIDE_CODE = #{mpSide},
-                VOLT_CODE = #{mpVolt},
-                APP_DATE = #{appDate},
-                RUN_DATE = #{runDate},
-                WIRING_MODE = #{wiringMode},
-                MEAS_MODE = #{measMode},
-                SWITCH_NO = #{switchNo},
-                MR_SECT_NO = #{mrSectNo},
-                STATUS_CODE = #{mpStatus},
-                LASTTIME_STAMP = #{lastTimestamp}
+                ORG_ID = #{orgId,jdbcType=NUMERIC},
+                TG_ID = #{tgId,jdbcType=NUMERIC},
+                METER_ID = #{meterId,jdbcType=NUMERIC},
+                MP_NO = #{mpNo,jdbcType=VARCHAR},
+                MP_NAME = #{mpName,jdbcType=VARCHAR},
+                MP_ADDR = #{mpAddr,jdbcType=VARCHAR},
+                TYPE_CODE = #{mpType,jdbcType=VARCHAR},
+                MP_ATTR_CODE = #{mpAttr,jdbcType=VARCHAR},
+                USAGE_TYPE_CODE = #{mpUsageType,jdbcType=VARCHAR},
+                SIDE_CODE = #{mpSide,jdbcType=VARCHAR},
+                VOLT_CODE = #{mpVolt,jdbcType=VARCHAR},
+                APP_DATE = #{appDate,jdbcType=TIMESTAMP},
+                RUN_DATE = #{runDate,jdbcType=TIMESTAMP},
+                WIRING_MODE = #{wiringMode,jdbcType=VARCHAR},
+                MEAS_MODE = #{measMode,jdbcType=VARCHAR},
+                SWITCH_NO = #{switchNo,jdbcType=VARCHAR},
+                MR_SECT_NO = #{mrSectNo,jdbcType=VARCHAR},
+                STATUS_CODE = #{mpStatus,jdbcType=VARCHAR},
+                LASTTIME_STAMP = #{lastTimestamp,jdbcType=TIMESTAMP}
          where MP_ID = #{id}
     </update>
 

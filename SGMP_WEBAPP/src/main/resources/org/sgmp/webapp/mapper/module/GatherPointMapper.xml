@@ -22,7 +22,7 @@
         <result column="PT_TIMES" property="ptTimes" javaType="java.lang.Integer" jdbcType="NUMERIC" />
         <result column="PORT" property="port" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="PROTOCOL_NO" property="protocolNo" javaType="java.lang.String" jdbcType="VARCHAR" />
-        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <insert id="create" parameterType="gatherPoint">
@@ -30,26 +30,26 @@
             select SEQ_C_GP.NEXTVAL as ID from DUAL
         </selectKey>
         insert into C_GP(GP_ID, OBJECT_ID, TRAN_ID, TERM_ID, MP_ID, GM_ID, GP_SN, GP_CHAR, GP_TYPE, GP_STATUS, GP_ADDR, CT_TIMES, PT_TIMES, PORT, PROTOCOL_NO, LASTTIME_STAMP)
-        values(#{id}, #{objectId}, #{tranId}, #{termId}, #{mpId}, #{gmId}, #{gpSn}, #{gpChar}, #{gpType}, #{gpStatus}, #{gpAddr}, #{ctTimes}, #{ptTimes}, #{port}, #{protocolNo}, #{lastTimestamp})
+        values(#{id,jdbcType=NUMERIC}, #{objectId,jdbcType=NUMERIC}, #{tranId,jdbcType=NUMERIC}, #{termId,jdbcType=NUMERIC}, #{mpId,jdbcType=NUMERIC}, #{gmId,jdbcType=NUMERIC}, #{gpSn,jdbcType=NUMERIC}, #{gpChar,jdbcType=VARCHAR}, #{gpType,jdbcType=VARCHAR}, #{gpStatus,jdbcType=VARCHAR}, #{gpAddr,jdbcType=VARCHAR}, #{ctTimes,jdbcType=NUMERIC}, #{ptTimes,jdbcType=NUMERIC}, #{port,jdbcType=VARCHAR}, #{protocolNo,jdbcType=VARCHAR}, #{lastTimestamp,jdbcType=TIMESTAMP})
     </insert>
 
     <update id="update" parameterType="gatherPoint">
         update C_GP set
-                OBJECT_ID = #{objectId},
-                TRAN_ID = #{tranId},
-                TERM_ID = #{termId},
-                MP_ID = #{mpId},
-                GM_ID = #{gmId},
-                GP_SN = #{gpSn},
-                GP_CHAR = #{gpChar},
-                GP_TYPE = #{gpType},
-                GP_STATUS = #{gpStatus},
-                GP_ADDR = #{gpAddr},
-                CT_TIMES = #{ctTimes},
-                PT_TIMES = #{ptTimes},
-                PORT = #{port},
-                PROTOCOL_NO = #{protocolNo},
-                LASTTIME_STAMP = #{lastTimestamp}
+                OBJECT_ID = #{objectId,jdbcType=NUMERIC},
+                TRAN_ID = #{tranId,jdbcType=NUMERIC},
+                TERM_ID = #{termId,jdbcType=NUMERIC},
+                MP_ID = #{mpId,jdbcType=NUMERIC},
+                GM_ID = #{gmId,jdbcType=NUMERIC},
+                GP_SN = #{gpSn,jdbcType=NUMERIC},
+                GP_CHAR = #{gpChar,jdbcType=VARCHAR},
+                GP_TYPE = #{gpType,jdbcType=VARCHAR},
+                GP_STATUS = #{gpStatus,jdbcType=VARCHAR},
+                GP_ADDR = #{gpAddr,jdbcType=VARCHAR},
+                CT_TIMES = #{ctTimes,jdbcType=NUMERIC},
+                PT_TIMES = #{ptTimes,jdbcType=NUMERIC},
+                PORT = #{port,jdbcType=VARCHAR},
+                PROTOCOL_NO = #{protocolNo,jdbcType=VARCHAR},
+                LASTTIME_STAMP = #{lastTimestamp,jdbcType=TIMESTAMP}
          where GP_ID = #{id}
     </update>
 

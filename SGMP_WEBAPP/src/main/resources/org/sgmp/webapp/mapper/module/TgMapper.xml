@@ -13,10 +13,10 @@
         <result column="TG_NAME" property="tgName" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="TG_CAP" property="tgCap" javaType="java.lang.Float" jdbcType="NUMERIC" />
         <result column="INST_ADDR" property="instAddr" javaType="java.lang.String" jdbcType="VARCHAR" />
-        <result column="CHG_DATE" property="chgDate" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="CHG_DATE" property="chgDate" javaType="java.util.Date" jdbcType="TIMESTAMP" />
         <result column="PUB_PRIV_FLAG" property="pubPrivFlag" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="RUN_STATUS_CODE" property="runStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
-        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <insert id="create" parameterType="tg">
@@ -24,20 +24,20 @@
             select SEQ_G_TG.NEXTVAL as ID from DUAL
         </selectKey>
         insert into G_TG(TG_ID, ORG_ID, TG_NO, TG_NAME, TG_CAP, INST_ADDR, CHG_DATE, PUB_PRIV_FLAG, RUN_STATUS_CODE, LASTTIME_STAMP)
-        values(#{id}, #{orgId}, #{tgNo}, #{tgName}, #{tgCap}, #{instAddr}, #{chgDate}, #{pubPrivFlag}, #{runStatus}, #{lastTimestamp})
+        values(#{id,jdbcType=NUMERIC}, #{orgId,jdbcType=NUMERIC}, #{tgNo,jdbcType=VARCHAR}, #{tgName,jdbcType=VARCHAR}, #{tgCap,jdbcType=NUMERIC}, #{instAddr,jdbcType=VARCHAR}, #{chgDate,jdbcType=TIMESTAMP}, #{pubPrivFlag,jdbcType=VARCHAR}, #{runStatus,jdbcType=VARCHAR}, #{lastTimestamp,jdbcType=TIMESTAMP})
     </insert>
 
     <update id="update" parameterType="tg">
         update G_TG set
-                ORG_ID = #{orgId},
-                TG_NO = #{tgNo},
-                TG_NAME = #{tgName},
-                TG_CAP = #{tgCap},
-                INST_ADDR = #{instAddr},
-                CHG_DATE = #{chgDate},
-                PUB_PRIV_FLAG = #{pubPrivFlag},
-                RUN_STATUS_CODE = #{runStatus},
-                LASTTIME_STAMP = #{lastTimestamp}
+                ORG_ID = #{orgId,jdbcType=NUMERIC},
+                TG_NO = #{tgNo,jdbcType=VARCHAR},
+                TG_NAME = #{tgName,jdbcType=VARCHAR},
+                TG_CAP = #{tgCap,jdbcType=NUMERIC},
+                INST_ADDR = #{instAddr,jdbcType=VARCHAR},
+                CHG_DATE = #{chgDate,jdbcType=TIMESTAMP},
+                PUB_PRIV_FLAG = #{pubPrivFlag,jdbcType=VARCHAR},
+                RUN_STATUS_CODE = #{runStatus,jdbcType=VARCHAR},
+                LASTTIME_STAMP = #{lastTimestamp,jdbcType=TIMESTAMP}
          where TG_ID = #{id}
     </update>
 

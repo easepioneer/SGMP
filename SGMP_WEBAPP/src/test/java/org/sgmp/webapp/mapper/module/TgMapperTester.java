@@ -30,8 +30,8 @@ public class TgMapperTester extends AbstractJUnit4SpringContextTests {
         tg.setOrgId(7L);
         tg.setTgNo("TG001");
         tg.setTgName("测试台区001");
-        tg.setTgCap(100.00F);
-        tg.setInstAddr("葛岭供电所");
+        //tg.setTgCap(100.00F);
+        //tg.setInstAddr("");
         tg.setChgDate(new Date());
         tg.setPubPrivFlag("0");
         tg.setRunStatus("1");
@@ -41,8 +41,9 @@ public class TgMapperTester extends AbstractJUnit4SpringContextTests {
 
     @Test
     public void testUpdate() throws Exception {
-        Tg tg = tgMapper.getById(7L);
-        tg.setTgName("测试台区001_update");
+        Tg tg = tgMapper.getById(33L);
+        logger.debug("台区 : " + tg.toString());
+        tg.setTgName("测试台区001_update2");
         tgMapper.update(tg);
     }
 
@@ -54,7 +55,7 @@ public class TgMapperTester extends AbstractJUnit4SpringContextTests {
 
     @Test
     public void testGetById() throws Exception {
-        Long id = 2L;
+        Long id = 33L;
         Tg tg = tgMapper.getById(id);
         logger.info(tg.toString());
     }

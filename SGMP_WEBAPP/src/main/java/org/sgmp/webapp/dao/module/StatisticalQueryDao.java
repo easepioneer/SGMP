@@ -1,5 +1,7 @@
 package org.sgmp.webapp.dao.module;
 
+import org.sgmp.webapp.dao.BaseDao;
+
 /**
  * DAO统计查询接口
  *      - 
@@ -7,6 +9,6 @@ package org.sgmp.webapp.dao.module;
  * @author Nick
  *
  */
-public interface StatisticalQuery {
+public interface StatisticalQueryDao extends BaseDao {
 
 }

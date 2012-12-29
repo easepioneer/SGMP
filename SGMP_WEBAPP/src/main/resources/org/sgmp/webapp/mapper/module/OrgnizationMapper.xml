@@ -13,7 +13,7 @@
         <result column="ORG_TYPE" property="orgType" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="P_ORG_ID" property="parentId" javaType="java.lang.Long" jdbcType="NUMERIC" />
         <result column="SORT_NO" property="sortNo" javaType="java.lang.Integer" jdbcType="NUMERIC" />
-        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <insert id="create" parameterType="orgnization">
@@ -21,17 +21,17 @@
             select SEQ_O_ORG.NEXTVAL as ID from DUAL
         </selectKey>
         insert into O_ORG(ORG_ID, ORG_NO, ORG_NAME, ORG_TYPE, P_ORG_ID, SORT_NO, LASTTIME_STAMP)
-        values(#{id}, #{orgNo}, #{orgName}, #{orgType}, #{parentId}, #{sortNo}, #{lastTimestamp})
+        values(#{id,jdbcType=NUMERIC}, #{orgNo,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, #{orgType,jdbcType=VARCHAR}, #{parentId,jdbcType=NUMERIC}, #{sortNo,jdbcType=NUMERIC}, #{lastTimestamp,jdbcType=TIMESTAMP})
     </insert>
 
     <update id="update" parameterType="orgnization">
         update O_ORG set
-                ORG_NO = #{orgNo},
-                ORG_NAME = #{orgName},
-                ORG_TYPE = #{orgType},
-                P_ORG_ID = #{parentId},
-                SORT_NO = #{sortNo},
-                LASTTIME_STAMP = #{lastTimestamp}
+                ORG_NO = #{orgNo,jdbcType=VARCHAR},
+                ORG_NAME = #{orgName,jdbcType=VARCHAR},
+                ORG_TYPE = #{orgType,jdbcType=VARCHAR},
+                P_ORG_ID = #{parentId,jdbcType=NUMERIC},
+                SORT_NO = #{sortNo,jdbcType=NUMERIC},
+                LASTTIME_STAMP = #{lastTimestamp,jdbcType=TIMESTAMP}
          where ORG_ID = #{id}
     </update>
 

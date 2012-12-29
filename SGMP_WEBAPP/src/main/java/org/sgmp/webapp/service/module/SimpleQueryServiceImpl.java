@@ -22,7 +22,7 @@ public class SimpleQueryServiceImpl implements SimpleQueryService {
     private static final Logger logger = LoggerFactory.getLogger(SimpleQueryServiceImpl.class);
 
     @Autowired
-    public SimpleQueryDao simpleQueryDao;
+    private SimpleQueryDao simpleQueryDao;
 
     @Override
     public List<?> getList(Class<? extends SimpleQueryMapper> mapperClass, Map<String, Object> params, 

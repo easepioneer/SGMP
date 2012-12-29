@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.OperatorMapper">
+
+    <!-- 定义数据库字段与实体对象的映射关系 -->
+    <resultMap type="org.sgmp.webapp.pojo.module.Operator" id="operatorResultMap">
+        <id column="EMP_NO" property="id" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="ORG_ID" property="orgId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="STAFF_NO" property="no" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="NAME" property="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="PASSWD" property="password" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="GENDER" property="gender" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MOBILE" property="mobile" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <insert id="create" parameterType="operator">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+            select SEQ_O_STAFF.NEXTVAL as ID from DUAL
+        </selectKey>
+        insert into O_STAFF(EMP_NO, ORG_ID, STAFF_NO, NAME, PASSWD, GENDER, MOBILE, REMARK, LASTTIME_STAMP)
+        values(#{id,jdbcType=NUMERIC}, #{orgId,jdbcType=NUMERIC}, #{no,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{lastTimestamp,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="operator">
+        update O_STAFF set
+                ORG_ID = #{orgId,jdbcType=NUMERIC},
+                STAFF_NO = #{no,jdbcType=VARCHAR},
+                NAME = #{name,jdbcType=VARCHAR},
+                PASSWD = #{password,jdbcType=VARCHAR},
+                GENDER = #{gender,jdbcType=VARCHAR},
+                MOBILE = #{mobile,jdbcType=VARCHAR},
+                REMARK = #{remark,jdbcType=VARCHAR},
+                LASTTIME_STAMP = #{lastTimestamp,jdbcType=TIMESTAMP}
+         where EMP_NO = #{id}
+    </update>
+
+    <delete id="delete" parameterType="operator">
+        delete from O_STAFF
+         where EMP_NO = #{id}
+    </delete>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from O_STAFF
+         where EMP_NO = #{id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="operator" resultMap="operatorResultMap">
+        select EMP_NO, ORG_ID, STAFF_NO, NAME, PASSWD, GENDER, MOBILE, REMARK, LASTTIME_STAMP
+          from O_STAFF
+         where EMP_NO = #{id}
+    </select>
+
+    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="operatorResultMap">
+        select EMP_NO, ORG_ID, STAFF_NO, NAME, PASSWD, GENDER, MOBILE, REMARK, LASTTIME_STAMP
+          from O_STAFF
+         order by EMP_NO
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="int">
+        select count(1) as CNT
+          from O_STAFF
+    </select>
+
+</mapper>

@@ -1,5 +1,7 @@
 package org.sgmp.webapp.service.module;
 
+import org.sgmp.webapp.service.BaseService;
+
 /**
  * Service统计查询接口
  *      - 
@@ -7,6 +9,6 @@ package org.sgmp.webapp.service.module;
  * @author Nick
  *
  */
-public interface StatisticalQuery {
+public interface StatisticalQueryService extends BaseService {
 
 }

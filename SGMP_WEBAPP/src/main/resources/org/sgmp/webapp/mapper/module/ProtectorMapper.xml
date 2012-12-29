@@ -20,7 +20,7 @@
         <result column="TEST_DAY" property="testDay" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="TEST_TIME" property="testTime" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="AUTO_TEST" property="autoTest" javaType="java.lang.String" jdbcType="VARCHAR" />
-        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="LASTTIME_STAMP" property="lastTimestamp" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <insert id="create" parameterType="protector">
@@ -28,24 +28,24 @@
             select SEQ_C_PS.NEXTVAL as ID from DUAL
         </selectKey>
         insert into C_PS(PS_ID, TERM_ID, GP_ID, ASSET_NO, PS_NAME, MODEL_CODE, COMM_MODE_GM, BTL, RATED_EC, PS_TYPE, TEST_DAY, TEST_TIME, AUTO_TEST, LASTTIME_STAMP)
-        values(#{id}, #{termId}, #{gpId}, #{assetNo}, #{psName}, #{psModel}, #{commMode}, #{baudrate}, #{ratedEc}, #{psType}, #{testDay}, #{testTime}, #{autoTest}, #{lastTimestamp})
+        values(#{id,jdbcType=NUMERIC}, #{termId,jdbcType=NUMERIC}, #{gpId,jdbcType=NUMERIC}, #{assetNo,jdbcType=VARCHAR}, #{psName,jdbcType=VARCHAR}, #{psModel,jdbcType=VARCHAR}, #{commMode,jdbcType=VARCHAR}, #{baudrate,jdbcType=VARCHAR}, #{ratedEc,jdbcType=VARCHAR}, #{psType,jdbcType=VARCHAR}, #{testDay,jdbcType=VARCHAR}, #{testTime,jdbcType=VARCHAR}, #{autoTest,jdbcType=VARCHAR}, #{lastTimestamp,jdbcType=TIMESTAMP})
     </insert>
 
     <update id="update" parameterType="protector">
         update C_PS set
-                TERM_ID = #{termId},
-                GP_ID = #{gpId},
-                ASSET_NO = #{assetNo},
-                PS_NAME = #{psName},
-                MODEL_CODE = #{psModel},
-                COMM_MODE_GM = #{commMode},
-                BTL = #{baudrate},
-                RATED_EC = #{ratedEc},
-                PS_TYPE = #{psType},
-                TEST_DAY = #{testDay},
-                TEST_TIME = #{testTime},
-                AUTO_TEST = #{autoTest},
-                LASTTIME_STAMP = #{lastTimestamp}
+                TERM_ID = #{termId,jdbcType=NUMERIC},
+                GP_ID = #{gpId,jdbcType=NUMERIC},
+                ASSET_NO = #{assetNo,jdbcType=VARCHAR},
+                PS_NAME = #{psName,jdbcType=VARCHAR},
+                MODEL_CODE = #{psModel,jdbcType=VARCHAR},
+                COMM_MODE_GM = #{commMode,jdbcType=VARCHAR},
+                BTL = #{baudrate,jdbcType=VARCHAR},
+                RATED_EC = #{ratedEc,jdbcType=VARCHAR},
+                PS_TYPE = #{psType,jdbcType=VARCHAR},
+                TEST_DAY = #{testDay,jdbcType=VARCHAR},
+                TEST_TIME = #{testTime,jdbcType=VARCHAR},
+                AUTO_TEST = #{autoTest,jdbcType=VARCHAR},
+                LASTTIME_STAMP = #{lastTimestamp,jdbcType=TIMESTAMP}
          where PS_ID = #{id}
     </update>
 

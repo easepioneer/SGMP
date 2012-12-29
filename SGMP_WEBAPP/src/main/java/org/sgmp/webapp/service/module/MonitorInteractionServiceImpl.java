@@ -1,6 +1,6 @@
 package org.sgmp.webapp.service.module;
 
-import org.sgmp.webapp.dao.module.SimpleInteractionDao;
+import org.sgmp.webapp.dao.module.MonitorInteractionDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service
-public class SimpleInteractionServiceImpl implements SimpleInteractionService {
+public class MonitorInteractionServiceImpl implements MonitorInteractionService {
 
     @Autowired
-    private SimpleInteractionDao simpleInteractionDao;
+    private MonitorInteractionDao monitorInteractionDao;
 
 }
