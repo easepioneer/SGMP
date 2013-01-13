@@ -7,7 +7,7 @@ public class CheckedTreeNode extends TreeNode {
      */
     private static final long serialVersionUID = -1993436299745114456L;
 
-    private boolean checked;
+    protected boolean checked;
 
     /**
      * 

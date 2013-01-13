@@ -7,6 +7,7 @@
 
     <!-- 定义实体类的别名 -->
     <typeAliases>
+        <typeAlias type="org.sgmp.webapp.pojo.module.Code" alias="code" />
         <typeAlias type="org.sgmp.webapp.pojo.module.Operator" alias="operator" />
         <typeAlias type="org.sgmp.webapp.pojo.module.Orgnization" alias="orgnization" />
         <typeAlias type="org.sgmp.webapp.pojo.module.Tg" alias="tg" />
@@ -16,11 +17,9 @@
         <typeAlias type="org.sgmp.webapp.pojo.module.GatherPoint" alias="gatherPoint" />
         <typeAlias type="org.sgmp.webapp.pojo.module.MeasuringPoint" alias="measuringPoint" />
         <typeAlias type="org.sgmp.webapp.pojo.module.Meter" alias="meter" />
+        <typeAlias type="org.sgmp.webapp.pojo.module.MeterInfo" alias="meterInfo" />
         <typeAlias type="org.sgmp.webapp.pojo.module.Protector" alias="protector" />
+        <typeAlias type="org.sgmp.webapp.pojo.module.ProtectorInfo" alias="protectorInfo" />
     </typeAliases>
-
-    <!-- 定义映射资源 -->
-    <mappers>
-    </mappers>
 
 </configuration>

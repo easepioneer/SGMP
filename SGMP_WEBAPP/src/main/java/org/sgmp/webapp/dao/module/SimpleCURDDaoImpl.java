@@ -24,7 +24,7 @@ public class SimpleCURDDaoImpl<E> implements SimpleCURDDao<E> {
     private static final Logger logger = LoggerFactory.getLogger(SimpleCURDDaoImpl.class);
 
     @Autowired
-    private SqlSessionTemplate sqlSessionTemplate;
+    protected SqlSessionTemplate sqlSessionTemplate;
  
     @Override
     public boolean create(Class<? extends SimpleCURDMapper<E>> mapperClass, E entity) throws DaoException {

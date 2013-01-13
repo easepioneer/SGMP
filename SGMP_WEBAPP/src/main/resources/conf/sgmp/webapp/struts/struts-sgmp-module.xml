@@ -36,7 +36,7 @@
         <action name="pteq" class="protectorTripEventsQueryAction" />
     </package>
 
-    <!-- |参数管理| -->
+    <!-- |系统管理| -->
     <package name="sm" namespace="/sm" extends="struts-default">
         <!-- |组织机构管理| -->
         <action name="orgm" class="orgnizationManagementAction" />
@@ -44,6 +44,8 @@
         <action name="opem" class="operatorManagementAction" />
         <!-- |角色管理| -->
         <action name="rolm" class="roleManagementAction" />
+        <!-- |编码管理| -->
+        <action name="codm" class="codeManagementAction" />
     </package>
 
 </struts>

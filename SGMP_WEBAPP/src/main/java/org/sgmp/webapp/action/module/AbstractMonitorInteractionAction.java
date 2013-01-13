@@ -7,7 +7,7 @@ import org.sgmp.webapp.action.AbstractSimpleAction;
  * @author Nick
  *
  */
-public class AbstractMonitorInteractionAction extends AbstractSimpleAction {
+public abstract class AbstractMonitorInteractionAction extends AbstractSimpleAction {
 
     /**
      * serialVersionUID

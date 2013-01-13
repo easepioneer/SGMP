@@ -20,7 +20,7 @@ public class TgMeterDataQueryMapperTester extends AbstractJUnit4SpringContextTes
 
     @Before
     public void init() {
-        PropertyConfigurator.configure("E:\\Zhangyu\\Repositories\\Git\\SGMP\\SGMP_WEBAPP\\webapp\\WEB-INF\\classes\\conf\\sgmp\\webapp\\log\\log4j.properties");
+        PropertyConfigurator.configure("D:\\Repositories\\Git\\CZStudio\\SGMP\\SGMP_WEBAPP\\webapp\\WEB-INF\\classes\\conf\\sgmp\\webapp\\log\\log4j.properties");
     }
 
     @Test
@@ -28,7 +28,7 @@ public class TgMeterDataQueryMapperTester extends AbstractJUnit4SpringContextTes
     public void testGetList() throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("startDate", "2012-12-01");
-        params.put("endDate", "2012-12-12");
+        params.put("endDate", "2012-12-31");
         params.put("_start", 0);
         params.put("_end", 3);
         List<Map<String, Object>> results = (List<Map<String, Object>>) tgMeterDataQueryMapper.getList(params);

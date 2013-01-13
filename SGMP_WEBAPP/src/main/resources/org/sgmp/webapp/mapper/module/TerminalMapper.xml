@@ -77,13 +77,21 @@
 
     <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="terminalResultMap">
         select TERM_ID, ORG_ID, ASSET_NO, LOGICAL_ADDR, RUN_STATUS, CUR_STATUS, SIM_NO, TERM_TYPE, WIRING_MODE, MODEL_CODE, INSTALL_DATE, COMM_MODE, CHANNEL_TYPE, PROTOCOL_NO, PR, ISAC, PHYSICS_ADDR, COMM_PATTERN, LASTTIME_STAMP
-          from C_TERMINAL
-         order by ORG_ID, TERM_ID
+          from C_TERMINAL T
+         where 1 = 1
+          <choose>
+              <when test="tgId != null and tgId != 0">and exists (select 1 from C_TERM_OBJ_RELA R where R.TERM_ID =  T.TERM_ID and R.OBJ_TYPE = '2' and R.OBJ_ID = #{tgId})</when>
+          </choose>
+         order by ORG_ID, LOGICAL_ADDR
     </select>
 
     <select id="getCount" parameterType="java.util.Map" resultType="int">
         select count(1) as CNT
-          from C_TERMINAL
+          from C_TERMINAL T
+         where 1 = 1
+          <choose>
+              <when test="tgId != null and tgId != 0">and exists (select 1 from C_TERM_OBJ_RELA R where R.TERM_ID =  T.TERM_ID and R.OBJ_TYPE = '2' and R.OBJ_ID = #{tgId})</when>
+          </choose>
     </select>
 
 </mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.ProtectorInfoQueryMapper">
+
+    <resultMap type="org.sgmp.webapp.pojo.module.ProtectorInfo" id="protectorInfoResultMap">
+        <id column="PS_ID" property="id" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="TERM_ID" property="termId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="GP_ID" property="gpId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="ASSET_NO" property="assetNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="PS_NAME" property="psName" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MODEL_CODE" property="psModel" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="COMM_MODE_GM" property="commMode" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="BTL" property="baudrate" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="RATED_EC" property="ratedEc" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="PS_TYPE" property="psType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="TEST_DAY" property="testDay" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="TEST_TIME" property="testTime" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="AUTO_TEST" property="autoTest" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="OBJECT_ID" property="objectId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="GP_SN" property="gpSn" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+        <result column="GP_CHAR" property="gpChar" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="GP_TYPE" property="gpType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="GP_STATUS" property="gpStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="GP_ADDR" property="gpAddr" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="CT_TIMES" property="ctTimes" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+        <result column="PT_TIMES" property="ptTimes" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+        <result column="PORT" property="port" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="PROTOCOL_NO" property="protocolNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="querySelect">
+        select PS.PS_ID, PS.TERM_ID, PS.GP_ID, PS.ASSET_NO, PS.PS_NAME, PS.MODEL_CODE, PS.COMM_MODE_GM, PS.BTL, PS.RATED_EC, PS.PS_TYPE, PS.TEST_DAY, PS.TEST_TIME, PS.AUTO_TEST, GP.OBJECT_ID, GP.GP_SN, GP.GP_CHAR, GP.GP_TYPE, GP.GP_STATUS, GP.GP_ADDR, GP.CT_TIMES, GP.PT_TIMES, GP.PORT, GP.PROTOCOL_NO
+    </sql>
+
+    <sql id="queryFrom">
+        from C_PS PS, C_GP GP
+    </sql>
+
+    <sql id="queryWhere">
+        where GP.GP_ID = PS.GP_ID
+          <choose>
+              <when test="id != null and id != 0">and PS.PS_ID = #{id}</when>
+          </choose>
+          <choose>
+              <when test="tgId != null and tgId != 0">and GP.GP_TYPE = '2' and GP.OBJECT_ID = #{tgId}</when>
+          </choose>
+    </sql>
+
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.List" resultMap="protectorInfoResultMap">
+        <include refid="querySelect" />
+        <include refid="queryFrom" />
+        <include refid="queryWhere" />
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(1) as CNT
+        <include refid="queryFrom" />
+        <include refid="queryWhere" />
+    </select>
+
+</mapper>

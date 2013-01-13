@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.MeterInfoQueryMapper">
+
+    <resultMap type="org.sgmp.webapp.pojo.module.MeterInfo" id="meterInfoResultMap">
+        <id column="METER_ID" property="id" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="ORG_ID" property="orgId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="ASSET_NO" property="assetNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="INST_DATE" property="instDate" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+        <result column="T_FACTOR" property="totalFactor" javaType="java.lang.Float" jdbcType="NUMERIC" />
+        <result column="COMM_NO" property="commNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="BAUDRATE" property="baudrate" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="COMM_MODE" property="commMode" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MP_ID" property="mpId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="TG_ID" property="tgId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="MP_NO" property="mpNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MP_NAME" property="mpName" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MP_ADDR" property="mpAddr" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="TYPE_CODE" property="mpType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MP_ATTR_CODE" property="mpAttr" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="USAGE_TYPE_CODE" property="mpUsageType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="SIDE_CODE" property="mpSide" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="VOLT_CODE" property="mpVolt" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="APP_DATE" property="appDate" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+        <result column="RUN_DATE" property="runDate" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+        <result column="WIRING_MODE" property="wiringMode" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MEAS_MODE" property="measMode" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="SWITCH_NO" property="switchNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="MR_SECT_NO" property="mrSectNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="STATUS_CODE" property="mpStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="GP_ID" property="gpId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="TRAN_ID" property="tranId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="TERM_ID" property="termId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="GP_SN" property="gpSn" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+        <result column="GP_CHAR" property="gpChar" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="GP_TYPE" property="gpType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="GP_STATUS" property="gpStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="GP_ADDR" property="gpAddr" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="CT_TIMES" property="ctTimes" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+        <result column="PT_TIMES" property="ptTimes" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+        <result column="PORT" property="port" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="PROTOCOL_NO" property="protocolNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="querySelect">
+        select METER.METER_ID, METER.ORG_ID, METER.ASSET_NO, METER.INST_DATE, METER.T_FACTOR, METER.COMM_NO, METER.BAUDRATE, METER.COMM_MODE, MP.MP_ID, MP.TG_ID, MP.MP_NO, MP.MP_NAME, MP.MP_ADDR, MP.TYPE_CODE, MP.MP_ATTR_CODE, MP.USAGE_TYPE_CODE, MP.SIDE_CODE, MP.VOLT_CODE, MP.APP_DATE, MP.RUN_DATE, MP.WIRING_MODE, MP.MEAS_MODE, MP.SWITCH_NO, MP.MR_SECT_NO, MP.STATUS_CODE, GP.GP_ID, GP.TRAN_ID, GP.TERM_ID, GP.GP_SN, GP.GP_CHAR, GP.GP_TYPE, GP.GP_STATUS, GP.GP_ADDR, GP.CT_TIMES, GP.PT_TIMES, GP.PORT, GP.PROTOCOL_NO
+    </sql>
+
+    <sql id="queryFrom">
+        from C_METER METER, C_MP MP, C_GP GP
+    </sql>
+
+    <sql id="queryWhere">
+        where MP.MP_ID = GP.MP_ID
+          and METER.METER_ID = MP.METER_ID
+          <choose>
+              <when test="id != null and id != 0">and METER.METER_ID = #{id}</when>
+          </choose>
+          <choose>
+              <when test="tgId != null and tgId != 0">and MP.TG_ID = #{tgId}</when>
+          </choose>
+    </sql>
+
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.List" resultMap="meterInfoResultMap">
+        <include refid="querySelect" />
+        <include refid="queryFrom" />
+        <include refid="queryWhere" />
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(1) as CNT
+        <include refid="queryFrom" />
+        <include refid="queryWhere" />
+    </select>
+
+</mapper>

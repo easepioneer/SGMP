@@ -15,14 +15,14 @@ public class TreeNode implements Serializable {
      */
     private static final long serialVersionUID = -8606142262738320503L;
 
-    private String id;
-    private String text;
-    private String cls;
-    private String iconCls;
-    private String qtip;
-    private String qtitle;
-    private boolean leaf;
-    private List<?> children;
+    protected String id;
+    protected String text;
+    protected String cls;
+    protected String iconCls;
+    protected String qtip;
+    protected String qtitle;
+    protected boolean leaf;
+    protected List<?> children;
 
     /**
      * 

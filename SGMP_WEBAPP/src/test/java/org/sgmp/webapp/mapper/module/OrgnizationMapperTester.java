@@ -21,7 +21,7 @@ public class OrgnizationMapperTester extends AbstractJUnit4SpringContextTests {
 
     @Before
     public void init() {
-        PropertyConfigurator.configure("E:\\Zhangyu\\Repositories\\Git\\SGMP\\SGMP_WEBAPP\\webapp\\WEB-INF\\classes\\conf\\sgmp\\webapp\\log\\log4j.properties");
+        PropertyConfigurator.configure("D:\\Repositories\\Git\\CZStudio\\SGMP\\SGMP_WEBAPP\\webapp\\WEB-INF\\classes\\conf\\sgmp\\webapp\\log\\log4j.properties");
     }
 
     @Test

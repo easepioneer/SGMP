@@ -1,11 +1,14 @@
 package org.sgmp.webapp.action.module;
 
+import org.springframework.stereotype.Component;
+
 /**
  * 保护器数据召测
  * 
  * @author Nick
  *
  */
+@Component
 public class ProtectorDataReadingAction extends AbstractSimpleInteractionAction {
 
     /**

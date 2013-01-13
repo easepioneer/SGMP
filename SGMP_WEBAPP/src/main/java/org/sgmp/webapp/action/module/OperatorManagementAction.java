@@ -1,11 +1,14 @@
 package org.sgmp.webapp.action.module;
 
+import org.springframework.stereotype.Component;
+
 /**
  * 操作员管理
  * 
  * @author Nick
  *
  */
+@Component
 public class OperatorManagementAction extends AbstractSimpleCURDAction {
 
     /**

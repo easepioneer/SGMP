@@ -174,7 +174,7 @@ function getParameterManagementFunctions() {
     });
     var tps_termparam_gridstore = Ext.create('Ext.data.Store', {
         // destroy the store if the grid is destroyed
-        //autoDestroy: true,
+        autoDestroy: true,
         model: 'tps-termparam-gridstore-model',
         //remoteSort: true,
         proxy: {
@@ -185,7 +185,7 @@ function getParameterManagementFunctions() {
             reader: {
                 type: 'json',
                 root: 'records',
-                totalProperty: 'count'
+                totalProperty: 'totalCount'
             },
             // sends single sort as multi parameter
             simpleSortMode: true

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.CodeMapper">
+
+    <!-- 定义数据库字段与实体对象的映射关系 -->
+    <resultMap type="org.sgmp.webapp.pojo.module.Code" id="codeResultMap">
+        <id column="CODE_ID" property="id" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="CODE_CATE" property="codeCate" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="CODE" property="code" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="NAME" property="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="CODE_TYPE" property="codeType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="VALUE" property="value" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="create" parameterType="code">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+            select SEQ_A_CODE.NEXTVAL as ID from DUAL
+        </selectKey>
+        insert into A_CODE(CODE_ID, CODE_CATE, CODE, NAME, REMARK, CODE_TYPE, VALUE)
+        values(#{id,jdbcType=NUMERIC}, #{codeCate,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{codeType,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="code">
+        update A_CODE set
+                CODE_CATE = #{codeCate,jdbcType=VARCHAR},
+                CODE = #{code,jdbcType=VARCHAR},
+                NAME = #{name,jdbcType=VARCHAR},
+                REMARK = #{remark,jdbcType=VARCHAR},
+                CODE_TYPE = #{codeType,jdbcType=VARCHAR},
+                VALUE = #{value,jdbcType=VARCHAR}
+         where CODE_ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="code">
+        delete from A_CODE
+         where CODE_ID = #{id}
+    </delete>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from A_CODE
+         where CODE_ID = #{id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="code" resultMap="codeResultMap">
+        select CODE_ID, CODE_CATE, CODE, NAME, REMARK, CODE_TYPE, VALUE
+          from A_CODE
+         where CODE_ID = #{id}
+    </select>
+
+    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="codeResultMap">
+        select CODE_ID, CODE_CATE, CODE, NAME, REMARK, CODE_TYPE, VALUE
+          from A_CODE
+         order by CODE_CATE, CODE
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="int">
+        select count(1) as CNT
+          from A_CODE
+    </select>
+
+</mapper>

@@ -165,15 +165,22 @@ Ext.onReady(function() {
         autoScroll: true,
         store: selectionObjectTreeStore
     });
-    selectionObjectTreePanel.getSelectionModel().on('select', function(selModel, record) {
-        /* Ext.MessageBox.alert('提示', 'depth : ' + record.get('depth'), function() {
-            
-        }); */
-        //alert(Ext.getCmp('content-panel').layout.getActiveItem().id);
+    // 双击事件
+    selectionObjectTreePanel.on('itemdblclick', function(treeview, record, item, index, e, eOpts) {
+        treeview.toggleOnDblClick = false;
         selectedSoRecord = record;
         activeItemId = Ext.getCmp('content-panel').layout.getActiveItem().id;
-        if(activeItemId == 'actionTgMeterDataQueryContentPanel') {
+        if(activeItemId == 'actionTgArchivesManagementContentPanel') {
+            //alert(selectedSoRecord.get('soType'));
+            //alert(selectedSoRecord.get('soId'));
+            if(selectedSoRecord.get('soType') == 'tg') {
+                //alert(selectedSoRecord.get('soId'));
+                Ext.getCmp('tgInfoForm').getForm().setValues({id: selectedSoRecord.get('soId')});
+            }
+        }
+        else if(activeItemId == 'actionTgMeterDataQueryContentPanel') {
             Ext.getCmp('tmdq-filter-form').getForm().loadRecord(selectedSoRecord);
+            //Ext.getCmp('tmdq-filter-form').getForm().setValues({soId: selectedSoRecord.get('soId'), soOrgId: selectedSoRecord.get('soOrgId')});
         }
     });
 

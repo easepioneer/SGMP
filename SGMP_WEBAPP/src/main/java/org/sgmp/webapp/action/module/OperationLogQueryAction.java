@@ -1,11 +1,14 @@
 package org.sgmp.webapp.action.module;
 
+import org.springframework.stereotype.Component;
+
 /**
  * 操作日志查询
  * 
  * @author Nick
  *
  */
+@Component
 public class OperationLogQueryAction extends AbstractSimpleQueryAction {
 
     /**

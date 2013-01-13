@@ -23,7 +23,7 @@
     <!-- fall back data-source if JNDI look up of main data-source fails -->  
     <bean id="nojndi-datasource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="oracle.jdbc.pool.OracleConnectionPoolDataSource" />
-        <property name="url" value="jdbc:oracle:thin:hduser/hduser2012@192.168.1.11:1521:orcl" />
+        <property name="url" value="jdbc:oracle:thin:hduser/hduser2012@127.0.0.1:1521:HDDB" />
     </bean>
 
     <!-- 配置SqlSessionFactoryBean -->
