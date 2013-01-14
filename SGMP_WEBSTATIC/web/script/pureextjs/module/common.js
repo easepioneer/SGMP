@@ -23,6 +23,39 @@ function getNameByCode_TermProtocol(value) {
     }
 }
 
+// 表规约
+var codeListStore_MeterProtocol = Ext.create('Ext.data.Store', {
+    model: 'code-liststore-model',
+    data: [ 
+            {"code": "1", "name": "DL/T 645—1997"},
+            {"code": "30", "name": "DL/T 645—2007"}
+    ]
+});
+function getNameByCode_MeterProtocol(value) {
+    if(!Ext.isEmpty(value)) {
+        return codeListStore_MeterProtocol.getById(value).get('name');
+    }
+    else {
+        return '';
+    }
+}
+
+// 保护器规约
+var codeListStore_ProtectorProtocol = Ext.create('Ext.data.Store', {
+    model: 'code-liststore-model',
+    data: [ 
+            {"code": "101", "name": "嘉兴保护器通信规约"}
+    ]
+});
+function getNameByCode_ProtectorProtocol(value) {
+    if(!Ext.isEmpty(value)) {
+        return codeListStore_ProtectorProtocol.getById(value).get('name');
+    }
+    else {
+        return '';
+    }
+}
+
 // 集中器当前状态
 var codeListStore_TermCurStatus = Ext.create('Ext.data.Store', {
     model: 'code-liststore-model',
@@ -82,6 +115,25 @@ function getNameByCode_TermCommMode(value) {
     }
 }
 
+// 表通讯方式
+var codeListStore_MeterCommMode = Ext.create('Ext.data.Store', {
+    model: 'code-liststore-model',
+    data: [ 
+            {"code": "1", "name": "485"},
+            {"code": "2", "name": "载波"},
+            {"code": "3", "name": "小无线"},
+            {"code": "4", "name": "ZIGBEE"}
+    ]
+});
+function getNameByCode_MeterCommMode(value) {
+    if(!Ext.isEmpty(value)) {
+        return codeListStore_MeterCommMode.getById(value).get('name');
+    }
+    else {
+        return '';
+    }
+}
+
 // 集中器通道类型
 var codeListStore_TermChannelType = Ext.create('Ext.data.Store', {
     model: 'code-liststore-model',
@@ -132,6 +184,15 @@ function getNameByCode_Pr(value) {
     else {
         return '';
     }
+}
+
+/**
+ * 
+ * @param termId
+ * @returns
+ */
+function getLogicalAddrByTermId(termId) {
+    return termId;
 }
 
 

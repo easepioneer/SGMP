@@ -28,11 +28,11 @@
         }]
     }, {
         text: '采集管理',
-        children: [{
+        children: [/*{
             text: '采集任务管理',
             id: 'actionCollectionTaskManagement',
             leaf: true
-        }, {
+        }, */{
             text: '台区考核表数据召测',
             id: 'actionTgMeterDataReading',
             leaf: true
@@ -41,7 +41,7 @@
             id: 'actionProtectorDataReading',
             leaf: true
         }]
-    }, {
+    }, /*{
         text: '在线监测',
         children: [{
             text: '台区监测',
@@ -52,7 +52,7 @@
             id: 'actionProtectorMonitoring',
             leaf: true
         }]
-    }, {
+    }, */{
         text: '数据查询',
         children: [{
             text: '台区考核表数据查询',
@@ -75,7 +75,7 @@
             id: 'actionProtectorTripEventsQuery',
             leaf: true
         }]
-    }, {
+    }, /*{
         text: '日志查询',
         children: [{
             text: '系统日志',
@@ -94,7 +94,7 @@
             id: 'actionInterfaceLogQuery',
             leaf: true
         }]
-    }, {
+    }, */{
         text: '系统管理',
         children: [{
             text: '组织机构管理',

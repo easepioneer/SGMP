@@ -23,8 +23,7 @@ public class CheckedTreeNode extends TreeNode {
      * @param leaf
      * @param checked
      */
-    public CheckedTreeNode(String id, String text, boolean leaf, boolean checked) {
-        super(id, text, leaf);
+    public CheckedTreeNode(boolean checked) {
         this.checked = checked;
     }
 

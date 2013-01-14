@@ -35,72 +35,6 @@ function getArchivesManagementFunctions() {
     /**
      * ================  台区档案管理  =======================
      */
-    // 变压器列表
-    Ext.define('tam-tran-gridstore-model', {
-        extend: 'Ext.data.Model',
-        fields: [
-            {name: 'id', type: 'int'},                                          /* 变压器标识 */
-            {name: 'tranName', type: 'string'},                                 /* 变压器名称 */
-            {name: 'instAddr', type: 'string'},                                 /* 安装地址 */
-            {name: 'instDate', type: 'date', dateFormat: 'Y-m-d'},              /* 安装日期 */
-            {name: 'plateCap', type: 'number', defaultValue: ' '},              /* 变压器容量 */
-            {name: 'runStatus', type: 'string'},                                /* 变压器状态 */
-            {name: 'tranModel', type: 'string'},                                /* 变压器型号 */
-            {name: 'rvHv', type: 'string'},                                     /* 高压侧电压等级 */
-            {name: 'rvMv', type: 'string'},                                     /* 中压侧电压等级 */
-            {name: 'rvLv', type: 'string'},                                     /* 低压侧电压等级 */
-            {name: 'pr', type: 'string'}                                        /* 变压器产权 */
-        ],
-        idProperty: 'id'
-    });
-    var tam_tran_gridstore = Ext.create('Ext.data.Store', {
-        // destroy the store if the grid is destroyed
-        autoDestroy: true,
-        model: 'tam-tran-gridstore-model',
-        remoteSort: true,
-        proxy: {
-            // load using script tags for cross domain, if the data in on the same domain as
-            // this page, an HttpProxy would be better
-            type: 'ajax',
-            url: ctx_webapp + '/am/tam!getTranListByTgId.do',
-            reader: {
-                type: 'json',
-                root: 'records',
-                totalProperty: 'totalCount'
-            },
-            // sends single sort as multi parameter
-            simpleSortMode: true
-        },
-        // 
-        autoLoad: false
-    });
-    var tam_tran_gridpanel = Ext.create('Ext.grid.Panel', {
-        id: 'tam-tran-grid',
-        xtype: 'grid',
-        region: 'north',
-        height: 151,
-        margins: '5 5 0 5',
-        store: tam_tran_gridstore,
-        loadMask: true,
-        columns: [
-            {text: "变压器标识", dataIndex: 'id', sortable: false, hideable: true, hidden: true},
-            {text: "变压器名称", dataIndex: 'tranName', width: 150, sortable: true},
-            {text: "安装地址", dataIndex: 'instAddr', width: 200, sortable: true},
-            {text: "安装日期", dataIndex: 'instDate', width: 100, sortable: true, xtype: 'datecolumn', format:'Y-m-d'},
-            {text: "变压器容量", dataIndex: 'plateCap', width: 100, sortable: true, xtype: 'numbercolumn', format: '0.00'},
-            {text: "变压器状态", dataIndex: 'runStatus', width: 100, sortable: true},
-            {text: "变压器型号", dataIndex: 'tranModel', width: 100, sortable: true},
-            {text: "高压侧电压等级", dataIndex: 'rvHv', width: 120, sortable: true},
-            {text: "低压侧电压等级", dataIndex: 'rvLv', width: 120, sortable: true}
-        ],
-        columnLines: true
-    });
-    tam_tran_gridpanel.getSelectionModel().on('select', function(selModel, record) {
-        if(record) {
-            //alert(record.getId());
-        }
-    });
-
     // 集中器列表
     Ext.define('tam-term-gridstore-model', {
         extend: 'Ext.data.Model',
@@ -167,7 +101,7 @@ function getArchivesManagementFunctions() {
     });
     tam_term_gridpanel.getSelectionModel().on('select', function(selModel, record) {
         if(record) {
-            //alert(record.getId());
+            Ext.getCmp('termInfoForm').getForm().setValues({id: record.getId()});
         }
     });
 
@@ -250,7 +184,7 @@ function getArchivesManagementFunctions() {
             {name: 'psName', type: 'string'},                                   /* 保护器名称 */
             {name: 'gpSn', type: 'int'},                                        /* 测量点序号 */
             {name: 'termId', type: 'int'},                                      /* 集中器标识 */
-            {name: 'gpAddr', type: 'string'},                                   /* 通讯地址 */
+            {name: 'gpAddr', type: 'string'},                                   /* 通信地址 */
             {name: 'commMode', type: 'string'},                                 /* 通讯方式 */
             {name: 'protocolNo', type: 'string'},                               /* 保护器规约 */
             {name: 'psModel', type: 'string'}                                   /* 保护器型号 */
@@ -288,20 +222,19 @@ function getArchivesManagementFunctions() {
         loadMask: true,
         columns: [
             {text: "保护器标识", dataIndex: 'id', sortable: false, hideable: true, hidden: true},
-            {text: "资产编号", dataIndex: 'assetNo', width: 100, sortable: true},
-            {text: "保护器名称", dataIndex: 'psName', width: 100, sortable: true},
-            {text: "通讯地址", dataIndex: 'gpAddr', width: 100, sortable: true},
+            {text: "资产编号", dataIndex: 'assetNo', width: 150, sortable: true},
+            {text: "保护器名称", dataIndex: 'psName', width: 200, sortable: true},
+            {text: "通信地址", dataIndex: 'gpAddr', width: 150, sortable: true},
             {text: "测量点序号", dataIndex: 'gpSn', width: 100, sortable: true},
-            {text: "采集集中器", dataIndex: 'termId', width: 100, sortable: true/*, renderer: getLogicalAddrByTermId*/},
-            {text: "保护器规约", dataIndex: 'protocolNo', width: 100, sortable: true/*, renderer: getNameByCode_MeterProtocol*/},
-            {text: "通讯方式", dataIndex: 'commMode', width: 100, sortable: true/*, renderer: getNameByCode_MeterCommMode*/},
-            {text: "保护器型号", dataIndex: 'psModel', width: 100, sortable: true/*, renderer: getNameByCode_PsModel*/}
+            {text: "采集集中器", dataIndex: 'termId', width: 100, sortable: true, renderer: getLogicalAddrByTermId},
+            {text: "保护器规约", dataIndex: 'protocolNo', width: 150, sortable: true, renderer: getNameByCode_ProtectorProtocol},
+            {text: "通讯方式", dataIndex: 'commMode', width: 100, sortable: true, renderer: getNameByCode_MeterCommMode}
         ],
         columnLines: true
     });
     tam_ps_gridpanel.getSelectionModel().on('select', function(selModel, record) {
         if(record) {
-            //alert(record.getId());
+            Ext.getCmp('psInfoForm').getForm().setValues({id: record.getId()});
         }
     });
 
@@ -369,24 +302,17 @@ function getArchivesManagementFunctions() {
                                                 success: function(response) {
                                                     //alert(response.responseText);
                                                     Ext.getCmp('tgInfoForm').getForm().setValues(Ext.JSON.decode(response.responseText));
-                                                    // 加载变压器列表
-                                                    tam_tran_gridstore.load({
+                                                    // 加载集中器列表
+                                                    tam_term_gridstore.load({
                                                         params: {id: newValue},
                                                         callback: function(records, operation, success) {
-                                                            // 加载集中器列表
-                                                            tam_term_gridstore.load({
+                                                            // 加载考核表列表
+                                                            tam_meter_gridstore.load({
                                                                 params: {id: newValue},
                                                                 callback: function(records, operation, success) {
-                                                                    // 加载考核表列表
-                                                                    tam_meter_gridstore.load({
+                                                                    // 加载保护器列表
+                                                                    tam_ps_gridstore.load({
                                                                         params: {id: newValue},
-                                                                        callback: function(records, operation, success) {
-                                                                            // 加载保护器列表
-                                                                            tam_ps_gridstore.load({
-                                                                                params: {id: newValue},
-                                                                                scope: this
-                                                                            });
-                                                                        },
                                                                         scope: this
                                                                     });
                                                                 },
@@ -405,8 +331,6 @@ function getArchivesManagementFunctions() {
                                             this.up('form').down('#am-tginfo-new-button').setDisabled(true);
                                             // 清空台区信息
                                             this.up('form').getForm().reset();
-                                            // 清空变压器列表
-                                            tam_tran_gridstore.removeAll();
                                             // 清空集中器列表
                                             tam_term_gridstore.removeAll();
                                             // 清空考核表列表
@@ -493,7 +417,7 @@ function getArchivesManagementFunctions() {
                         disabled: false,
                         handler: function() {
                             if(this.up('form').getForm().isValid()) {
-                                alert(Ext.JSON.encode(this.up('form').getForm().getValues(false)));
+                                //alert(Ext.JSON.encode(this.up('form').getForm().getValues(false)));
                                 Ext.Ajax.request({
                                     url: ctx_webapp + '/am/tam!saveTg.do',
                                     params: {tg: Ext.JSON.encode(this.up('form').getForm().getValues(false))},
@@ -504,6 +428,9 @@ function getArchivesManagementFunctions() {
                                         if(Ext.isNumber(tgId) && tgId > 0) {
                                             Ext.Msg.alert('提示', '保存成功！', function(btn) {
                                                 Ext.getCmp('tgInfoForm').getForm().setValues({id: tgId});
+                                                if(selectionObjectTreeStore) {
+                                                    selectionObjectTreeStore.load(selectionObjectTreeStore.root);
+                                                }
                                             });
                                         }
                                         else {
@@ -532,131 +459,6 @@ function getArchivesManagementFunctions() {
                     margins: '5 5 5 5',
                     activeTab: 0,
                     items: [{
-                        title: '变压器信息',
-                        layout: 'border',
-                        hideMode: Ext.isIE ? 'offsets' : 'display',
-                        items: [tam_tran_gridpanel, {
-                            xtype: 'form',
-                            id: 'tranInfoForm',
-                            region: 'center',
-                            frame: true,
-                            margins: '5 5 5 5',
-                            bodyStyle: 'padding: 7px 7px 0 7px;',
-                            //split: true,
-                            items: [{
-                                xtype: 'container',
-                                anchor: '100%',
-                                layout: 'hbox',
-                                items: [{
-                                    xtype: 'container',
-                                    flex: 1,
-                                    layout: 'anchor',
-                                    items: [{
-                                        xtype: 'textfield',
-                                        fieldLabel: '变压器标识',
-                                        allowBlank: false,
-                                        afterLabelTextTpl: required,
-                                        name: 'tranId'
-                                    }, {
-                                        xtype: 'combobox',
-                                        fieldLabel: '高压侧电压',
-                                        afterLabelTextTpl: required,
-                                        allowBlank: false,
-                                        name: 'highVolt',
-                                        store: Ext.create('Ext.data.ArrayStore', {
-                                            fields: ['voltCode', 'voltName'],
-                                            data: [
-                                                   ['500', '500kV'],
-                                                   ['220', '220kV'],
-                                                   ['110', '110kV'],
-                                                   ['35', '35kV'],
-                                                   ['10', '10kV'],
-                                                   ['0.38', '380V'],
-                                                   ['0.22', '220V']
-                                            ]
-                                        }),
-                                        valueField: 'voltCode',
-                                        displayField: 'voltName',
-                                        queryMode: 'local',
-                                        emptyText: '请选择电压等级...'
-                                    }]
-                                }, {
-                                    xtype: 'container',
-                                    flex: 1,
-                                    layout: 'anchor',
-                                    items: [{
-                                        xtype: 'textfield',
-                                        fieldLabel: '变压器名称',
-                                        allowBlank: false,
-                                        afterLabelTextTpl: required,
-                                        name: 'tranName'
-                                    }, {
-                                        xtype: 'combobox',
-                                        fieldLabel: '低压侧电压',
-                                        afterLabelTextTpl: required,
-                                        allowBlank: false,
-                                        name: 'lowVolt',
-                                        store: Ext.create('Ext.data.ArrayStore', {
-                                            fields: ['voltCode', 'voltName'],
-                                            data: [
-                                                   ['500', '500kV'],
-                                                   ['220', '220kV'],
-                                                   ['110', '110kV'],
-                                                   ['35', '35kV'],
-                                                   ['10', '10kV'],
-                                                   ['0.38', '380V'],
-                                                   ['0.22', '220V']
-                                            ]
-                                        }),
-                                        valueField: 'voltCode',
-                                        displayField: 'voltName',
-                                        queryMode: 'local',
-                                        emptyText: '请选择电压等级...'
-                                    }]
-                                }, {
-                                    xtype: 'container',
-                                    flex: 1,
-                                    layout: 'anchor',
-                                    items: [{
-                                        xtype: 'combobox',
-                                        fieldLabel: '变压器型号',
-                                        afterLabelTextTpl: required,
-                                        allowBlank: false,
-                                        name: 'orgId',
-                                        store: Ext.create('Ext.data.ArrayStore', {
-                                            fields: ['modelCode', 'modelName'],
-                                            data: []
-                                        }),
-                                        valueField: 'modelCode',
-                                        displayField: 'modelName',
-                                        typeAhead: true,
-                                        queryMode: 'local',
-                                        emptyText: '请选择变压器型号...'
-                                    }, {
-                                        xtype: 'textfield',
-                                        fieldLabel: '安装地址',
-                                        name: 'instAddr'
-                                    }]
-                                }]
-                            }],
-                            buttons: [{
-                                text: '新增',
-                                handler: function() {
-                                    this.up('form').getForm().reset();
-                                }
-                            }, {
-                                text: '保存',
-                                handler: function() {
-                                    this.up('form').getForm().isValid();
-                                }
-                            }, {
-                                text: '取消',
-                                handler: function() {
-                                    this.up('form').getForm().reset();
-                                }
-                            }]
-                        }]
-                    }, {
                         title: '集中器信息',
                         layout: 'border',
                         hideMode: Ext.isIE ? 'offsets' : 'display',
@@ -678,32 +480,35 @@ function getArchivesManagementFunctions() {
                                     layout: 'anchor',
                                     items: [{
                                         xtype: 'textfield',
-                                        fieldLabel: '集中器标识',
+                                        fieldLabel: '资产编号',
+                                        labelWidth: 77,
                                         allowBlank: false,
                                         afterLabelTextTpl: required,
-                                        name: 'termId'
+                                        name: 'assetNo'
                                     }, {
                                         xtype: 'combobox',
-                                        fieldLabel: '高压侧电压',
-                                        afterLabelTextTpl: required,
+                                        fieldLabel: '当前状态',
+                                        labelWidth: 77,
                                         allowBlank: false,
-                                        name: 'highVolt',
-                                        store: Ext.create('Ext.data.ArrayStore', {
-                                            fields: ['voltCode', 'voltName'],
-                                            data: [
-                                                   ['500', '500kV'],
-                                                   ['220', '220kV'],
-                                                   ['110', '110kV'],
-                                                   ['35', '35kV'],
-                                                   ['10', '10kV'],
-                                                   ['0.38', '380V'],
-                                                   ['0.22', '220V']
-                                            ]
-                                        }),
-                                        valueField: 'voltCode',
-                                        displayField: 'voltName',
+                                        afterLabelTextTpl: required,
+                                        name: 'curStatus',
+                                        store: codeListStore_TermCurStatus,
+                                        valueField: 'code',
+                                        displayField: 'name',
                                         queryMode: 'local',
-                                        emptyText: '请选择电压等级...'
+                                        emptyText: '请选择当前状态...'
+                                    }, {
+                                        xtype: 'combobox',
+                                        fieldLabel: '集中器规约',
+                                        labelWidth: 77,
+                                        allowBlank: false,
+                                        afterLabelTextTpl: required,
+                                        name: 'protocolNo',
+                                        store: codeListStore_TermProtocol,
+                                        valueField: 'code',
+                                        displayField: 'name',
+                                        queryMode: 'local',
+                                        emptyText: '请选择集中器规约...'
                                     }]
                                 }, {
                                     xtype: 'container',
@@ -711,73 +516,113 @@ function getArchivesManagementFunctions() {
                                     layout: 'anchor',
                                     items: [{
                                         xtype: 'textfield',
-                                        fieldLabel: '变压器名称',
+                                        fieldLabel: '逻辑地址',
+                                        labelWidth: 77,
                                         allowBlank: false,
                                         afterLabelTextTpl: required,
-                                        name: 'tranName'
+                                        name: 'logicalAddr'
                                     }, {
                                         xtype: 'combobox',
-                                        fieldLabel: '低压侧电压',
-                                        afterLabelTextTpl: required,
+                                        fieldLabel: '接线方式',
+                                        labelWidth: 77,
                                         allowBlank: false,
-                                        name: 'lowVolt',
-                                        store: Ext.create('Ext.data.ArrayStore', {
-                                            fields: ['voltCode', 'voltName'],
-                                            data: [
-                                                   ['500', '500kV'],
-                                                   ['220', '220kV'],
-                                                   ['110', '110kV'],
-                                                   ['35', '35kV'],
-                                                   ['10', '10kV'],
-                                                   ['0.38', '380V'],
-                                                   ['0.22', '220V']
-                                            ]
-                                        }),
-                                        valueField: 'voltCode',
-                                        displayField: 'voltName',
+                                        afterLabelTextTpl: required,
+                                        name: 'wiringMode',
+                                        store: codeListStore_WiringMode,
+                                        valueField: 'code',
+                                        displayField: 'name',
                                         queryMode: 'local',
-                                        emptyText: '请选择电压等级...'
+                                        emptyText: '请选择接线方式...'
+                                    }, {
+                                        xtype: 'combobox',
+                                        fieldLabel: '通讯方式',
+                                        labelWidth: 77,
+                                        allowBlank: false,
+                                        afterLabelTextTpl: required,
+                                        name: 'commMode',
+                                        store: codeListStore_TermCommMode,
+                                        valueField: 'code',
+                                        displayField: 'name',
+                                        queryMode: 'local',
+                                        emptyText: '请选择通讯方式...'
                                     }]
                                 }, {
                                     xtype: 'container',
                                     flex: 1,
                                     layout: 'anchor',
                                     items: [{
-                                        xtype: 'combobox',
-                                        fieldLabel: '变压器型号',
-                                        afterLabelTextTpl: required,
-                                        allowBlank: false,
-                                        name: 'orgId',
-                                        store: Ext.create('Ext.data.ArrayStore', {
-                                            fields: ['modelCode', 'modelName'],
-                                            data: []
-                                        }),
-                                        valueField: 'modelCode',
-                                        displayField: 'modelName',
-                                        typeAhead: true,
-                                        queryMode: 'local',
-                                        emptyText: '请选择变压器型号...'
-                                    }, {
                                         xtype: 'textfield',
-                                        fieldLabel: '安装地址',
-                                        name: 'instAddr'
+                                        fieldLabel: 'SIM卡号',
+                                        labelWidth: 77,
+                                        allowBlank: false,
+                                        afterLabelTextTpl: required,
+                                        name: 'simNo'
+                                    }, {
+                                        xtype: 'datefield',
+                                        fieldLabel: '安装日期',
+                                        labelWidth: 77,
+                                        name: 'instDate',
+                                        format: 'Y-m-d'
+                                    }, {
+                                        xtype: 'combobox',
+                                        fieldLabel: '通道类型',
+                                        labelWidth: 77,
+                                        allowBlank: false,
+                                        afterLabelTextTpl: required,
+                                        name: 'channelType',
+                                        store: codeListStore_TermChannelType,
+                                        valueField: 'code',
+                                        displayField: 'name',
+                                        queryMode: 'local',
+                                        emptyText: '请选择通道类型...'
+                                    }, {
+                                        xtype: 'hiddenfield',
+                                        name: 'id',
+                                        listeners: {
+                                            change: function(field, newValue, oldValue, eOpts) {
+                                                //alert(oldValue);
+                                                //alert(newValue);
+                                                //alert(Ext.JSON.encode(eOpts));
+                                                //alert(Ext.isString(newValue));
+                                                if(!Ext.isEmpty(newValue) && newValue != '0' && newValue != '-1') {
+                                                    this.up('form').down('#am-terminfo-new-button').setDisabled(false);
+                                                    // 加载集中器信息
+                                                    Ext.Ajax.request({
+                                                        url: ctx_webapp + '/am/tam!getTermById.do',
+                                                        params: {id: newValue},
+                                                        method: 'POST',
+                                                        success: function(response) {
+                                                            //alert(Ext.JSON.decode(response.responseText));
+                                                            Ext.getCmp('termInfoForm').getForm().setValues(Ext.JSON.decode(response.responseText));
+                                                        },
+                                                        failure: function(response) {
+                                                            //alert(response.responseText);
+                                                        }
+                                                    });
+                                                }
+                                                else {
+                                                    this.up('form').down('#am-terminfo-new-button').setDisabled(true);
+                                                    // 清空集中器信息
+                                                    this.up('form').getForm().reset();
+                                                }
+                                            }
+                                        }
                                     }]
                                 }]
                             }],
                             buttons: [{
+                                itemId: 'am-terminfo-new-button',
                                 text: '新增',
+                                disabled: true,
                                 handler: function() {
-                                    this.up('form').getForm().reset();
+                                    //this.up('form').getForm().reset();
                                 }
                             }, {
+                                itemId: 'am-terminfo-save-button',
                                 text: '保存',
+                                disabled: false,
                                 handler: function() {
-                                    this.up('form').getForm().isValid();
-                                }
-                            }, {
-                                text: '取消',
-                                handler: function() {
-                                    this.up('form').getForm().reset();
+                                    //this.up('form').getForm().isValid();
                                 }
                             }]
                         }]
@@ -803,32 +648,18 @@ function getArchivesManagementFunctions() {
                                     layout: 'anchor',
                                     items: [{
                                         xtype: 'textfield',
-                                        fieldLabel: '考核表标识',
+                                        fieldLabel: '资产编号',
+                                        labelWidth: 77,
                                         allowBlank: false,
                                         afterLabelTextTpl: required,
-                                        name: 'meterId'
+                                        name: 'assetNo'
                                     }, {
-                                        xtype: 'combobox',
-                                        fieldLabel: '高压侧电压',
-                                        afterLabelTextTpl: required,
+                                        xtype: 'numberfield',
+                                        fieldLabel: '测量点序号',
+                                        labelWidth: 77,
                                         allowBlank: false,
-                                        name: 'highVolt',
-                                        store: Ext.create('Ext.data.ArrayStore', {
-                                            fields: ['voltCode', 'voltName'],
-                                            data: [
-                                                   ['500', '500kV'],
-                                                   ['220', '220kV'],
-                                                   ['110', '110kV'],
-                                                   ['35', '35kV'],
-                                                   ['10', '10kV'],
-                                                   ['0.38', '380V'],
-                                                   ['0.22', '220V']
-                                            ]
-                                        }),
-                                        valueField: 'voltCode',
-                                        displayField: 'voltName',
-                                        queryMode: 'local',
-                                        emptyText: '请选择电压等级...'
+                                        afterLabelTextTpl: required,
+                                        name: 'gpSn'
                                     }]
                                 }, {
                                     xtype: 'container',
@@ -836,73 +667,95 @@ function getArchivesManagementFunctions() {
                                     layout: 'anchor',
                                     items: [{
                                         xtype: 'textfield',
-                                        fieldLabel: '变压器名称',
+                                        fieldLabel: '考核表名称',
+                                        labelWidth: 77,
                                         allowBlank: false,
                                         afterLabelTextTpl: required,
-                                        name: 'tranName'
+                                        name: 'mpName'
                                     }, {
                                         xtype: 'combobox',
-                                        fieldLabel: '低压侧电压',
-                                        afterLabelTextTpl: required,
+                                        fieldLabel: '表规约',
+                                        labelWidth: 77,
                                         allowBlank: false,
-                                        name: 'lowVolt',
-                                        store: Ext.create('Ext.data.ArrayStore', {
-                                            fields: ['voltCode', 'voltName'],
-                                            data: [
-                                                   ['500', '500kV'],
-                                                   ['220', '220kV'],
-                                                   ['110', '110kV'],
-                                                   ['35', '35kV'],
-                                                   ['10', '10kV'],
-                                                   ['0.38', '380V'],
-                                                   ['0.22', '220V']
-                                            ]
-                                        }),
-                                        valueField: 'voltCode',
-                                        displayField: 'voltName',
+                                        afterLabelTextTpl: required,
+                                        name: 'protocolNo',
+                                        store: codeListStore_MeterProtocol,
+                                        valueField: 'code',
+                                        displayField: 'name',
                                         queryMode: 'local',
-                                        emptyText: '请选择电压等级...'
+                                        emptyText: '请选择表规约...'
                                     }]
                                 }, {
                                     xtype: 'container',
                                     flex: 1,
                                     layout: 'anchor',
                                     items: [{
-                                        xtype: 'combobox',
-                                        fieldLabel: '变压器型号',
-                                        afterLabelTextTpl: required,
-                                        allowBlank: false,
-                                        name: 'orgId',
-                                        store: Ext.create('Ext.data.ArrayStore', {
-                                            fields: ['modelCode', 'modelName'],
-                                            data: []
-                                        }),
-                                        valueField: 'modelCode',
-                                        displayField: 'modelName',
-                                        typeAhead: true,
-                                        queryMode: 'local',
-                                        emptyText: '请选择变压器型号...'
-                                    }, {
                                         xtype: 'textfield',
-                                        fieldLabel: '安装地址',
-                                        name: 'instAddr'
+                                        fieldLabel: '通信地址',
+                                        labelWidth: 77,
+                                        allowBlank: false,
+                                        afterLabelTextTpl: required,
+                                        name: 'gpAddr'
+                                    }, {
+                                        xtype: 'combobox',
+                                        fieldLabel: '通讯方式',
+                                        labelWidth: 77,
+                                        allowBlank: false,
+                                        afterLabelTextTpl: required,
+                                        name: 'commMode',
+                                        store: codeListStore_MeterCommMode,
+                                        valueField: 'code',
+                                        displayField: 'name',
+                                        queryMode: 'local',
+                                        emptyText: '请选择通讯方式...'
+                                    }, {
+                                        xtype: 'hiddenfield',
+                                        name: 'id',
+                                        listeners: {
+                                            change: function(field, newValue, oldValue, eOpts) {
+                                                //alert(oldValue);
+                                                //alert(newValue);
+                                                //alert(Ext.JSON.encode(eOpts));
+                                                //alert(Ext.isString(newValue));
+                                                if(!Ext.isEmpty(newValue) && newValue != '0' && newValue != '-1') {
+                                                    this.up('form').down('#am-meterinfo-new-button').setDisabled(false);
+                                                    // 加载考核表信息
+                                                    Ext.Ajax.request({
+                                                        url: ctx_webapp + '/am/tam!getMeterById.do',
+                                                        params: {id: newValue},
+                                                        method: 'POST',
+                                                        success: function(response) {
+                                                            //alert(Ext.JSON.decode(response.responseText));
+                                                            Ext.getCmp('meterInfoForm').getForm().setValues(Ext.JSON.decode(response.responseText));
+                                                        },
+                                                        failure: function(response) {
+                                                            //alert(response.responseText);
+                                                        }
+                                                    });
+                                                }
+                                                else {
+                                                    this.up('form').down('#am-meterinfo-new-button').setDisabled(true);
+                                                    // 清空考核表信息
+                                                    this.up('form').getForm().reset();
+                                                }
+                                            }
+                                        }
                                     }]
                                 }]
                             }],
                             buttons: [{
+                                itemId: 'am-meterinfo-new-button',
                                 text: '新增',
+                                disabled: true,
                                 handler: function() {
-                                    this.up('form').getForm().reset();
+                                    //this.up('form').getForm().reset();
                                 }
                             }, {
+                                itemId: 'am-meterinfo-save-button',
                                 text: '保存',
+                                disabled: false,
                                 handler: function() {
-                                    this.up('form').getForm().isValid();
-                                }
-                            }, {
-                                text: '取消',
-                                handler: function() {
-                                    this.up('form').getForm().reset();
+                                    //this.up('form').getForm().isValid();
                                 }
                             }]
                         }]
@@ -928,32 +781,18 @@ function getArchivesManagementFunctions() {
                                     layout: 'anchor',
                                     items: [{
                                         xtype: 'textfield',
-                                        fieldLabel: '保护器标识',
+                                        fieldLabel: '资产编号',
+                                        labelWidth: 77,
                                         allowBlank: false,
                                         afterLabelTextTpl: required,
-                                        name: 'psId'
+                                        name: 'assetNo'
                                     }, {
-                                        xtype: 'combobox',
-                                        fieldLabel: '高压侧电压',
-                                        afterLabelTextTpl: required,
+                                        xtype: 'numberfield',
+                                        fieldLabel: '测量点序号',
+                                        labelWidth: 77,
                                         allowBlank: false,
-                                        name: 'highVolt',
-                                        store: Ext.create('Ext.data.ArrayStore', {
-                                            fields: ['voltCode', 'voltName'],
-                                            data: [
-                                                   ['500', '500kV'],
-                                                   ['220', '220kV'],
-                                                   ['110', '110kV'],
-                                                   ['35', '35kV'],
-                                                   ['10', '10kV'],
-                                                   ['0.38', '380V'],
-                                                   ['0.22', '220V']
-                                            ]
-                                        }),
-                                        valueField: 'voltCode',
-                                        displayField: 'voltName',
-                                        queryMode: 'local',
-                                        emptyText: '请选择电压等级...'
+                                        afterLabelTextTpl: required,
+                                        name: 'gpSn'
                                     }]
                                 }, {
                                     xtype: 'container',
@@ -961,73 +800,95 @@ function getArchivesManagementFunctions() {
                                     layout: 'anchor',
                                     items: [{
                                         xtype: 'textfield',
-                                        fieldLabel: '变压器名称',
+                                        fieldLabel: '保护器名称',
+                                        labelWidth: 77,
                                         allowBlank: false,
                                         afterLabelTextTpl: required,
-                                        name: 'tranName'
+                                        name: 'psName'
                                     }, {
                                         xtype: 'combobox',
-                                        fieldLabel: '低压侧电压',
-                                        afterLabelTextTpl: required,
+                                        fieldLabel: '保护器规约',
+                                        labelWidth: 77,
                                         allowBlank: false,
-                                        name: 'lowVolt',
-                                        store: Ext.create('Ext.data.ArrayStore', {
-                                            fields: ['voltCode', 'voltName'],
-                                            data: [
-                                                   ['500', '500kV'],
-                                                   ['220', '220kV'],
-                                                   ['110', '110kV'],
-                                                   ['35', '35kV'],
-                                                   ['10', '10kV'],
-                                                   ['0.38', '380V'],
-                                                   ['0.22', '220V']
-                                            ]
-                                        }),
-                                        valueField: 'voltCode',
-                                        displayField: 'voltName',
+                                        afterLabelTextTpl: required,
+                                        name: 'protocolNo',
+                                        store: codeListStore_ProtectorProtocol,
+                                        valueField: 'code',
+                                        displayField: 'name',
                                         queryMode: 'local',
-                                        emptyText: '请选择电压等级...'
+                                        emptyText: '请选择保护器规约...'
                                     }]
                                 }, {
                                     xtype: 'container',
                                     flex: 1,
                                     layout: 'anchor',
                                     items: [{
-                                        xtype: 'combobox',
-                                        fieldLabel: '变压器型号',
-                                        afterLabelTextTpl: required,
-                                        allowBlank: false,
-                                        name: 'orgId',
-                                        store: Ext.create('Ext.data.ArrayStore', {
-                                            fields: ['modelCode', 'modelName'],
-                                            data: []
-                                        }),
-                                        valueField: 'modelCode',
-                                        displayField: 'modelName',
-                                        typeAhead: true,
-                                        queryMode: 'local',
-                                        emptyText: '请选择变压器型号...'
-                                    }, {
                                         xtype: 'textfield',
-                                        fieldLabel: '安装地址',
-                                        name: 'instAddr'
+                                        fieldLabel: '通信地址',
+                                        labelWidth: 77,
+                                        allowBlank: false,
+                                        afterLabelTextTpl: required,
+                                        name: 'gpAddr'
+                                    }, {
+                                        xtype: 'combobox',
+                                        fieldLabel: '通讯方式',
+                                        labelWidth: 77,
+                                        allowBlank: false,
+                                        afterLabelTextTpl: required,
+                                        name: 'commMode',
+                                        store: codeListStore_MeterCommMode,
+                                        valueField: 'code',
+                                        displayField: 'name',
+                                        queryMode: 'local',
+                                        emptyText: '请选择通讯方式...'
+                                    }, {
+                                        xtype: 'hiddenfield',
+                                        name: 'id',
+                                        listeners: {
+                                            change: function(field, newValue, oldValue, eOpts) {
+                                                //alert(oldValue);
+                                                //alert(newValue);
+                                                //alert(Ext.JSON.encode(eOpts));
+                                                //alert(Ext.isString(newValue));
+                                                if(!Ext.isEmpty(newValue) && newValue != '0' && newValue != '-1') {
+                                                    this.up('form').down('#am-psinfo-new-button').setDisabled(false);
+                                                    // 加载保护器信息
+                                                    Ext.Ajax.request({
+                                                        url: ctx_webapp + '/am/tam!getPsById.do',
+                                                        params: {id: newValue},
+                                                        method: 'POST',
+                                                        success: function(response) {
+                                                            //alert(Ext.JSON.decode(response.responseText));
+                                                            Ext.getCmp('psInfoForm').getForm().setValues(Ext.JSON.decode(response.responseText));
+                                                        },
+                                                        failure: function(response) {
+                                                            //alert(response.responseText);
+                                                        }
+                                                    });
+                                                }
+                                                else {
+                                                    this.up('form').down('#am-psinfo-new-button').setDisabled(true);
+                                                    // 清空保护器信息
+                                                    this.up('form').getForm().reset();
+                                                }
+                                            }
+                                        }
                                     }]
                                 }]
                             }],
                             buttons: [{
+                                itemId: 'am-psinfo-new-button',
                                 text: '新增',
+                                disabled: true,
                                 handler: function() {
-                                    this.up('form').getForm().reset();
+                                    //this.up('form').getForm().reset();
                                 }
                             }, {
+                                itemId: 'am-psinfo-save-button',
                                 text: '保存',
+                                disabled: false,
                                 handler: function() {
-                                    this.up('form').getForm().isValid();
-                                }
-                            }, {
-                                text: '取消',
-                                handler: function() {
-                                    this.up('form').getForm().reset();
+                                    //this.up('form').getForm().isValid();
                                 }
                             }]
                         }]

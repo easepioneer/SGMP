@@ -18,16 +18,6 @@ public class FunctionMenuTreeNode extends TreeNode {
      * 
      */
     public FunctionMenuTreeNode() {
-        super();
     }
 
-    /**
-     * 
-     * @param id
-     * @param text
-     * @param leaf
-     */
-    public FunctionMenuTreeNode(String id, String text, boolean leaf) {
-        super(id, text, leaf);
-    }
 }

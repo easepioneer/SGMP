@@ -7,6 +7,7 @@
 
     <!-- 定义实体类的别名 -->
     <typeAliases>
+        <typeAlias type="org.sgmp.webapp.pojo.mainframe.SelectionObjectTreeNode" alias="sotn" />
         <typeAlias type="org.sgmp.webapp.pojo.module.Code" alias="code" />
         <typeAlias type="org.sgmp.webapp.pojo.module.Operator" alias="operator" />
         <typeAlias type="org.sgmp.webapp.pojo.module.Orgnization" alias="orgnization" />

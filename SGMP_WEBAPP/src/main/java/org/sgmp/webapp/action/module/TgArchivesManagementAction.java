@@ -228,7 +228,21 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
      * @throws ActionException
      */
     public void getTermById() throws ActionException {
-        
+        String termid = request.getParameter("id");                       // 集中器标识
+        if(StringUtils.isNotBlank(termid)) {
+            Long id = Long.valueOf(termid);
+            try {
+                Terminal terminal = termService.getById(TerminalMapper.class, id);
+                responseJson(terminal);
+            }
+            catch(ServiceException _se) {
+                logger.error("getTermById error", _se);
+                throw new ActionException("ActionException", _se.getCause());
+            }
+        }
+        else {
+            responseJson(new Terminal());
+        }
     }
 
     /**
@@ -322,7 +336,29 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
      * @throws ActionException
      */
     public void getPsById() throws ActionException {
-        
+        String psId = request.getParameter("id");                       // 保护器标识
+        if(StringUtils.isNotBlank(psId)) {
+            Long id = Long.valueOf(psId);
+            try {
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("id", id);
+                List<?> records = simpleQueryService.getList(ProtectorInfoQueryMapper.class, params, null, null, null, null);
+                if(records != null && records.size() > 0) {
+                    ProtectorInfo psInfo = (ProtectorInfo) records.get(0);
+                    responseJson(psInfo);
+                }
+                else {
+                    responseJson(new ProtectorInfo());
+                }
+            }
+            catch(ServiceException _se) {
+                logger.error("getTgById error", _se);
+                throw new ActionException("ActionException", _se.getCause());
+            }
+        }
+        else {
+            responseJson(new ProtectorInfo());
+        }
     }
 
     /**

@@ -69,6 +69,7 @@ Ext.require(['*']);
 
 var activeItemId;
 var selectedSoRecord;
+var selectionObjectTreeStore = '';
 Ext.onReady(function() {
     Ext.QuickTips.init();
 
@@ -138,6 +139,8 @@ Ext.onReady(function() {
         fields: [
                  {name: 'id', type: 'string'},
                  {name: 'text', type: 'string'},
+                 {name: 'leaf', type: 'boolean'},
+                 {name: 'expanded', type: 'boolean'},
                  {name: 'soType', type: 'string'},
                  {name: 'soId', type: 'string'},
                  {name: 'soName', type: 'string'},
@@ -148,15 +151,23 @@ Ext.onReady(function() {
         ],
         idProperty: 'id'
     });
-    var selectionObjectTreeStore = Ext.create('Ext.data.TreeStore', {
+    selectionObjectTreeStore = Ext.create('Ext.data.TreeStore', {
         model: 'selection-object-treestore-model',
         root: {
+            id: 'root',
+            text: 'root',
+            soType: 'root',
+            soId: 'root',
             expanded: true
         },
         proxy: {
             type: 'ajax',
-            url: '${ctx_webstatic}/customized/project/hd/data/selection-object-tree-data.json'
-        }
+            url: ctx_webapp + '/left!getTree.do',
+            reader: {
+                type: 'json'
+            }
+        },
+        autoLoad: true
     });
     var selectionObjectTreePanel = Ext.create('Ext.tree.Panel', {
         id: 'selection-object-tree-panel',
@@ -164,6 +175,23 @@ Ext.onReady(function() {
         rootVisible: false,
         autoScroll: true,
         store: selectionObjectTreeStore
+    });
+    selectionObjectTreePanel.on('beforeload', function(store, operation, eOpts) {
+        //alert('beforeload');
+        var _params = {
+                id: operation.node.data.id,
+                text: operation.node.data.text,
+                leaf: operation.node.data.leaf,
+                expanded: operation.node.data.expanded,
+                soType: operation.node.data.soType,
+                soId: operation.node.data.soId,
+                soName: operation.node.data.soName,
+                soOrgId: operation.node.data.soOrgId,
+                soTgId: operation.node.data.soTgId,
+                soTermId: operation.node.data.soTermId,
+                soGpId: operation.node.data.soGpId
+        };
+        operation.params = _params;
     });
     // 双击事件
     selectionObjectTreePanel.on('itemdblclick', function(treeview, record, item, index, e, eOpts) {
