@@ -69,6 +69,7 @@ Ext.require(['*']);
 
 var activeItemId;
 var selectedSoRecord;
+var functionMenuTreeStore = '';
 var selectionObjectTreeStore = '';
 Ext.onReady(function() {
     Ext.QuickTips.init();
@@ -111,7 +112,7 @@ Ext.onReady(function() {
         items: functionContents
     };
 
-    var functionMenuTreeStore = Ext.create('Ext.data.TreeStore', {
+    functionMenuTreeStore = Ext.create('Ext.data.TreeStore', {
         root: {
             expanded: true
         },
@@ -154,12 +155,9 @@ Ext.onReady(function() {
     selectionObjectTreeStore = Ext.create('Ext.data.TreeStore', {
         model: 'selection-object-treestore-model',
         root: {
-            id: 'root',
-            text: 'root',
-            soType: 'root',
-            soId: 'root',
             expanded: true
         },
+        defaultRootId: 'root',
         proxy: {
             type: 'ajax',
             url: ctx_webapp + '/left!getTree.do',
@@ -177,21 +175,8 @@ Ext.onReady(function() {
         store: selectionObjectTreeStore
     });
     selectionObjectTreePanel.on('beforeload', function(store, operation, eOpts) {
-        //alert('beforeload');
-        var _params = {
-                id: operation.node.data.id,
-                text: operation.node.data.text,
-                leaf: operation.node.data.leaf,
-                expanded: operation.node.data.expanded,
-                soType: operation.node.data.soType,
-                soId: operation.node.data.soId,
-                soName: operation.node.data.soName,
-                soOrgId: operation.node.data.soOrgId,
-                soTgId: operation.node.data.soTgId,
-                soTermId: operation.node.data.soTermId,
-                soGpId: operation.node.data.soGpId
-        };
-        operation.params = _params;
+        //alert(Ext.JSON.encode(operation.node.data));
+        operation.params = operation.node.data;
     });
     // 双击事件
     selectionObjectTreePanel.on('itemdblclick', function(treeview, record, item, index, e, eOpts) {
@@ -220,7 +205,7 @@ Ext.onReady(function() {
         Ext.create('Ext.Component', {
             region: 'north',
             id: 'panel-north',
-            height: 60,
+            height: 00,
             autoEl: {
                 tag: 'div',
                 html: '<h1>浙江豪顿电气有限公司</h1><h2>低压配电网络信息一体化平台</h2>'

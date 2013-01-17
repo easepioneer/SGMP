@@ -2,6 +2,7 @@ package org.sgmp.webapp.action;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,10 +89,23 @@ public class AbstractSimpleAction extends ActionSupport implements ServletReques
      * @throws ActionException
      */
     public void responseJson(Object o) throws ActionException {
+        responseJson(o, null);
+    }
+
+    /**
+     * 
+     * @param o
+     * @param dateFormat
+     * @throws ActionException
+     */
+    public void responseJson(Object o, String dateFormat) throws ActionException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/json; charset=UTF-8");
 
         ObjectMapper objectMapper = new ObjectMapper();
+        if(StringUtils.isNotBlank(dateFormat)) {
+            objectMapper.setDateFormat(new SimpleDateFormat(dateFormat)); 
+        }
         StringWriter stringWriter = new StringWriter();
         JsonGenerator jsonGenerator = null;
         try {

@@ -17,7 +17,7 @@ function getArchivesManagementFunctions() {
         // destroy the store if the grid is destroyed
         autoDestroy: true,
         model: 'am-orgnization-liststore-model',
-        remoteSort: true,
+        remoteSort: false,
         proxy: {
             // load using script tags for cross domain, if the data in on the same domain as
             // this page, an HttpProxy would be better
@@ -46,7 +46,7 @@ function getArchivesManagementFunctions() {
             {name: 'curStatus', type: 'string'},                                /* 当前状态 */
             {name: 'simNo', type: 'string'},                                    /* SIM卡号 */
             {name: 'wiringMode', type: 'string'},                               /* 接线方式 */
-            {name: 'instDate', type: 'date', dateFormat: 'Y-m-d'},              /* 安装日期 */
+            {name: 'instDate', type: 'date', dateFormat: 'Y-m-d H:i:s'},        /* 安装日期 */
             {name: 'commMode', type: 'string'},                                 /* 通讯方式 */
             {name: 'channelType', type: 'string'},                              /* 通道类型 */
             {name: 'protocolNo', type: 'string'},                               /* 集中器规约 */
@@ -59,7 +59,7 @@ function getArchivesManagementFunctions() {
         // destroy the store if the grid is destroyed
         autoDestroy: true,
         model: 'tam-term-gridstore-model',
-        remoteSort: true,
+        remoteSort: false,
         proxy: {
             // load using script tags for cross domain, if the data in on the same domain as
             // this page, an HttpProxy would be better
@@ -129,7 +129,7 @@ function getArchivesManagementFunctions() {
         // destroy the store if the grid is destroyed
         autoDestroy: true,
         model: 'tam-meter-gridstore-model',
-        remoteSort: true,
+        remoteSort: false,
         proxy: {
             // load using script tags for cross domain, if the data in on the same domain as
             // this page, an HttpProxy would be better
@@ -195,7 +195,7 @@ function getArchivesManagementFunctions() {
         // destroy the store if the grid is destroyed
         autoDestroy: true,
         model: 'tam-ps-gridstore-model',
-        remoteSort: true,
+        remoteSort: false,
         proxy: {
             // load using script tags for cross domain, if the data in on the same domain as
             // this page, an HttpProxy would be better
@@ -616,13 +616,55 @@ function getArchivesManagementFunctions() {
                                 disabled: true,
                                 handler: function() {
                                     //this.up('form').getForm().reset();
+                                    Ext.Msg.confirm('提示', '确认要新增集中器？', function(btn) {
+                                        if(btn == 'yes') {
+                                            Ext.getCmp('termInfoForm').getForm().setValues({id: '0'});
+                                        }
+                                    });
                                 }
                             }, {
                                 itemId: 'am-terminfo-save-button',
                                 text: '保存',
                                 disabled: false,
                                 handler: function() {
-                                    //this.up('form').getForm().isValid();
+                                    if(this.up('form').getForm().isValid()) {
+                                        //alert(Ext.JSON.encode(this.up('form').getForm().getValues(false)));
+                                        var _term = Ext.JSON.encode(this.up('form').getForm().getValues(false));
+                                        var _tgId = Ext.getCmp('tgInfoForm').getForm().getValues(false).id;
+                                        Ext.Ajax.request({
+                                            url: ctx_webapp + '/am/tam!saveTerm.do',
+                                            params: {term: _term, tgId: _tgId},
+                                            method: 'POST',
+                                            success: function(response) {
+                                                //alert(response.responseText);
+                                                var termId = parseInt(response.responseText);
+                                                if(Ext.isNumber(termId) && termId > 0) {
+                                                    Ext.Msg.alert('提示', '保存成功！', function(btn) {
+                                                        // 重新加载集中器列表
+                                                        tam_term_gridstore.load({
+                                                            params: {id: _tgId},
+                                                            callback: function(records, operation, success) {
+                                                                Ext.getCmp('termInfoForm').getForm().setValues({id: termId});
+                                                                if(selectionObjectTreeStore) {
+                                                                    selectionObjectTreeStore.load(selectionObjectTreeStore.root);
+                                                                }
+                                                            },
+                                                            scope: this
+                                                        });
+                                                    });
+                                                }
+                                                else {
+                                                    Ext.Msg.alert('提示', '保存失败！', function(btn) {
+                                                    });
+                                                }
+                                            },
+                                            failure: function(response) {
+                                                //alert(response.responseText);
+                                                Ext.Msg.alert('提示', '保存失败！', function(btn) {
+                                                });
+                                            }
+                                        });
+                                    }
                                 }
                             }]
                         }]

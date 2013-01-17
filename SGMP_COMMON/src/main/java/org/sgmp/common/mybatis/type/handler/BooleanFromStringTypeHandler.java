@@ -6,64 +6,56 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.type.BooleanTypeHandler;
 import org.apache.ibatis.type.JdbcType;
+import org.apache.ibatis.type.TypeHandler;
 
 /**
  * 
  * @author Nick
  *
  */
-public class BooleanFromStringTypeHandler extends BooleanTypeHandler {
+public class BooleanFromStringTypeHandler implements TypeHandler<Boolean> {
 
-    private static final String TRUE = "true";
-    private static final String FALSE = "false";
+    private static final String TRUE = "TRUE";
+    private static final String FALSE = "FALSE";
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, Boolean parameter, JdbcType jdbcType) throws SQLException {
-        String value = null;
-        if(parameter != null) {
-            if(((Boolean) parameter).booleanValue()) {
-                value = TRUE;
-            }
-            else {
-                value = FALSE;
-            }
-        }
-        ps.setString(i, value);
+    public void setParameter(PreparedStatement ps, int i, Boolean parameter, JdbcType jdbcType) throws SQLException {
+        String value = parameter ? TRUE : FALSE;
+        ps.setString(i, value); 
     }
 
     @Override
-    public Boolean getNullableResult(ResultSet rs, String columnName) throws SQLException {
+    public Boolean getResult(ResultSet rs, String columnName) throws SQLException {
         String value = rs.getString(columnName);
-        if(StringUtils.equals(value, TRUE)) {
+        if(StringUtils.equalsIgnoreCase(value, TRUE)) {
             return Boolean.TRUE;
         }
-        else if(StringUtils.equals(value, FALSE)) {
+        else if(StringUtils.equalsIgnoreCase(value, FALSE)) {
             return Boolean.FALSE;
         }
         return null;
     }
 
     @Override
-    public Boolean getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+    public Boolean getResult(ResultSet rs, int columnIndex) throws SQLException {
         String value = rs.getString(columnIndex);
-        if(StringUtils.equals(value, TRUE)) {
+        if(StringUtils.equalsIgnoreCase(value, TRUE)) {
             return Boolean.TRUE;
         }
-        else if(StringUtils.equals(value, FALSE)) {
+        else if(StringUtils.equalsIgnoreCase(value, FALSE)) {
             return Boolean.FALSE;
         }
         return null;
     }
 
     @Override
-    public Boolean getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+    public Boolean getResult(CallableStatement cs, int columnIndex) throws SQLException {
         String value = cs.getString(columnIndex);
-        if(StringUtils.equals(value, TRUE)) {
+        if(StringUtils.equalsIgnoreCase(value, TRUE)) {
             return Boolean.TRUE;
         }
-        else if(StringUtils.equals(value, FALSE)) {
+        else if(StringUtils.equalsIgnoreCase(value, FALSE)) {
             return Boolean.FALSE;
         }
         return null;

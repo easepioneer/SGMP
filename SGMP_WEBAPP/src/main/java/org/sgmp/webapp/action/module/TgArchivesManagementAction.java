@@ -1,6 +1,7 @@
 package org.sgmp.webapp.action.module;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import org.sgmp.webapp.ActionException;
 import org.sgmp.webapp.ServiceException;
 import org.sgmp.webapp.mapper.module.MeterInfoQueryMapper;
 import org.sgmp.webapp.mapper.module.ProtectorInfoQueryMapper;
+import org.sgmp.webapp.mapper.module.RelationTerminalAndObjectMapper;
 import org.sgmp.webapp.mapper.module.TerminalMapper;
 import org.sgmp.webapp.mapper.module.TgMapper;
 import org.sgmp.webapp.mapper.module.TransformerMapper;
@@ -81,7 +83,7 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
             Long id = Long.valueOf(tgid);
             try {
                 Tg tg = tgService.getById(TgMapper.class, id);
-                responseJson(tg);
+                responseJson(tg, "yyyy-MM-dd");
             }
             catch(ServiceException _se) {
                 logger.error("getTgById error", _se);
@@ -89,7 +91,7 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
             }
         }
         else {
-            responseJson(new Tg());
+            responseJson(new Tg(), "yyyy-MM-dd");
         }
     }
 
@@ -163,7 +165,7 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
                 Map<String, Object> result = new HashMap<String, Object>();
                 result.put("records", records);
                 result.put("totalCount", totalCount);
-                responseJson(result);
+                responseJson(result, "yyyy-MM-dd HH:mm:ss");
             }
             catch(ServiceException _se) {
                 logger.error("getTgById error", _se);
@@ -171,7 +173,7 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
             }
         }
         else {
-            responseJson(new ArrayList<Transformer>());
+            responseJson(new ArrayList<Transformer>(), "yyyy-MM-dd HH:mm:ss");
         }
     }
 
@@ -181,7 +183,6 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
      * @throws ActionException
      */
     public void getTranById() throws ActionException {
-        
     }
 
     /**
@@ -190,7 +191,6 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
      * @throws ActionException
      */
     public void saveTran() throws ActionException {
-        
     }
 
     /**
@@ -210,7 +210,7 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
                 Map<String, Object> result = new HashMap<String, Object>();
                 result.put("records", records);
                 result.put("totalCount", totalCount);
-                responseJson(result);
+                responseJson(result, "yyyy-MM-dd HH:mm:ss");
             }
             catch(ServiceException _se) {
                 logger.error("getTgById error", _se);
@@ -218,7 +218,7 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
             }
         }
         else {
-            responseJson(new ArrayList<Terminal>());
+            responseJson(new ArrayList<Terminal>(), "yyyy-MM-dd HH:mm:ss");
         }
     }
 
@@ -233,7 +233,7 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
             Long id = Long.valueOf(termid);
             try {
                 Terminal terminal = termService.getById(TerminalMapper.class, id);
-                responseJson(terminal);
+                responseJson(terminal, "yyyy-MM-dd");
             }
             catch(ServiceException _se) {
                 logger.error("getTermById error", _se);
@@ -241,7 +241,7 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
             }
         }
         else {
-            responseJson(new Terminal());
+            responseJson(new Terminal(), "yyyy-MM-dd");
         }
     }
 
@@ -251,7 +251,73 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
      * @throws ActionException
      */
     public void saveTerm() throws ActionException {
-        
+        String termString = request.getParameter("term");
+        String stgid = request.getParameter("tgId");
+        logger.info("termString : " + termString);
+        logger.info("tgId       : " + stgid);
+        Terminal terminal = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+        Long termId = 0L;
+        try {
+            Long tgId = Long.parseLong(stgid);
+            Tg tg = tgService.getById(TgMapper.class, tgId);
+            if(tg != null) {
+                terminal = objectMapper.readValue(termString, Terminal.class);
+                terminal.setOrgId(tg.getOrgId());
+                logger.info(terminal.toString());
+
+                if(terminal.getId() != null && terminal.getId() > 0) {
+                    termService.update(TerminalMapper.class, terminal);
+                    termId = terminal.getId();
+                    logger.info("termId : " + termId);
+                }
+                else {
+                    terminal.setRunStatus("2");
+                    terminal.setTermType("05");
+                    terminal.setPr("1");
+                    terminal.setIsAc("0");
+                    termService.create(TerminalMapper.class, terminal);
+                    termId = terminal.getId();
+
+                    RelationTerminalAndObject rtao = new RelationTerminalAndObject();
+                    rtao.setTermId(termId);
+                    rtao.setObjectId(tgId);
+                    rtao.setObjectType("2");
+                    rtaoService.create(RelationTerminalAndObjectMapper.class, rtao);
+
+                    logger.info("termId : " + termId);
+                }
+            }
+        }
+        catch(NumberFormatException _nfe) {
+            termId = -1L;
+            logger.error("saveTg error", _nfe);
+            throw new ActionException("ActionException", _nfe.getCause());
+        }
+        catch(JsonParseException _jpe) {
+            termId = -1L;
+            logger.error("saveTg error", _jpe);
+            throw new ActionException("ActionException", _jpe.getCause());
+        }
+        catch(JsonMappingException _jme) {
+            termId = -1L;
+            logger.error("saveTg error", _jme);
+            throw new ActionException("ActionException", _jme.getCause());
+        }
+        catch(IOException _ioe) {
+            termId = -1L;
+            logger.error("saveTg error", _ioe);
+            throw new ActionException("ActionException", _ioe.getCause());
+        }
+        catch(ServiceException _se) {
+            termId = -1L;
+            logger.error("saveTg error", _se);
+            throw new ActionException("ActionException", _se.getCause());
+        }
+        finally {
+            responseText(String.valueOf(termId));
+        }
     }
 
     /**
@@ -271,7 +337,7 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
                 Map<String, Object> result = new HashMap<String, Object>();
                 result.put("records", records);
                 result.put("totalCount", totalCount);
-                responseJson(result);
+                responseJson(result, "yyyy-MM-dd HH:mm:ss");
             }
             catch(ServiceException _se) {
                 logger.error("getTgById error", _se);
@@ -279,7 +345,7 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
             }
         }
         else {
-            responseJson(new ArrayList<MeterInfo>());
+            responseJson(new ArrayList<MeterInfo>(), "yyyy-MM-dd HH:mm:ss");
         }
     }
 

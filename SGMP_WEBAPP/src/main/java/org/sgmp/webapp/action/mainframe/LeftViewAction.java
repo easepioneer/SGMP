@@ -43,24 +43,6 @@ public class LeftViewAction extends AbstractSimpleAction {
     private String soTermId;            // selection object termId
     private String soGpId;              // selection object gpId
 
-    public void getRoot() throws ActionException {
-        logger.debug(" ==================== getRoot ==================== ");
-        List<SelectionObjectTreeNode> rootList = new ArrayList<SelectionObjectTreeNode>();
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("isRootNode", true);
-        params.put("rootSoId", "1");
-        try {
-            rootList = sotnService.getTreeNodeList_Orgnization(params);
-        }
-        catch(ServiceException _se) {
-            logger.error("getRoot error", _se);
-            throw new ActionException("ActionException", _se.getCause());
-        }
-        finally {
-            responseJson(rootList);
-        }
-    }
-
     /**
      * 
      * @throws ActionException
@@ -76,8 +58,24 @@ public class LeftViewAction extends AbstractSimpleAction {
         logger.debug("soTermId   : " + soTermId);
         logger.debug("soGpId     : " + soGpId);
         if(StringUtils.equals(id, "root")) {
-            getRoot();
-            return;
+            List<SelectionObjectTreeNode> nodeList = new ArrayList<SelectionObjectTreeNode>();
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("isRootNode", true);
+            params.put("rootSoId", "1");
+            try {
+                List<SelectionObjectTreeNode> tnsTemp = sotnService.getTreeNodeList_Orgnization(params);
+                for(SelectionObjectTreeNode tn : tnsTemp) {
+                    tn.setExpanded(true);
+                    nodeList.add(tn);
+                }
+            }
+            catch(ServiceException _se) {
+                logger.error("getRoot error", _se);
+                throw new ActionException("ActionException", _se.getCause());
+            }
+            finally {
+                responseJson(nodeList);
+            }
         }
         else {
             List<SelectionObjectTreeNode> nodeList = new ArrayList<SelectionObjectTreeNode>();

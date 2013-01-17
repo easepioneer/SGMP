@@ -9,6 +9,7 @@
     <resultMap type="org.sgmp.webapp.pojo.mainframe.SelectionObjectTreeNode" id="sotnResultMap">
         <id column="ID" property="id" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="TEXT" property="text" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="LEAF" property="leaf" javaType="java.lang.Boolean" jdbcType="VARCHAR" typeHandler="org.sgmp.common.mybatis.type.handler.BooleanFromStringTypeHandler" />
         <result column="SOTYPE" property="soType" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="SOID" property="soId" javaType="java.lang.String" jdbcType="VARCHAR" />
         <result column="SONAME" property="soName" javaType="java.lang.String" jdbcType="VARCHAR" />
@@ -38,7 +39,7 @@
     </sql>
 
     <select id="getTreeNodeList_Orgnization" parameterType="java.util.Map" resultType="java.util.List" resultMap="sotnResultMap">
-        select 'org-' || O.ORG_ID as "ID", O.ORG_NAME as "TEXT", 
+        select 'org-' || O.ORG_ID as "ID", O.ORG_NAME as "TEXT", 'FALSE' as LEAF,
                'org' as SOTYPE, TO_CHAR(O.ORG_ID) as SOID, O.ORG_NAME as SONAME,
                TO_CHAR(O.ORG_ID) as SOORGID, '' as SOTGID, '' as SOTERMID, '' as SOGPID
           from O_ORG O
@@ -65,7 +66,7 @@
     </sql>
 
     <select id="getTreeNodeList_Tg" parameterType="java.util.Map" resultType="java.util.List" resultMap="sotnResultMap">
-        select 'tg-' || TG.TG_ID as "ID", TG.TG_NAME as "TEXT", 
+        select 'tg-' || TG.TG_ID as "ID", TG.TG_NAME as "TEXT", 'FALSE' as LEAF,
                'tg' as SOTYPE, TO_CHAR(TG.TG_ID) as SOID, TG.TG_NAME as SONAME,
                TO_CHAR(TG.ORG_ID) as SOORGID, TO_CHAR(TG.TG_ID) as SOTGID, '' as SOTERMID, '' as SOGPID
           from G_TG TG
@@ -92,7 +93,7 @@
     </sql>
 
     <select id="getTreeNodeList_Terminal" parameterType="java.util.Map" resultType="java.util.List" resultMap="sotnResultMap">
-        select 'term-' || T.TERM_ID as "ID", T.LOGICAL_ADDR as "TEXT", 
+        select 'term-' || T.TERM_ID as "ID", T.LOGICAL_ADDR as "TEXT", 'FALSE' as LEAF,
                'term' as SOTYPE, TO_CHAR(T.TERM_ID) as SOID, T.LOGICAL_ADDR as SONAME,
                TO_CHAR(T.ORG_ID) as SOORGID, TO_CHAR(R.OBJ_ID) as SOTGID, TO_CHAR(T.TERM_ID) as SOTERMID, '' as SOGPID
           from C_TERMINAL T, C_TERM_OBJ_RELA R
@@ -119,7 +120,7 @@
     </sql>
 
     <select id="getTreeNodeList_Meter" parameterType="java.util.Map" resultType="java.util.List" resultMap="sotnResultMap">
-        select 'gp-' || GP.GP_ID as "ID", MP.MP_NAME as "TEXT", 
+        select 'gp-' || GP.GP_ID as "ID", MP.MP_NAME as "TEXT", 'TRUE' as LEAF,
                'meter' as SOTYPE, TO_CHAR(GP.GP_ID) as SOID, MP.MP_NAME as SONAME,
                TO_CHAR(METER.ORG_ID) as SOORGID, TO_CHAR(MP.TG_ID) as SOTGID, TO_CHAR(GP.TERM_ID) as SOTERMID, TO_CHAR(GP.GP_ID) as SOGPID
           from C_METER METER, C_MP MP, C_GP GP
@@ -146,7 +147,7 @@
     </sql>
 
     <select id="getTreeNodeList_Protector" parameterType="java.util.Map" resultType="java.util.List" resultMap="sotnResultMap">
-        select 'gp-' || GP.GP_ID as "ID", PS.PS_NAME as "TEXT", 
+        select 'gp-' || GP.GP_ID as "ID", PS.PS_NAME as "TEXT", 'TRUE' as LEAF,
                'ps' as SOTYPE, TO_CHAR(GP.GP_ID) as SOID, PS.PS_NAME as SONAME,
                TO_CHAR(T.ORG_ID) as SOORGID, TO_CHAR(GP.OBJECT_ID) as SOTGID, TO_CHAR(GP.TERM_ID) as SOTERMID, TO_CHAR(GP.GP_ID) as SOGPID
           from C_PS PS, C_GP GP, C_TERMINAL T

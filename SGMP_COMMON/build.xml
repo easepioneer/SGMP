@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="SGMP_COMMON" basedir="." default="package-common">
+    <!-- import properties (app settings, classpath, jar file locations) -->
+    <property file="build.properties" />
+
+    <target name="prepare">
+        <echo message="====== start build SGMP_COMMON ========" />
+        <property name="src.dir" value="${basedir}/src" />
+        <property name="src.main.java" value="${basedir}/src/main/java" />
+        <property name="src.main.resources" value="${basedir}/src/main/resources" />
+        <property name="build.dir" value="${basedir}/build" />
+        <property name="dist.dir" value="${basedir}/dist" />
+        <!-- WebApp Lib -->
+        <property name="webapp.lib.dir" value="${webapp.path}/webapp/WEB-INF/lib" />
+        <!-- Jar包Path -->
+        <property name="lib.dir" value="${lib.home}" />
+        <!-- Compile ClassPath -->
+        <path id="compile.classpath">
+            <fileset dir="${lib.dir}">
+                <include name="**/*.jar" />
+            </fileset>
+        </path>
+    </target>
+
+    <target name="compile" description="Compile Common" depends="prepare">
+        <mkdir dir="${build.dir}" />
+        <javac destdir="${build.dir}" encoding="UTF-8" debug="true" includeantruntime="on">
+            <src path="${src.main.java}" />
+            <src path="${src.main.resources}" />
+            <classpath refid="compile.classpath" />
+        </javac>
+        <copy todir="${build.dir}">
+            <fileset dir="${src.main.resources}">
+                <include name="**/*.xml" />
+                <include name="**/*.properties" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="package-common" description="Package Common Module" depends="compile">
+        <jar destfile="${dist.dir}/sgmp-common.jar">
+            <fileset dir="${build.dir}">
+                <include name="**/*.xml" />
+                <include name="**/*.class" />
+                <include name="**/*.properties" />
+            </fileset>
+        </jar>
+        <jar destfile="${webapp.lib.dir}/sgmp-common.jar">
+            <fileset dir="${build.dir}">
+                <include name="**/*.xml" />
+                <include name="**/*.class" />
+                <include name="**/*.properties" />
+            </fileset>
+        </jar>
+        <delete dir="${build.dir}"/>
+        <echo message="====== end build SGMP_COMMON ========" />
+    </target>
+</project>
