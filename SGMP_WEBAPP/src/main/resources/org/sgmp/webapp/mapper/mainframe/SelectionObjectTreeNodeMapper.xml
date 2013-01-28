@@ -161,4 +161,58 @@
           <include refid="queryWhere_Protector" />
     </select>
 
+    <sql id="queryWhere_Analogue">
+        where GP.GP_ID = AG.GP_ID and T.TERM_ID = GP.TERM_ID
+        <choose>
+            <when test="parentSoId != null and parentSoId != '' and parentSoId != '0'">
+                and GP.TERM_ID = #{parentSoId}
+            </when>
+            <otherwise>
+                and 1 = 0
+            </otherwise>
+        </choose>
+    </sql>
+
+    <select id="getTreeNodeList_Analogue" parameterType="java.util.Map" resultType="java.util.List" resultMap="sotnResultMap">
+        select 'gp-' || GP.GP_ID as "ID", AG.ANALOGUE_NAME as "TEXT", 'TRUE' as LEAF,
+               'ag' as SOTYPE, TO_CHAR(GP.GP_ID) as SOID, AG.ANALOGUE_NAME as SONAME,
+               TO_CHAR(T.ORG_ID) as SOORGID, TO_CHAR(GP.OBJECT_ID) as SOTGID, TO_CHAR(GP.TERM_ID) as SOTERMID, TO_CHAR(GP.GP_ID) as SOGPID
+          from C_ANALOGUE AG, C_GP GP, C_TERMINAL T
+          <include refid="queryWhere_Analogue" />
+         order by GP.PORT
+    </select>
+
+    <select id="getTreeNodeCount_Analogue" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(GP.GP_ID) as CNT
+          from C_ANALOGUE AG, C_GP GP, C_TERMINAL T
+          <include refid="queryWhere_Analogue" />
+    </select>
+
+    <sql id="queryWhere_Switch">
+        where T.TERM_ID = SW.TERM_ID and T.TERM_ID = R.TERM_ID and R.OBJ_TYPE = '2'
+        <choose>
+            <when test="parentSoId != null and parentSoId != '' and parentSoId != '0'">
+                and T.TERM_ID = #{parentSoId}
+            </when>
+            <otherwise>
+                and 1 = 0
+            </otherwise>
+        </choose>
+    </sql>
+
+    <select id="getTreeNodeList_Switch" parameterType="java.util.Map" resultType="java.util.List" resultMap="sotnResultMap">
+        select 'sw-' || SW.SWITCH_ID as "ID", SW.SWITCH_VALUE_NAME as "TEXT", 'TRUE' as LEAF,
+               'sw' as SOTYPE, TO_CHAR(SW.SWITCH_ID) as SOID, SW.SWITCH_VALUE_NAME as SONAME,
+               TO_CHAR(T.ORG_ID) as SOORGID, TO_CHAR(R.OBJ_ID) as SOTGID, TO_CHAR(T.TERM_ID) as SOTERMID, TO_CHAR(SW.SWITCH_ID) as SOGPID
+          from C_SWITCH_VALUE SW, C_TERMINAL T, C_TERM_OBJ_RELA R
+          <include refid="queryWhere_Switch" />
+         order by SW.SWITCH_NO
+    </select>
+
+    <select id="getTreeNodeCount_Switch" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(SW.SWITCH_ID) as CNT
+          from C_SWITCH_VALUE SW, C_TERMINAL T, C_TERM_OBJ_RELA R
+          <include refid="queryWhere_Switch" />
+    </select>
+
 </mapper>

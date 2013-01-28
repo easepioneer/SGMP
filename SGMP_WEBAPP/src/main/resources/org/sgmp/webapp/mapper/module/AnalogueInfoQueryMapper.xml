@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.AnalogueInfoQueryMapper">
+
+    <resultMap type="org.sgmp.webapp.pojo.module.AnalogueInfo" id="analogueInfoResultMap">
+        <result column="GP_ID" property="gpId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="ANALOGUE_NAME" property="analogueName" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="RANGE_BEGIN" property="rangeBegin" javaType="java.lang.Float" jdbcType="NUMERIC" />
+        <result column="RANGE_END" property="rangeEnd" javaType="java.lang.Float" jdbcType="NUMERIC" />
+        <result column="MAX_VALUE" property="maxValue" javaType="java.lang.Float" jdbcType="NUMERIC" />
+        <result column="MIN_VALUE" property="minValue" javaType="java.lang.Float" jdbcType="NUMERIC" />
+        <result column="FREEZ_DENSITY" property="freezeDensity" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="OBJECT_ID" property="objectId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="TERM_ID" property="termId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="GP_SN" property="gpSn" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+        <result column="GP_CHAR" property="gpChar" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="GP_TYPE" property="gpType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="GP_STATUS" property="gpStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="PORT" property="port" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="querySelect">
+        select AG.GP_ID, AG.ANALOGUE_NAME, AG.RANGE_BEGIN, AG.RANGE_END, AG.MAX_VALUE, AG.MIN_VALUE, AG.FREEZ_DENSITY, GP.OBJECT_ID, GP.TERM_ID, GP.GP_SN, GP.GP_CHAR, GP.GP_TYPE, GP.GP_STATUS, GP.PORT
+    </sql>
+
+    <sql id="queryFrom">
+        from C_ANALOGUE AG, C_GP GP
+    </sql>
+
+    <sql id="queryWhere">
+        where GP.GP_ID = AG.GP_ID
+          <choose>
+              <when test="gpId != null and gpId != 0">and GP.GP_ID = #{gpId}</when>
+          </choose>
+          <choose>
+              <when test="tgId != null and tgId != 0">and GP.GP_TYPE = '2' and GP.OBJECT_ID = #{tgId}</when>
+          </choose>
+          <choose>
+              <when test="termId != null and termId != 0">and GP.TERM_ID = #{termId}</when>
+          </choose>
+    </sql>
+
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.List" resultMap="analogueInfoResultMap">
+        <include refid="querySelect" />
+        <include refid="queryFrom" />
+        <include refid="queryWhere" />
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(1) as CNT
+        <include refid="queryFrom" />
+        <include refid="queryWhere" />
+    </select>
+
+</mapper>

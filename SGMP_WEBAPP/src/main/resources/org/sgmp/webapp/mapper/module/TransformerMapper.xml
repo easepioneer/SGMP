@@ -73,7 +73,7 @@
          where EQUIP_ID = #{id}
     </select>
 
-    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="transformerResultMap">
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.List" resultMap="transformerResultMap">
         select EQUIP_ID, ORG_ID, TG_ID, TYPE_CODE, TRAN_NAME, INST_ADDR, INST_DATE, PLATE_CAP, RUN_STATUS_CODE, MODEL_NO, RV_HV, RV_MV, RV_LV, RC_HV, RC_MV, RC_LV, PR_CODE, LASTTIME_STAMP
           from G_TRAN
          where 1 = 1
@@ -83,7 +83,7 @@
          order by ORG_ID, TG_ID, EQUIP_ID
     </select>
 
-    <select id="getCount" parameterType="java.util.Map" resultType="int">
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(1) as CNT
           from G_TRAN
          where 1 = 1

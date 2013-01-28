@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.SwitchMapper">
+
+    <!-- 定义数据库字段与实体对象的映射关系 -->
+    <resultMap type="org.sgmp.webapp.pojo.module.Switch" id="switchResultMap">
+        <id column="SWITCH_ID" property="id" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="TERM_ID" property="termId" javaType="java.lang.Long" jdbcType="NUMERIC" />
+        <result column="SWITCH_NO" property="switchNo" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+        <result column="SWITCH_TYPE" property="switchType" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="SWITCH_VALUE_NAME" property="switchName" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="create" parameterType="switch">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+            select SEQ_C_SWITCH.NEXTVAL as ID from DUAL
+        </selectKey>
+        insert into C_SWITCH_VALUE(SWITCH_ID, TERM_ID, SWITCH_NO, SWITCH_TYPE, SWITCH_VALUE_NAME)
+        values(#{id,jdbcType=NUMERIC}, #{termId,jdbcType=NUMERIC}, #{switchNo,jdbcType=NUMERIC}, #{switchType,jdbcType=VARCHAR}, #{switchName,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="switch">
+        update C_SWITCH_VALUE set
+                TERM_ID = #{termId,jdbcType=NUMERIC},
+                SWITCH_NO = #{switchNo,jdbcType=NUMERIC},
+                SWITCH_TYPE = #{switchType,jdbcType=VARCHAR},
+                SWITCH_VALUE_NAME = #{switchName,jdbcType=VARCHAR}
+         where SWITCH_ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="switch">
+        delete from C_SWITCH_VALUE
+         where SWITCH_ID = #{id}
+    </delete>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from C_SWITCH_VALUE
+         where SWITCH_ID = #{id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="switch" resultMap="switchResultMap">
+        select SWITCH_ID, TERM_ID, SWITCH_NO, SWITCH_TYPE, SWITCH_VALUE_NAME
+          from C_SWITCH_VALUE
+         where SWITCH_ID = #{id}
+    </select>
+
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.List" resultMap="switchResultMap">
+        select SWITCH_ID, TERM_ID, SWITCH_NO, SWITCH_TYPE, SWITCH_VALUE_NAME
+          from C_SWITCH_VALUE T
+         where 1 = 1
+          <choose>
+              <when test="tgId != null and tgId != 0">and exists (select 1 from C_TERM_OBJ_RELA R where R.TERM_ID =  T.TERM_ID and R.OBJ_TYPE = '2' and R.OBJ_ID = #{tgId})</when>
+          </choose>
+         order by TERM_ID, SWITCH_NO
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(1) as CNT
+          from C_SWITCH_VALUE T
+         where 1 = 1
+          <choose>
+              <when test="tgId != null and tgId != 0">and exists (select 1 from C_TERM_OBJ_RELA R where R.TERM_ID =  T.TERM_ID and R.OBJ_TYPE = '2' and R.OBJ_ID = #{tgId})</when>
+          </choose>
+    </select>
+
+</mapper>

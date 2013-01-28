@@ -75,7 +75,7 @@
          where TERM_ID = #{id}
     </select>
 
-    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="terminalResultMap">
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.List" resultMap="terminalResultMap">
         select TERM_ID, ORG_ID, ASSET_NO, LOGICAL_ADDR, RUN_STATUS, CUR_STATUS, SIM_NO, TERM_TYPE, WIRING_MODE, MODEL_CODE, INSTALL_DATE, COMM_MODE, CHANNEL_TYPE, PROTOCOL_NO, PR, ISAC, PHYSICS_ADDR, COMM_PATTERN, LASTTIME_STAMP
           from C_TERMINAL T
          where 1 = 1
@@ -85,7 +85,7 @@
          order by ORG_ID, LOGICAL_ADDR
     </select>
 
-    <select id="getCount" parameterType="java.util.Map" resultType="int">
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(1) as CNT
           from C_TERMINAL T
          where 1 = 1

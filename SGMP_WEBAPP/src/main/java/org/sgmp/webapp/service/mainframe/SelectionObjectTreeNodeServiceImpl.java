@@ -84,4 +84,28 @@ public class SelectionObjectTreeNodeServiceImpl implements SelectionObjectTreeNo
         return selectionObjectTreeNodeDao.getTreeNodeCount_Protector(params);
     }
 
+    @Override
+    public List<SelectionObjectTreeNode> getTreeNodeList_Analogue(Map<?, ?> params) throws ServiceException {
+        logger.debug(this.getClass().getName() + "." + "getTreeNodeList_Analogue");
+        return selectionObjectTreeNodeDao.getTreeNodeList_Analogue(params);
+    }
+
+    @Override
+    public Integer getTreeNodeCount_Analogue(Map<?, ?> params) throws ServiceException {
+        logger.debug(this.getClass().getName() + "." + "getTreeNodeCount_Analogue");
+        return selectionObjectTreeNodeDao.getTreeNodeCount_Analogue(params);
+    }
+
+    @Override
+    public List<SelectionObjectTreeNode> getTreeNodeList_Switch(Map<?, ?> params) throws ServiceException {
+        logger.debug(this.getClass().getName() + "." + "getTreeNodeList_Switch");
+        return selectionObjectTreeNodeDao.getTreeNodeList_Switch(params);
+    }
+
+    @Override
+    public Integer getTreeNodeCount_Switch(Map<?, ?> params) throws ServiceException {
+        logger.debug(this.getClass().getName() + "." + "getTreeNodeCount_Switch");
+        return selectionObjectTreeNodeDao.getTreeNodeCount_Switch(params);
+    }
+
 }

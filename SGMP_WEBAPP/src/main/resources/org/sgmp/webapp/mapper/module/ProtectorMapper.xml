@@ -65,13 +65,13 @@
          where PS_ID = #{id}
     </select>
 
-    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="protectorResultMap">
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.List" resultMap="protectorResultMap">
         select PS_ID, TERM_ID, GP_ID, ASSET_NO, PS_NAME, MODEL_CODE, COMM_MODE_GM, BTL, RATED_EC, PS_TYPE, TEST_DAY, TEST_TIME, AUTO_TEST, LASTTIME_STAMP
           from C_PS
          order by PS_ID
     </select>
 
-    <select id="getCount" parameterType="java.util.Map" resultType="int">
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(1) as CNT
           from C_PS
     </select>

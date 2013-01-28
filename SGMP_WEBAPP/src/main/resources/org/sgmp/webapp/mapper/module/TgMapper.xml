@@ -57,15 +57,23 @@
          where TG_ID = #{id}
     </select>
 
-    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="tgResultMap">
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.List" resultMap="tgResultMap">
         select TG_ID, ORG_ID, TG_NO, TG_NAME, TG_CAP, INST_ADDR, CHG_DATE, PUB_PRIV_FLAG, RUN_STATUS_CODE, LASTTIME_STAMP
-          from G_TG
+          from G_TG TG
+         where 1 = 1
+          <choose>
+              <when test="orgId != null and orgId != 0">and exists (select 1 from (select * from O_ORG start with ORG_ID = #{orgId} connect by P_ORG_ID = prior ORG_ID) O where O.ORG_ID = TG.ORG_ID)</when>
+          </choose>
          order by ORG_ID, TG_ID
     </select>
 
-    <select id="getCount" parameterType="java.util.Map" resultType="int">
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(1) as CNT
           from G_TG
+         where 1 = 1
+          <choose>
+              <when test="orgId != null and orgId != 0">and exists (select 1 from (select * from O_ORG start with ORG_ID = #{orgId} connect by P_ORG_ID = prior ORG_ID) O where O.ORG_ID = TG.ORG_ID)</when>
+          </choose>
     </select>
 
 </mapper>

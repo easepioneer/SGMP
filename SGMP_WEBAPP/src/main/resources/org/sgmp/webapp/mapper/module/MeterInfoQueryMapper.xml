@@ -60,7 +60,13 @@
               <when test="id != null and id != 0">and METER.METER_ID = #{id}</when>
           </choose>
           <choose>
+              <when test="orgId != null and orgId != 0">and exists (select 1 from (select * from O_ORG start with ORG_ID = #{orgId} connect by P_ORG_ID = prior ORG_ID) O where O.ORG_ID = METER.ORG_ID)</when>
+          </choose>
+          <choose>
               <when test="tgId != null and tgId != 0">and MP.TG_ID = #{tgId}</when>
+          </choose>
+          <choose>
+              <when test="termId != null and termId != 0">and GP.TERM_ID = #{termId}</when>
           </choose>
     </sql>
 

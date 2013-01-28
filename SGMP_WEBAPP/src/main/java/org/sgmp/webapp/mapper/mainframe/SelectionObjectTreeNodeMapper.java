@@ -94,4 +94,36 @@ public interface SelectionObjectTreeNodeMapper extends BaseMapper {
      */
     public Integer getTreeNodeCount_Protector(Map<?, ?> params) throws DataAccessException;
 
+    /**
+     * 
+     * @param params
+     * @return
+     * @throws DataAccessException
+     */
+    public List<SelectionObjectTreeNode> getTreeNodeList_Analogue(Map<?, ?> params) throws DataAccessException;
+
+    /**
+     * 
+     * @param params
+     * @return
+     * @throws DataAccessException
+     */
+    public Integer getTreeNodeCount_Analogue(Map<?, ?> params) throws DataAccessException;
+
+    /**
+     * 
+     * @param params
+     * @return
+     * @throws DataAccessException
+     */
+    public List<SelectionObjectTreeNode> getTreeNodeList_Switch(Map<?, ?> params) throws DataAccessException;
+
+    /**
+     * 
+     * @param params
+     * @return
+     * @throws DataAccessException
+     */
+    public Integer getTreeNodeCount_Switch(Map<?, ?> params) throws DataAccessException;
+
 }

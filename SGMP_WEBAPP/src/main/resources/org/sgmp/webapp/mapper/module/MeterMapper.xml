@@ -53,13 +53,13 @@
          where METER_ID = #{id}
     </select>
 
-    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="meterResultMap">
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.List" resultMap="meterResultMap">
         select METER_ID, ORG_ID, ASSET_NO, INST_DATE, T_FACTOR, COMM_NO, BAUDRATE, COMM_MODE
           from C_METER
          order by ORG_ID, METER_ID
     </select>
 
-    <select id="getCount" parameterType="java.util.Map" resultType="int">
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(1) as CNT
           from C_METER
     </select>

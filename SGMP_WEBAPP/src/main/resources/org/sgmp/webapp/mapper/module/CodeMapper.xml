@@ -51,13 +51,13 @@
          where CODE_ID = #{id}
     </select>
 
-    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="codeResultMap">
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.List" resultMap="codeResultMap">
         select CODE_ID, CODE_CATE, CODE, NAME, REMARK, CODE_TYPE, VALUE
           from A_CODE
          order by CODE_CATE, CODE
     </select>
 
-    <select id="getCount" parameterType="java.util.Map" resultType="int">
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(1) as CNT
           from A_CODE
     </select>

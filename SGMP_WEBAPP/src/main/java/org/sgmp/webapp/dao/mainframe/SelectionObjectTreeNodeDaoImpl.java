@@ -85,4 +85,28 @@ public class SelectionObjectTreeNodeDaoImpl implements SelectionObjectTreeNodeDa
         return sqlSessionTemplate.getMapper(SelectionObjectTreeNodeMapper.class).getTreeNodeCount_Protector(params);
     }
 
+    @Override
+    public List<SelectionObjectTreeNode> getTreeNodeList_Analogue(Map<?, ?> params) throws DaoException {
+        logger.debug(this.getClass().getName() + "." + "getTreeNodeList_Analogue");
+        return sqlSessionTemplate.getMapper(SelectionObjectTreeNodeMapper.class).getTreeNodeList_Analogue(params);
+    }
+
+    @Override
+    public Integer getTreeNodeCount_Analogue(Map<?, ?> params) throws DaoException {
+        logger.debug(this.getClass().getName() + "." + "getTreeNodeCount_Analogue");
+        return sqlSessionTemplate.getMapper(SelectionObjectTreeNodeMapper.class).getTreeNodeCount_Analogue(params);
+    }
+
+    @Override
+    public List<SelectionObjectTreeNode> getTreeNodeList_Switch(Map<?, ?> params) throws DaoException {
+        logger.debug(this.getClass().getName() + "." + "getTreeNodeList_Switch");
+        return sqlSessionTemplate.getMapper(SelectionObjectTreeNodeMapper.class).getTreeNodeList_Switch(params);
+    }
+
+    @Override
+    public Integer getTreeNodeCount_Switch(Map<?, ?> params) throws DaoException {
+        logger.debug(this.getClass().getName() + "." + "getTreeNodeCount_Switch");
+        return sqlSessionTemplate.getMapper(SelectionObjectTreeNodeMapper.class).getTreeNodeCount_Switch(params);
+    }
+
 }

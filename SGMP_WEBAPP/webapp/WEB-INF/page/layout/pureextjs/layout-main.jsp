@@ -132,6 +132,23 @@ Ext.onReady(function() {
         if(record.get('leaf')) {
             Ext.getCmp('content-panel').layout.setActiveItem(record.getId() + 'ContentPanel');
             //alert(record.getId());
+            if(record.getId() == 'actionTgArchivesManagement') {
+                //alert(selectedSoRecord.get('soType'));
+                //alert(selectedSoRecord.get('soId'));
+                if(selectedSoRecord.get('soType') == 'tg') {
+                    //alert(selectedSoRecord.get('soId'));
+                    Ext.getCmp('tgInfoForm').getForm().setValues({id: selectedSoRecord.get('soId')});
+                }
+            }
+            else if(record.getId() == 'actionTgMeterDataQuery') {
+                initTmdqFilterForm();
+            }
+            else if(record.getId() == 'actionProtectorDataQuery') {
+                initPdqFilterForm();
+            }
+            else if(record.getId() == 'actionTgPowerConsumptionQuery') {
+                initTpcqFilterForm();
+            }
         }
     });
 
@@ -228,6 +245,8 @@ Ext.onReady(function() {
             items: [functionMenuTreePanel, selectionObjectTreePanel]
         }, contentPanel]
     });
+
+    //orgnizationListStore.load();
 });
 </script>
 </head>

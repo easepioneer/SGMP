@@ -1,10 +1,61 @@
+function initTmdqFilterForm() {
+    Ext.getCmp('tmdq-filter-formfield-org').setValue(1);
+}
+
+function initPdqFilterForm() {
+    Ext.getCmp('pdq-filter-formfield-org').setValue(1);
+}
+
+function initTpcqFilterForm() {
+    Ext.getCmp('tpcq-filter-formfield-org').setValue(1);
+}
+
 function getDataQueryFunctions() {
     var defaultPageSize = 20;
     var defaultDataTable = 'D_EI_CURV_C';
     var currentDataTable = defaultDataTable;
+
     /**
      * ================  台区考核表数据查询  =======================
      */
+    var tmdqFilterTgListStoreWithAll = Ext.create('Ext.data.Store', {
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'tg-liststore-model',
+        remoteSort: false,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/am/tam!getTgList.do',
+            reader: {
+                type: 'json',
+                root: 'records'
+            }
+        },
+        // 
+        autoLoad: false
+    });
+
+    var tmdqFilterMeterListStoreWithAll = Ext.create('Ext.data.Store', {
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'meter-liststore-model',
+        remoteSort: false,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/am/tam!getMeterList.do',
+            reader: {
+                type: 'json',
+                root: 'records'
+            }
+        },
+        // 
+        autoLoad: false
+    });
+
     // 查询条件表单
     var tmdq_filter_formpanel = Ext.create('Ext.form.Panel', {
         id: 'tmdq-filter-form',
@@ -26,12 +77,13 @@ function getDataQueryFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'tmdq-filter-formfield-org',
                     name: 'soOrgId',
                     fieldLabel: '所属机构',
                     labelWidth: 60,
                     allowBlank: false,
                     store: filterOrgnizationListStore,
-                    valueField: 'orgId',
+                    valueField: 'id',
                     displayField: 'orgName',
                     emptyText: '请选择所属机构...',
                     queryMode: 'local',
@@ -40,7 +92,18 @@ function getDataQueryFunctions() {
                     editable: false,
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soOrgId : " + newValue);
+                            if(!Ext.isEmpty(newValue)) {
+                                Ext.getCmp('tmdq-filter-formfield-tg').reset();
+                                Ext.getCmp('tmdq-filter-formfield-tg').getStore().removeAll();
+                                Ext.getCmp('tmdq-filter-formfield-tg').getStore().load({
+                                    params: {orgId: newValue, withAll: true},
+                                    callback: function(records, operation, success) {
+                                        Ext.getCmp('tmdq-filter-formfield-tg').setValue(0);
+                                    },
+                                    scope: this
+                                });
+                            }
                         }
                     }
                 }, {
@@ -58,22 +121,33 @@ function getDataQueryFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'tmdq-filter-formfield-tg',
                     name: 'soTgId',
                     fieldLabel: '台区名称',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: filterTgListStoreWithAll,
-                    valueField: 'tgId',
+                    store: tmdqFilterTgListStoreWithAll,
+                    valueField: 'id',
                     displayField: 'tgName',
                     emptyText: '请选择台区...',
                     queryMode: 'local',
                     forceSelection : true,
                     triggerAction : 'all',
                     editable: false,
-                    value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soTgId : " + newValue);
+                            if(!Ext.isEmpty(newValue)) {
+                                Ext.getCmp('tmdq-filter-formfield-meter').reset();
+                                Ext.getCmp('tmdq-filter-formfield-meter').getStore().removeAll();
+                                Ext.getCmp('tmdq-filter-formfield-meter').getStore().load({
+                                    params: {orgId: Ext.getCmp('tmdq-filter-formfield-org').getValue(), tgId: newValue, withAll: true},
+                                    callback: function(records, operation, success) {
+                                        Ext.getCmp('tmdq-filter-formfield-meter').setValue(0);
+                                    },
+                                    scope: this
+                                });
+                            }
                         }
                     }
                 }, {
@@ -91,11 +165,12 @@ function getDataQueryFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'tmdq-filter-formfield-meter',
                     name: 'soGpId',
                     fieldLabel: '考核表名称',
                     labelWidth: 66,
                     allowBlank: false,
-                    store: filterMeterListStoreWithAll,
+                    store: tmdqFilterMeterListStoreWithAll,
                     valueField: 'gpId',
                     displayField: 'mpName',
                     emptyText: '请选择考核表...',
@@ -106,7 +181,7 @@ function getDataQueryFunctions() {
                     value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soGpId : " + newValue);
                         }
                     }
                 }]
@@ -655,6 +730,44 @@ function getDataQueryFunctions() {
     /**
      * ================  保护器数据查询  =======================
      */
+    var pdqFilterTgListStoreWithAll = Ext.create('Ext.data.Store', {
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'tg-liststore-model',
+        remoteSort: false,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/am/tam!getTgList.do',
+            reader: {
+                type: 'json',
+                root: 'records'
+            }
+        },
+        // 
+        autoLoad: false
+    });
+
+    var pdqFilterPsListStoreWithAll = Ext.create('Ext.data.Store', {
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'ps-liststore-model',
+        remoteSort: false,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/am/tam!getPsList.do',
+            reader: {
+                type: 'json',
+                root: 'records'
+            }
+        },
+        // 
+        autoLoad: false
+    });
+
     // 查询条件表单
     var pdq_filter_formpanel = Ext.create('Ext.form.Panel', {
         id: 'pdq-filter-form',
@@ -676,12 +789,13 @@ function getDataQueryFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'pdq-filter-formfield-org',
                     name: 'soOrgId',
                     fieldLabel: '所属机构',
                     labelWidth: 60,
                     allowBlank: false,
                     store: filterOrgnizationListStore,
-                    valueField: 'orgId',
+                    valueField: 'id',
                     displayField: 'orgName',
                     emptyText: '请选择所属机构...',
                     queryMode: 'local',
@@ -690,7 +804,18 @@ function getDataQueryFunctions() {
                     editable: false,
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soOrgId : " + newValue);
+                            if(!Ext.isEmpty(newValue)) {
+                                Ext.getCmp('pdq-filter-formfield-tg').reset();
+                                Ext.getCmp('pdq-filter-formfield-tg').getStore().removeAll();
+                                Ext.getCmp('pdq-filter-formfield-tg').getStore().load({
+                                    params: {orgId: newValue, withAll: true},
+                                    callback: function(records, operation, success) {
+                                        Ext.getCmp('pdq-filter-formfield-tg').setValue(0);
+                                    },
+                                    scope: this
+                                });
+                            }
                         }
                     }
                 }, {
@@ -708,12 +833,13 @@ function getDataQueryFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'pdq-filter-formfield-tg',
                     name: 'soTgId',
                     fieldLabel: '台区名称',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: filterTgListStoreWithAll,
-                    valueField: 'tgId',
+                    store: pdqFilterTgListStoreWithAll,
+                    valueField: 'id',
                     displayField: 'tgName',
                     emptyText: '请选择台区...',
                     queryMode: 'local',
@@ -723,7 +849,18 @@ function getDataQueryFunctions() {
                     value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soTgId : " + newValue);
+                            if(!Ext.isEmpty(newValue)) {
+                                Ext.getCmp('pdq-filter-formfield-ps').reset();
+                                Ext.getCmp('pdq-filter-formfield-ps').getStore().removeAll();
+                                Ext.getCmp('pdq-filter-formfield-ps').getStore().load({
+                                    params: {orgId: Ext.getCmp('pdq-filter-formfield-org').getValue(), tgId: newValue, withAll: true},
+                                    callback: function(records, operation, success) {
+                                        Ext.getCmp('pdq-filter-formfield-ps').setValue(0);
+                                    },
+                                    scope: this
+                                });
+                            }
                         }
                     }
                 }, {
@@ -741,11 +878,12 @@ function getDataQueryFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'pdq-filter-formfield-ps',
                     name: 'soGpId',
                     fieldLabel: '保护器名称',
                     labelWidth: 66,
                     allowBlank: false,
-                    store: filterProtectorListStoreWithAll,
+                    store: pdqFilterPsListStoreWithAll,
                     valueField: 'gpId',
                     displayField: 'psName',
                     emptyText: '请选择保护器...',
@@ -756,7 +894,7 @@ function getDataQueryFunctions() {
                     value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soGpId : " + newValue);
                         }
                     }
                 }]
@@ -899,6 +1037,44 @@ function getDataQueryFunctions() {
     /**
      * ================  台区用电量查询  =======================
      */
+    var tpcqFilterTgListStoreWithAll = Ext.create('Ext.data.Store', {
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'tg-liststore-model',
+        remoteSort: false,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/am/tam!getTgList.do',
+            reader: {
+                type: 'json',
+                root: 'records'
+            }
+        },
+        // 
+        autoLoad: false
+    });
+
+    var tpcqFilterMeterListStoreWithAll = Ext.create('Ext.data.Store', {
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'meter-liststore-model',
+        remoteSort: false,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/am/tam!getMeterList.do',
+            reader: {
+                type: 'json',
+                root: 'records'
+            }
+        },
+        // 
+        autoLoad: false
+    });
+
     // 查询条件表单
     var tpcq_filter_formpanel = Ext.create('Ext.form.Panel', {
         id: 'tpcq-filter-form',
@@ -920,12 +1096,13 @@ function getDataQueryFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'tpcq-filter-formfield-org',
                     name: 'soOrgId',
                     fieldLabel: '所属机构',
                     labelWidth: 60,
                     allowBlank: false,
                     store: filterOrgnizationListStore,
-                    valueField: 'orgId',
+                    valueField: 'id',
                     displayField: 'orgName',
                     emptyText: '请选择所属机构...',
                     queryMode: 'local',
@@ -934,7 +1111,18 @@ function getDataQueryFunctions() {
                     editable: false,
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soOrgId : " + newValue);
+                            if(!Ext.isEmpty(newValue)) {
+                                Ext.getCmp('tpcq-filter-formfield-tg').reset();
+                                Ext.getCmp('tpcq-filter-formfield-tg').getStore().removeAll();
+                                Ext.getCmp('tpcq-filter-formfield-tg').getStore().load({
+                                    params: {orgId: newValue, withAll: true},
+                                    callback: function(records, operation, success) {
+                                        Ext.getCmp('tpcq-filter-formfield-tg').setValue(0);
+                                    },
+                                    scope: this
+                                });
+                            }
                         }
                     }
                 }, {
@@ -952,12 +1140,13 @@ function getDataQueryFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'tpcq-filter-formfield-tg',
                     name: 'soTgId',
                     fieldLabel: '台区名称',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: filterTgListStoreWithAll,
-                    valueField: 'tgId',
+                    store: tpcqFilterTgListStoreWithAll,
+                    valueField: 'id',
                     displayField: 'tgName',
                     emptyText: '请选择台区...',
                     queryMode: 'local',
@@ -967,7 +1156,18 @@ function getDataQueryFunctions() {
                     value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soTgId : " + newValue);
+                            if(!Ext.isEmpty(newValue)) {
+                                Ext.getCmp('tpcq-filter-formfield-meter').reset();
+                                Ext.getCmp('tpcq-filter-formfield-meter').getStore().removeAll();
+                                Ext.getCmp('tpcq-filter-formfield-meter').getStore().load({
+                                    params: {orgId: Ext.getCmp('tpcq-filter-formfield-org').getValue(), tgId: newValue, withAll: true},
+                                    callback: function(records, operation, success) {
+                                        Ext.getCmp('tpcq-filter-formfield-meter').setValue(0);
+                                    },
+                                    scope: this
+                                });
+                            }
                         }
                     }
                 }, {
@@ -985,11 +1185,12 @@ function getDataQueryFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'tpcq-filter-formfield-meter',
                     name: 'soGpId',
                     fieldLabel: '考核表名称',
                     labelWidth: 66,
                     allowBlank: false,
-                    store: filterMeterListStoreWithAll,
+                    store: tpcqFilterMeterListStoreWithAll,
                     valueField: 'gpId',
                     displayField: 'mpName',
                     emptyText: '请选择考核表...',
@@ -1000,7 +1201,7 @@ function getDataQueryFunctions() {
                     value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soGpId : " + newValue);
                         }
                     }
                 }]

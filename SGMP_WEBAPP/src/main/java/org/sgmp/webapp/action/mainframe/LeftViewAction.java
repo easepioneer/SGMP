@@ -92,6 +92,8 @@ public class LeftViewAction extends AbstractSimpleAction {
                 else if(StringUtils.equals(soType, "term")) {
                     nodeList.addAll(sotnService.getTreeNodeList_Meter(params));
                     nodeList.addAll(sotnService.getTreeNodeList_Protector(params));
+                    nodeList.addAll(sotnService.getTreeNodeList_Analogue(params));
+                    nodeList.addAll(sotnService.getTreeNodeList_Switch(params));
                 }
             }
             catch(ServiceException _se) {

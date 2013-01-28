@@ -21,6 +21,9 @@
         <typeAlias type="org.sgmp.webapp.pojo.module.MeterInfo" alias="meterInfo" />
         <typeAlias type="org.sgmp.webapp.pojo.module.Protector" alias="protector" />
         <typeAlias type="org.sgmp.webapp.pojo.module.ProtectorInfo" alias="protectorInfo" />
+        <typeAlias type="org.sgmp.webapp.pojo.module.Analogue" alias="analogue" />
+        <typeAlias type="org.sgmp.webapp.pojo.module.AnalogueInfo" alias="analogueInfo" />
+        <typeAlias type="org.sgmp.webapp.pojo.module.Switch" alias="switch" />
     </typeAliases>
 
 </configuration>

@@ -69,13 +69,13 @@
          where GP_ID = #{id}
     </select>
 
-    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="gatherPointResultMap">
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.List" resultMap="gatherPointResultMap">
         select GP_ID, OBJECT_ID, TRAN_ID, TERM_ID, MP_ID, GM_ID, GP_SN, GP_CHAR, GP_TYPE, GP_STATUS, GP_ADDR, CT_TIMES, PT_TIMES, PORT, PROTOCOL_NO, LASTTIME_STAMP
           from C_GP
          order by GP_ID
     </select>
 
-    <select id="getCount" parameterType="java.util.Map" resultType="int">
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(1) as CNT
           from C_GP
     </select>

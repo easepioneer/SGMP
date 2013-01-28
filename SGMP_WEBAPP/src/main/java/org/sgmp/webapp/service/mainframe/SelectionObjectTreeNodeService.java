@@ -94,4 +94,36 @@ public interface SelectionObjectTreeNodeService extends BaseService {
      */
     public Integer getTreeNodeCount_Protector(Map<?, ?> params) throws ServiceException;
 
+    /**
+     * 
+     * @param params
+     * @return
+     * @throws ServiceException
+     */
+    public List<SelectionObjectTreeNode> getTreeNodeList_Analogue(Map<?, ?> params) throws ServiceException;
+
+    /**
+     * 
+     * @param params
+     * @return
+     * @throws ServiceException
+     */
+    public Integer getTreeNodeCount_Analogue(Map<?, ?> params) throws ServiceException;
+
+    /**
+     * 
+     * @param params
+     * @return
+     * @throws ServiceException
+     */
+    public List<SelectionObjectTreeNode> getTreeNodeList_Switch(Map<?, ?> params) throws ServiceException;
+
+    /**
+     * 
+     * @param params
+     * @return
+     * @throws ServiceException
+     */
+    public Integer getTreeNodeCount_Switch(Map<?, ?> params) throws ServiceException;
+
 }

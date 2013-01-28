@@ -45,13 +45,13 @@
          where TERM_OBJ_ID = #{id}
     </select>
 
-    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="relationTerminalAndObjectResultMap">
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.List" resultMap="relationTerminalAndObjectResultMap">
         select TERM_OBJ_ID, TERM_ID, OBJ_TYPE, OBJ_ID
           from C_TERM_OBJ_RELA
          order by TERM_ID
     </select>
 
-    <select id="getCount" parameterType="java.util.Map" resultType="int">
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(1) as CNT
           from C_TERM_OBJ_RELA
     </select>

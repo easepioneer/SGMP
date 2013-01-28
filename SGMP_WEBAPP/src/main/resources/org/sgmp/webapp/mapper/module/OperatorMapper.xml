@@ -55,13 +55,13 @@
          where EMP_NO = #{id}
     </select>
 
-    <select id="getList" parameterType="java.util.Map" resultType="list" resultMap="operatorResultMap">
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.List" resultMap="operatorResultMap">
         select EMP_NO, ORG_ID, STAFF_NO, NAME, PASSWD, GENDER, MOBILE, REMARK, LASTTIME_STAMP
           from O_STAFF
          order by EMP_NO
     </select>
 
-    <select id="getCount" parameterType="java.util.Map" resultType="int">
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(1) as CNT
           from O_STAFF
     </select>

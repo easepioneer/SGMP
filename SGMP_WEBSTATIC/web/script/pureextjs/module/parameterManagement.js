@@ -111,7 +111,7 @@ function getParameterManagementFunctions() {
                     labelWidth: 60,
                     allowBlank: false,
                     store: filterTgListStoreWithAll,
-                    valueField: 'tgId',
+                    valueField: 'id',
                     displayField: 'tgName',
                     emptyText: '请选择台区...',
                     queryMode: 'local',
@@ -176,7 +176,6 @@ function getParameterManagementFunctions() {
         // destroy the store if the grid is destroyed
         autoDestroy: true,
         model: 'tps-termparam-gridstore-model',
-        //remoteSort: true,
         proxy: {
             // load using script tags for cross domain, if the data in on the same domain as
             // this page, an HttpProxy would be better
@@ -577,7 +576,7 @@ function getParameterManagementFunctions() {
                     labelWidth: 60,
                     allowBlank: false,
                     store: filterTgListStoreWithAll,
-                    valueField: 'tgId',
+                    valueField: 'id',
                     displayField: 'tgName',
                     queryMode: 'local',
                     emptyText: '请选择台区...',
@@ -685,7 +684,7 @@ function getParameterManagementFunctions() {
                     labelWidth: 60,
                     allowBlank: false,
                     store: filterTgListStoreWithAll,
-                    valueField: 'tgId',
+                    valueField: 'id',
                     displayField: 'tgName',
                     emptyText: '请选择台区...',
                     queryMode: 'local',

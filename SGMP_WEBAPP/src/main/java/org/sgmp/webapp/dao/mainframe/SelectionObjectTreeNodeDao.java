@@ -95,4 +95,36 @@ public interface SelectionObjectTreeNodeDao extends BaseDao {
      */
     public Integer getTreeNodeCount_Protector(Map<?, ?> params) throws DaoException;
 
+    /**
+     * 
+     * @param params
+     * @return
+     * @throws DaoException
+     */
+    public List<SelectionObjectTreeNode> getTreeNodeList_Analogue(Map<?, ?> params) throws DaoException;
+
+    /**
+     * 
+     * @param params
+     * @return
+     * @throws DaoException
+     */
+    public Integer getTreeNodeCount_Analogue(Map<?, ?> params) throws DaoException;
+
+    /**
+     * 
+     * @param params
+     * @return
+     * @throws DaoException
+     */
+    public List<SelectionObjectTreeNode> getTreeNodeList_Switch(Map<?, ?> params) throws DaoException;
+
+    /**
+     * 
+     * @param params
+     * @return
+     * @throws DaoException
+     */
+    public Integer getTreeNodeCount_Switch(Map<?, ?> params) throws DaoException;
+
 }
