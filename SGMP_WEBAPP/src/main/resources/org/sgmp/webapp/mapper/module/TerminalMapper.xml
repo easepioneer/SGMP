@@ -80,15 +80,21 @@
           from C_TERMINAL T
          where 1 = 1
           <choose>
+              <when test="orgId != null and orgId != 0">and exists (select 1 from (select * from O_ORG start with ORG_ID = #{orgId} connect by P_ORG_ID = prior ORG_ID) O where O.ORG_ID = T.ORG_ID)</when>
+          </choose>
+          <choose>
               <when test="tgId != null and tgId != 0">and exists (select 1 from C_TERM_OBJ_RELA R where R.TERM_ID =  T.TERM_ID and R.OBJ_TYPE = '2' and R.OBJ_ID = #{tgId})</when>
           </choose>
-         order by ORG_ID, LOGICAL_ADDR
+         order by LOGICAL_ADDR
     </select>
 
     <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(1) as CNT
           from C_TERMINAL T
          where 1 = 1
+          <choose>
+              <when test="orgId != null and orgId != 0">and exists (select 1 from (select * from O_ORG start with ORG_ID = #{orgId} connect by P_ORG_ID = prior ORG_ID) O where O.ORG_ID = T.ORG_ID)</when>
+          </choose>
           <choose>
               <when test="tgId != null and tgId != 0">and exists (select 1 from C_TERM_OBJ_RELA R where R.TERM_ID =  T.TERM_ID and R.OBJ_TYPE = '2' and R.OBJ_ID = #{tgId})</when>
           </choose>

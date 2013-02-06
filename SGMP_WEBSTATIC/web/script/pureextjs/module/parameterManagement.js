@@ -1,3 +1,15 @@
+function initTpsFilterForm() {
+    Ext.getCmp('tps-filter-formfield-org').setValue(1);
+}
+
+function initPpsFilterForm() {
+    Ext.getCmp('pps-filter-formfield-org').setValue(1);
+}
+
+function initPccsFilterForm() {
+    Ext.getCmp('pccs-filter-formfield-org').setValue(1);
+}
+
 function rendererProtectorControlCommand(code, value) {
     if(code == '0710') {            // 预约远程分断控制
         
@@ -20,7 +32,7 @@ function rendererProtectorControlCommand(code, value) {
     return value;
 }
 
-var totalReceiveCount = 10;
+var totalReceiveCount = 20;
 function receiveProtectorControlCommandResult(taskId) {
     totalReceiveCount--;
     Ext.Ajax.request({
@@ -61,6 +73,44 @@ function getParameterManagementFunctions() {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////// 集中器参数设置 ////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var tpsFilterTgListStoreWithAll = Ext.create('Ext.data.Store', {
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'tg-liststore-model',
+        remoteSort: false,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/am/tam!getTgList.do',
+            reader: {
+                type: 'json',
+                root: 'records'
+            }
+        },
+        // 
+        autoLoad: false
+    });
+
+    var tpsFilterTermListStore = Ext.create('Ext.data.Store', {
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'term-liststore-model',
+        remoteSort: false,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/am/tam!getTermList.do',
+            reader: {
+                type: 'json',
+                root: 'records'
+            }
+        },
+        // 
+        autoLoad: false
+    });
+
     // 集中器信息表单
     var tps_filter_formpanel = Ext.create('Ext.form.Panel', {
         id: 'tps-filter-form',
@@ -81,12 +131,13 @@ function getParameterManagementFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'tps-filter-formfield-org',
                     name: 'soOrgId',
                     fieldLabel: '所属机构',
                     labelWidth: 60,
                     allowBlank: false,
                     store: filterOrgnizationListStore,
-                    valueField: 'orgId',
+                    valueField: 'id',
                     displayField: 'orgName',
                     emptyText: '请选择所属机构...',
                     queryMode: 'local',
@@ -95,7 +146,18 @@ function getParameterManagementFunctions() {
                     editable: false,
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soOrgId : " + newValue);
+                            if(!Ext.isEmpty(newValue)) {
+                                Ext.getCmp('tps-filter-formfield-tg').reset();
+                                Ext.getCmp('tps-filter-formfield-tg').getStore().removeAll();
+                                Ext.getCmp('tps-filter-formfield-tg').getStore().load({
+                                    params: {orgId: newValue, withAll: true},
+                                    callback: function(records, operation, success) {
+                                        Ext.getCmp('tps-filter-formfield-tg').setValue(0);
+                                    },
+                                    scope: this
+                                });
+                            }
                         }
                     }
                 }]
@@ -106,11 +168,12 @@ function getParameterManagementFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'tps-filter-formfield-tg',
                     name: 'soTgId',
                     fieldLabel: '台区名称',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: filterTgListStoreWithAll,
+                    store: tpsFilterTgListStoreWithAll,
                     valueField: 'id',
                     displayField: 'tgName',
                     emptyText: '请选择台区...',
@@ -121,7 +184,18 @@ function getParameterManagementFunctions() {
                     value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soTgId : " + newValue);
+                            if(!Ext.isEmpty(newValue)) {
+                                Ext.getCmp('tps-filter-formfield-term').reset();
+                                Ext.getCmp('tps-filter-formfield-term').getStore().removeAll();
+                                Ext.getCmp('tps-filter-formfield-term').getStore().load({
+                                    params: {orgId: Ext.getCmp('tps-filter-formfield-org').getValue(), tgId: newValue, withAll: false},
+                                    callback: function(records, operation, success) {
+                                        //Ext.getCmp('tps-filter-formfield-term').setValue(null);
+                                    },
+                                    scope: this
+                                });
+                            }
                         }
                     }
                 }]
@@ -132,13 +206,14 @@ function getParameterManagementFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'tps-filter-formfield-term',
                     name: 'soTermId',
-                    fieldLabel: '逻辑地址',
+                    fieldLabel: '集 中 器',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: filterTerminalListStore,
-                    emptyText: '请选择逻辑地址...',
-                    valueField: 'termId',
+                    store: tpsFilterTermListStore,
+                    emptyText: '请选择集中器...',
+                    valueField: 'id',
                     displayField: 'logicalAddr',
                     queryMode: 'local',
                     forceSelection : true,
@@ -146,7 +221,43 @@ function getParameterManagementFunctions() {
                     editable: false,
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soTermId : " + newValue);
+                            if(!Ext.isEmpty(newValue) && newValue > 0) {
+                                //alert("加载集中器：" + newValue);
+                                Ext.Ajax.request({
+                                    url: ctx_webapp + '/pm/tps!loadTermParamsValuesByTermId.do',
+                                    params: {
+                                        termId: newValue
+                                    },
+                                    method: 'POST',
+                                    timeout: 30000,
+                                    success: function(response){
+                                        //alert(response.responseText);
+                                        var result = Ext.JSON.decode(response.responseText);
+                                        if(Ext.isObject(result)) {
+                                            //alert("isObject");
+                                            var records = result.records;
+                                            //alert(records);
+                                            if(Ext.isArray(records)) {
+                                                //alert("isArray");
+                                                for(var i = 0; i < records.length; i++) {
+                                                    var code = records[i].P_CODE;
+                                                    var value = records[i].P_VALUE;
+                                                    alert(code + " : " + value);
+                                                    tps_termparam_gridstore.getById(code).set("P_VALUE", value);
+                                                }
+                                            }
+                                            else {
+                                                //alert("notArray");
+                                            }
+                                        }
+                                        else {
+                                            //alert("notObject");
+                                        }
+                                        // process server response here
+                                    }
+                                });
+                            }
                         }
                     }
                 }]
@@ -183,8 +294,7 @@ function getParameterManagementFunctions() {
             url: ctx_webstatic + '/customized/project/hd/data/tps-termparam-grid-data.json',
             reader: {
                 type: 'json',
-                root: 'records',
-                totalProperty: 'totalCount'
+                root: 'records'
             },
             // sends single sort as multi parameter
             simpleSortMode: true
@@ -218,11 +328,11 @@ function getParameterManagementFunctions() {
         store: tps_termparam_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", width: 80, sortable: true, dataIndex: 'SN'},
-            {text: "参数编码", width: 120, sortable: true, dataIndex: 'P_CODE'},
-            {text: "参数名称", width: 200, sortable: true, dataIndex: 'P_NAME'},
-            {text: "参数值", width: 200, sortable: true, dataIndex: 'P_VALUE'},
-            {text: "操作结果", flex: 1, sortable: true, dataIndex: 'OP_RESULT'}
+            {text: "序号", dataIndex: 'SN', width: 50, sortable: true},
+            {text: "参数编码", dataIndex: 'P_CODE', width: 80, sortable: true},
+            {text: "参数名称", dataIndex: 'P_NAME', width: 200, sortable: true},
+            {text: "参数值", dataIndex: 'P_VALUE', width: 320, sortable: true},
+            {text: "操作结果", dataIndex: 'OP_RESULT', flex: 1, sortable: true}
         ],
         columnLines: true,
         selModel: tps_termparam_grid_selmodel,
@@ -238,80 +348,85 @@ function getParameterManagementFunctions() {
                 disabled: true,
                 handler: function() {
                     //alert('设置集中器参数');
-                    var records = tps_termparam_grid_selections;
-                    if(typeof(records) == "undefined" || records.length == 0) {
-                        Ext.MessageBox.alert('提示', '请选择要设置的参数项', function(btn) {
+                    var termId = Ext.getCmp('tps-filter-formfield-term').getValue();
+                    if(Ext.isEmpty(termId)) {
+                        Ext.MessageBox.alert('提示', '请选择要设置的集中器', function(btn) {
                             return;
                         });
                     }
                     else {
-                        var paramsAndValues = '';
-                        for(var i = 0; i < records.length; i++) {
-                            paramsAndValues += records[i].get("P_CODE") + ':' + records[i].get("P_VALUE") + ';';
+                        var records = tps_termparam_grid_selections;
+                        if(typeof(records) == "undefined" || records.length == 0) {
+                            Ext.MessageBox.alert('提示', '请选择要设置的参数项', function(btn) {
+                                return;
+                            });
                         }
-                        var params = {
-                                mtoType: '100',
-                                meterType: '100',
-                                type: 'terminal-parameter',
-                                action: 'write',
-                                paramsAndValues: paramsAndValues
-                        };
-                        Ext.apply(params, tps_filter_formpanel.getForm().getValues(false));
-                        Ext.Ajax.request({
-                            url: ctx_webapp + '/pm/tps!send.do',
-                            params: params,
-                            method: 'POST',
-                            success: function(response) {
-                                //alert(response.responseText);
-                                // 
-                                Ext.Ajax.request({
-                                    url: ctx_webapp + '/pm/tps!receive.do',
-                                    params: {
-                                        mtoType: '100',
-                                        meterType: '100',
-                                        type: 'terminal-parameter',
-                                        action: 'write',
-                                        taskId: response.responseText
-                                    },
-                                    method: 'POST',
-                                    success: function(response) {
-                                        //alert(response.responseText);
-                                    },
-                                    failure: function(response) {
-                                        //alert(response.responseText);
-                                    }
-                                });
-                            },
-                            failure: function(response) {
-                                //alert(response.responseText);
+                        else {
+                            var paramsAndValues = '';
+                            for(var i = 0; i < records.length; i++) {
+                                paramsAndValues += records[i].get("P_CODE") + ':' + records[i].get("P_VALUE") + ';';
                             }
-                        });
-                        //alert(paramsAndValues);
-                        /*Ext.MessageBox.show({
-                            title: '正在等待',
-                            msg: 'Loading items...',
-                            progressText: 'Initializing...',
-                            width:300,
-                            progress:true,
-                            closable:false,
-                            animateTarget: 'mb6'
-                        });
-
-                        // this hideous block creates the bogus progress
-                        var f = function(v){
-                             return function(){
-                                 if(v == 12){
-                                     Ext.MessageBox.hide();
-                                     Ext.example.msg('Done', 'Your fake items were loaded!');
-                                 }else{
-                                     var i = v/11;
-                                     Ext.MessageBox.updateProgress(i, Math.round(100*i)+'% completed');
-                                 }
+                            var params = {
+                                    type: 'terminal-parameter',
+                                    action: 'write',
+                                    paramsAndValues: paramsAndValues
                             };
-                        };
-                        for(var i = 1; i < 13; i++){
-                            setTimeout(f(i), i*500);
-                        }*/
+                            Ext.apply(params, tps_filter_formpanel.getForm().getValues(false));
+                            alert(Ext.JSON.encode(params))
+                            Ext.Ajax.request({
+                                url: ctx_webapp + '/pm/tps!send.do',
+                                params: params,
+                                method: 'POST',
+                                success: function(response) {
+                                    //alert(response.responseText);
+                                    // 
+                                    Ext.Ajax.request({
+                                        url: ctx_webapp + '/pm/tps!receive.do',
+                                        params: {
+                                            type: 'terminal-parameter',
+                                            action: 'write',
+                                            taskId: response.responseText
+                                        },
+                                        method: 'POST',
+                                        success: function(response) {
+                                            //alert(response.responseText);
+                                        },
+                                        failure: function(response) {
+                                            //alert(response.responseText);
+                                        }
+                                    });
+                                },
+                                failure: function(response) {
+                                    //alert(response.responseText);
+                                }
+                            });
+                            //alert(paramsAndValues);
+                            /*Ext.MessageBox.show({
+                                title: '正在等待',
+                                msg: 'Loading items...',
+                                progressText: 'Initializing...',
+                                width:300,
+                                progress:true,
+                                closable:false,
+                                animateTarget: 'mb6'
+                            });
+
+                            // this hideous block creates the bogus progress
+                            var f = function(v){
+                                 return function(){
+                                     if(v == 12){
+                                         Ext.MessageBox.hide();
+                                         Ext.example.msg('Done', 'Your fake items were loaded!');
+                                     }else{
+                                         var i = v/11;
+                                         Ext.MessageBox.updateProgress(i, Math.round(100*i)+'% completed');
+                                     }
+                                };
+                            };
+                            for(var i = 1; i < 13; i++){
+                                setTimeout(f(i), i*500);
+                            }*/
+                        }
                     }
                 }
             }, '-', {
@@ -416,18 +531,16 @@ function getParameterManagementFunctions() {
     });
     var tps_gpparam_gridstore = Ext.create('Ext.data.Store', {
         // destroy the store if the grid is destroyed
-        //autoDestroy: true,
+        autoDestroy: true,
         model: 'tps-gpparam-gridstore-model',
-        remoteSort: true,
         proxy: {
             // load using script tags for cross domain, if the data in on the same domain as
             // this page, an HttpProxy would be better
             type: 'ajax',
-            url: ctx_webapp + '/pm/tps!queryGpParamGrid.do',
+            url: ctx_webstatic + '/customized/project/hd/data/tps-gpparam-grid-data.json',
             reader: {
                 type: 'json',
-                root: 'records',
-                totalProperty: 'count'
+                root: 'records'
             },
             method: 'POST',
             // sends single sort as multi parameter
@@ -436,15 +549,17 @@ function getParameterManagementFunctions() {
         sorters: [{
             property: 'P_CODE',
             direction: 'ACS'
-        }]*//*,
-        autoLoad: true*/
+        }]*/,
+        autoLoad: true
     });
     // 测量点参数列表
+    var tps_gpparam_grid_selections = '';
     var tps_gpparam_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
         listeners: {
             selectionchange: function(sm, selections) {
                 tps_gpparam_gridpanel.down('#tps-gpparam-setting-button').setDisabled(selections.length == 0);
                 tps_gpparam_gridpanel.down('#tps-gpparam-reading-button').setDisabled(selections.length == 0);
+                tps_gpparam_grid_selections = selections;
             }
         }
     });
@@ -456,11 +571,11 @@ function getParameterManagementFunctions() {
         store: tps_gpparam_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", width: 80, sortable: true, dataIndex: 'SN'},
-            {text: "参数编码", width: 120, sortable: true, dataIndex: 'P_CODE'},
-            {text: "参数名称", width: 200, sortable: true, dataIndex: 'P_NAME'},
-            {text: "参数值", width: 200, sortable: true, dataIndex: 'P_VALUE'},
-            {text: "操作结果", flex: 1, sortable: true, dataIndex: 'OP_RESULT'}
+            {text: "序号", dataIndex: 'SN', width: 50, sortable: true},
+            {text: "参数编码", dataIndex: 'P_CODE', width: 80, sortable: true},
+            {text: "参数名称", dataIndex: 'P_NAME', width: 200, sortable: true},
+            {text: "参数值", dataIndex: 'P_VALUE', width: 320, sortable: true},
+            {text: "操作结果", dataIndex: 'OP_RESULT', flex: 1, sortable: true}
         ],
         columnLines: true,
         selModel: tps_gpparam_grid_selmodel,
@@ -500,7 +615,15 @@ function getParameterManagementFunctions() {
                         {"value": 5, "label": "测量点 5"},
                         {"value": 6, "label": "测量点 6"},
                         {"value": 7, "label": "测量点 7"},
-                        {"value": 8, "label": "测量点 8"}
+                        {"value": 8, "label": "测量点 8"},
+                        {"value": 9, "label": "测量点 9"},
+                        {"value": 10, "label": "测量点 10"},
+                        {"value": 11, "label": "测量点 11"},
+                        {"value": 12, "label": "测量点 12"},
+                        {"value": 13, "label": "测量点 13"},
+                        {"value": 14, "label": "测量点 14"},
+                        {"value": 15, "label": "测量点 15"},
+                        {"value": 16, "label": "测量点 16"}
                     ]
                 }),
                 valueField: 'value',
@@ -526,6 +649,44 @@ function getParameterManagementFunctions() {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////// 保护器参数设置 ////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var ppsFilterTgListStoreWithAll = Ext.create('Ext.data.Store', {
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'tg-liststore-model',
+        remoteSort: false,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/am/tam!getTgList.do',
+            reader: {
+                type: 'json',
+                root: 'records'
+            }
+        },
+        // 
+        autoLoad: false
+    });
+
+    var ppsFilterPsListStoreWithAll = Ext.create('Ext.data.Store', {
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'ps-liststore-model',
+        remoteSort: false,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/am/tam!getPsList.do',
+            reader: {
+                type: 'json',
+                root: 'records'
+            }
+        },
+        // 
+        autoLoad: false
+    });
+
     // 保护器信息表单
     var pps_filter_formpanel = Ext.create('Ext.form.Panel', {
         id: 'pps-filter-form',
@@ -546,12 +707,13 @@ function getParameterManagementFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'pps-filter-formfield-org',
                     name: 'soOrgId',
                     fieldLabel: '所属机构',
                     labelWidth: 60,
                     allowBlank: false,
                     store: filterOrgnizationListStore,
-                    valueField: 'orgId',
+                    valueField: 'id',
                     displayField: 'orgName',
                     emptyText: '请选择所属机构...',
                     queryMode: 'local',
@@ -560,7 +722,18 @@ function getParameterManagementFunctions() {
                     editable: false,
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soOrgId : " + newValue);
+                            if(!Ext.isEmpty(newValue)) {
+                                Ext.getCmp('pps-filter-formfield-tg').reset();
+                                Ext.getCmp('pps-filter-formfield-tg').getStore().removeAll();
+                                Ext.getCmp('pps-filter-formfield-tg').getStore().load({
+                                    params: {orgId: newValue, withAll: true},
+                                    callback: function(records, operation, success) {
+                                        Ext.getCmp('pps-filter-formfield-tg').setValue(0);
+                                    },
+                                    scope: this
+                                });
+                            }
                         }
                     }
                 }]
@@ -571,11 +744,12 @@ function getParameterManagementFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'pps-filter-formfield-tg',
                     name: 'soTgId',
                     fieldLabel: '台区名称',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: filterTgListStoreWithAll,
+                    store: ppsFilterTgListStoreWithAll,
                     valueField: 'id',
                     displayField: 'tgName',
                     queryMode: 'local',
@@ -586,7 +760,18 @@ function getParameterManagementFunctions() {
                     value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soTgId : " + newValue);
+                            if(!Ext.isEmpty(newValue)) {
+                                Ext.getCmp('pps-filter-formfield-ps').reset();
+                                Ext.getCmp('pps-filter-formfield-ps').getStore().removeAll();
+                                Ext.getCmp('pps-filter-formfield-ps').getStore().load({
+                                    params: {orgId: Ext.getCmp('pps-filter-formfield-org').getValue(), tgId: newValue, withAll: true},
+                                    callback: function(records, operation, success) {
+                                        Ext.getCmp('pps-filter-formfield-ps').setValue(0);
+                                    },
+                                    scope: this
+                                });
+                            }
                         }
                     }
                 }]
@@ -597,11 +782,12 @@ function getParameterManagementFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'pps-filter-formfield-ps',
                     name: 'soGpId',
                     fieldLabel: '保护器名称',
                     labelWidth: 66,
                     allowBlank: false,
-                    store: filterProtectorListStore,
+                    store: ppsFilterPsListStoreWithAll,
                     valueField: 'gpId',
                     displayField: 'psName',
                     emptyText: '请选择保护器...',
@@ -611,7 +797,7 @@ function getParameterManagementFunctions() {
                     editable: false,
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soGpId : " + newValue);
                         }
                     }
                 }]
@@ -634,6 +820,44 @@ function getParameterManagementFunctions() {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////// 保护器控制命令下发 //////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var pccsFilterTgListStoreWithAll = Ext.create('Ext.data.Store', {
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'tg-liststore-model',
+        remoteSort: false,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/am/tam!getTgList.do',
+            reader: {
+                type: 'json',
+                root: 'records'
+            }
+        },
+        // 
+        autoLoad: false
+    });
+
+    var pccsFilterPsListStoreWithAll = Ext.create('Ext.data.Store', {
+        // destroy the store if the grid is destroyed
+        autoDestroy: true,
+        model: 'ps-liststore-model',
+        remoteSort: false,
+        proxy: {
+            // load using script tags for cross domain, if the data in on the same domain as
+            // this page, an HttpProxy would be better
+            type: 'ajax',
+            url: ctx_webapp + '/am/tam!getPsList.do',
+            reader: {
+                type: 'json',
+                root: 'records'
+            }
+        },
+        // 
+        autoLoad: false
+    });
+
     // 保护器信息表单
     var pccs_filter_formpanel = Ext.create('Ext.form.Panel', {
         id: 'pccs-filter-form',
@@ -654,12 +878,13 @@ function getParameterManagementFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'pccs-filter-formfield-org',
                     name: 'soOrgId',
                     fieldLabel: '所属机构',
                     labelWidth: 60,
                     allowBlank: false,
                     store: filterOrgnizationListStore,
-                    valueField: 'orgId',
+                    valueField: 'id',
                     displayField: 'orgName',
                     emptyText: '请选择所属机构...',
                     queryMode: 'local',
@@ -668,7 +893,18 @@ function getParameterManagementFunctions() {
                     editable: false,
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soOrgId : " + newValue);
+                            if(!Ext.isEmpty(newValue)) {
+                                Ext.getCmp('pccs-filter-formfield-tg').reset();
+                                Ext.getCmp('pccs-filter-formfield-tg').getStore().removeAll();
+                                Ext.getCmp('pccs-filter-formfield-tg').getStore().load({
+                                    params: {orgId: newValue, withAll: true},
+                                    callback: function(records, operation, success) {
+                                        Ext.getCmp('pccs-filter-formfield-tg').setValue(0);
+                                    },
+                                    scope: this
+                                });
+                            }
                         }
                     }
                 }]
@@ -679,11 +915,12 @@ function getParameterManagementFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'pccs-filter-formfield-tg',
                     name: 'soTgId',
                     fieldLabel: '台区名称',
                     labelWidth: 60,
                     allowBlank: false,
-                    store: filterTgListStoreWithAll,
+                    store: pccsFilterTgListStoreWithAll,
                     valueField: 'id',
                     displayField: 'tgName',
                     emptyText: '请选择台区...',
@@ -694,7 +931,18 @@ function getParameterManagementFunctions() {
                     value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soTgId : " + newValue);
+                            if(!Ext.isEmpty(newValue)) {
+                                Ext.getCmp('pccs-filter-formfield-ps').reset();
+                                Ext.getCmp('pccs-filter-formfield-ps').getStore().removeAll();
+                                Ext.getCmp('pccs-filter-formfield-ps').getStore().load({
+                                    params: {orgId: Ext.getCmp('pccs-filter-formfield-org').getValue(), tgId: newValue, withAll: true},
+                                    callback: function(records, operation, success) {
+                                        Ext.getCmp('pccs-filter-formfield-ps').setValue(0);
+                                    },
+                                    scope: this
+                                });
+                            }
                         }
                     }
                 }]
@@ -705,11 +953,12 @@ function getParameterManagementFunctions() {
                 width: 240,
                 items: [{
                     xtype: 'combobox',
+                    id: 'pccs-filter-formfield-ps',
                     name: 'soGpId',
                     fieldLabel: '保护器名称',
                     labelWidth: 66,
                     allowBlank: false,
-                    store: filterProtectorListStore,
+                    store: pccsFilterPsListStoreWithAll,
                     valueField: 'gpId',
                     displayField: 'psName',
                     emptyText: '请选择保护器...',
@@ -720,7 +969,7 @@ function getParameterManagementFunctions() {
                     value: '0',
                     listeners: {
                         change: function(combo, newValue, oldValue, eOpts) {
-                            //alert(newValue);
+                            //alert("soGpId : " + newValue);
                         }
                     }
                 }]

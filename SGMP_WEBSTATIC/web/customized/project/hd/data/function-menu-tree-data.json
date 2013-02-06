@@ -63,6 +63,10 @@
             id: 'actionProtectorDataQuery',
             leaf: true
         }, {
+            text: '模拟量数据查询',
+            id: 'actionAnalogueDataQuery',
+            leaf: true
+        }, {
             text: '台区用电量查询',
             id: 'actionTgPowerConsumptionQuery',
             leaf: true

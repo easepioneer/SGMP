@@ -461,6 +461,7 @@ function getArchivesManagementFunctions() {
                                                 success: function(response) {
                                                     //alert(response.responseText);
                                                     Ext.getCmp('tgInfoForm').getForm().setValues(Ext.JSON.decode(response.responseText));
+                                                    Ext.getCmp('am-tginfo-formfield-org').setDisabled(true);
                                                     // 
                                                     Ext.getCmp('termInfoForm').getForm().reset();
                                                     Ext.getCmp('meterInfoForm').getForm().reset();
@@ -562,6 +563,7 @@ function getArchivesManagementFunctions() {
                             width: 240,
                             items: [{
                                 xtype: 'combobox',
+                                id: 'am-tginfo-formfield-org',
                                 fieldLabel: '所属机构',
                                 labelWidth: 77,
                                 allowBlank: false,

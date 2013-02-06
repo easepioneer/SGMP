@@ -11,7 +11,7 @@ function getHomepageFunctions() {
             items: [{
                 title: '首页',
                 layout: 'border',
-                items: [{
+                items: [/*{
                     region: 'north',
                     title: '企业介绍',
                     margins: '5 5 5 5',
@@ -28,7 +28,7 @@ function getHomepageFunctions() {
                     margins: '0 5 5 5',
                     bodyStyle: 'padding: 10px;',
                     html: '<p>低压配电网络信息一体化平台</p>'
-                }]
+                }*/]
             }]
         }
     };

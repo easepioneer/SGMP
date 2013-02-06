@@ -1,0 +1,15 @@
+{ 
+    "records": [{
+        "SN": "1",
+        "P_CODE": "F25",
+        "P_NAME": "测量点基本参数",
+        "P_VALUE": "",
+        "OP_RESULT": ""
+    }, {
+        "SN": "2",
+        "P_CODE": "F26",
+        "P_NAME": "测量点限值参数",
+        "P_VALUE": "",
+        "OP_RESULT": ""
+    }]
+}

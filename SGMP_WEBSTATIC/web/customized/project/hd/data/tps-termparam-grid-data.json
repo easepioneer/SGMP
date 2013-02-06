@@ -1,5 +1,4 @@
 { 
-    "totalCount": "6",
     "records": [{
         "SN": "1",
         "P_CODE": "F1",
@@ -14,24 +13,12 @@
         "OP_RESULT": ""
     }, {
         "SN": "3",
-        "P_CODE": "F9",
-        "P_NAME": "终端事件记录配置设置",
-        "P_VALUE": "",
-        "OP_RESULT": ""
-    }, {
-        "SN": "4",
-        "P_CODE": "F10",
-        "P_NAME": "终端电能表交流采样装置配置参数",
-        "P_VALUE": "",
-        "OP_RESULT": ""
-    }, {
-        "SN": "5",
         "P_CODE": "F12",
         "P_NAME": "终端状态量输入参数",
         "P_VALUE": "",
         "OP_RESULT": ""
     }, {
-        "SN": "6",
+        "SN": "4",
         "P_CODE": "F61",
         "P_NAME": "直流模拟量接入参数",
         "P_VALUE": "",

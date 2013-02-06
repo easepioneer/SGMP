@@ -5,7 +5,6 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.sgmp.webapp.ActionException;
 import org.sgmp.webapp.action.AbstractSimpleAction;
-import org.sgmp.webapp.constant.ConstantMTOType;
 import org.sgmp.webapp.service.module.SimpleInteractionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,20 +27,18 @@ public abstract class AbstractSimpleInteractionAction extends AbstractSimpleActi
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSimpleInteractionAction.class);
 
-    protected static final String TYPE_TERMINAL_PARAMETER = "terminal-parameter";             // 集中器参数
-    protected static final String TYPE_PROTECTOR_PARAMETER = "protector-parameter";           // 保护器参数
-    protected static final String TYPE_PROTECTOR_CONTROL = "protector-control";               // 保护器控制
+    protected static final String TYPE_TERMINAL_PARAMETER = "terminal-parameter";               // 集中器参数
+    protected static final String TYPE_GATHERPOINT_PARAMETER = "gatherpoint-parameter";         // 测量点参数
+    protected static final String TYPE_ANALOGUE_PARAMETER = "analogue-parameter";               // 模拟量参数
+    protected static final String TYPE_PROTECTOR_PARAMETER = "protector-parameter";             // 保护器参数
+    protected static final String TYPE_PROTECTOR_CONTROL = "protector-control";                 // 保护器控制
 
     @Autowired
-    private SimpleInteractionService simpleInteractionService;
-
+    protected SimpleInteractionService simpleInteractionService;
     @Autowired
-    private RealTimeInterface realTimeProxy376;
+    protected RealTimeInterface realTimeProxy376;
 
     protected MTO_376 mto376;
-
-    protected String mtoType;             // 终端（集中器）规约
-    protected String meterType;           // 测量点（电表/保护器）规约
 
     protected String type;
     protected String action;
@@ -66,56 +63,56 @@ public abstract class AbstractSimpleInteractionAction extends AbstractSimpleActi
     public void send() throws ActionException {
         beforeSend();
 
-        if(StringUtils.equals(mtoType, ConstantMTOType.GW_376)) {               // 376规约
-            if(StringUtils.equals(type, TYPE_TERMINAL_PARAMETER)) {                 // 集中器参数
-                if(StringUtils.equals(action, "write")) {       // 写
-                    try {
-                        taskId = realTimeProxy376.writeParameters(mto376);
-                    }
-                    catch(Exception _e) {
-                        logger.error("send error", _e);
-                        throw new ActionException("ActionException", _e.getCause());
-                    }
+        if(StringUtils.equals(type, TYPE_TERMINAL_PARAMETER)                    // 集中器参数
+                || StringUtils.equals(type, TYPE_GATHERPOINT_PARAMETER)         // 测量点参数
+                || StringUtils.equals(type, TYPE_ANALOGUE_PARAMETER)) {         // 模拟量参数
+            if(StringUtils.equals(action, "write")) {       // 写
+                try {
+                    taskId = realTimeProxy376.writeParameters(mto376);
                 }
-                else if(StringUtils.equals(action, "read")) {   // 读
-                    try {
-                        taskId = realTimeProxy376.readParameters(mto376);
-                    }
-                    catch(Exception _e) {
-                        logger.error("send error", _e);
-                        throw new ActionException("ActionException", _e.getCause());
-                    }
+                catch(Exception _e) {
+                    logger.error("send error", _e);
+                    throw new ActionException("ActionException", _e.getCause());
                 }
             }
-            else if(StringUtils.equals(type, TYPE_PROTECTOR_PARAMETER)) {           // 保护器参数
-                if(StringUtils.equals(action, "write")) {       // 写
-                    try {
-                        taskId = realTimeProxy376.transmitMsg(mto376);
-                    }
-                    catch(Exception _e) {
-                        logger.error("send error", _e);
-                        throw new ActionException("ActionException", _e.getCause());
-                    }
+            else if(StringUtils.equals(action, "read")) {   // 读
+                try {
+                    taskId = realTimeProxy376.readParameters(mto376);
                 }
-                else if(StringUtils.equals(action, "read")) {   // 读
-                    try {
-                        taskId = realTimeProxy376.transmitMsg(mto376);
-                    }
-                    catch(Exception _e) {
-                        logger.error("send error", _e);
-                        throw new ActionException("ActionException", _e.getCause());
-                    }
+                catch(Exception _e) {
+                    logger.error("send error", _e);
+                    throw new ActionException("ActionException", _e.getCause());
                 }
             }
-            else if(StringUtils.equals(type, TYPE_PROTECTOR_CONTROL)) {             // 保护器控制
-                if(StringUtils.equals(action, "write")) {       // 写
-                    try {
-                        taskId = realTimeProxy376.transmitMsg(mto376);
-                    }
-                    catch(Exception _e) {
-                        logger.error("send error", _e);
-                        throw new ActionException("ActionException", _e.getCause());
-                    }
+        }
+        else if(StringUtils.equals(type, TYPE_PROTECTOR_PARAMETER)) {           // 保护器参数
+            if(StringUtils.equals(action, "write")) {       // 写
+                try {
+                    taskId = realTimeProxy376.transmitMsg(mto376);
+                }
+                catch(Exception _e) {
+                    logger.error("send error", _e);
+                    throw new ActionException("ActionException", _e.getCause());
+                }
+            }
+            else if(StringUtils.equals(action, "read")) {   // 读
+                try {
+                    taskId = realTimeProxy376.transmitMsg(mto376);
+                }
+                catch(Exception _e) {
+                    logger.error("send error", _e);
+                    throw new ActionException("ActionException", _e.getCause());
+                }
+            }
+        }
+        else if(StringUtils.equals(type, TYPE_PROTECTOR_CONTROL)) {             // 保护器控制
+            if(StringUtils.equals(action, "write")) {       // 写
+                try {
+                    taskId = realTimeProxy376.transmitMsg(mto376);
+                }
+                catch(Exception _e) {
+                    logger.error("send error", _e);
+                    throw new ActionException("ActionException", _e.getCause());
                 }
             }
         }
@@ -132,39 +129,39 @@ public abstract class AbstractSimpleInteractionAction extends AbstractSimpleActi
     public void receive() throws ActionException {
         beforeReceive();
 
-        if(StringUtils.equals(mtoType, ConstantMTOType.GW_376)) {               // 376规约
-            if(StringUtils.equals(type, TYPE_TERMINAL_PARAMETER)) {                 // 集中器参数
-                if(StringUtils.equals(action, "write")) {       // 写
-                    try {
-                        resultMap = realTimeProxy376.getReturnByWriteParameter(taskId);
-                    }
-                    catch(Exception _e) {
-                        logger.error("send error", _e);
-                        throw new ActionException("ActionException", _e.getCause());
-                    }
+        if(StringUtils.equals(type, TYPE_TERMINAL_PARAMETER)                    // 集中器参数
+                || StringUtils.equals(type, TYPE_GATHERPOINT_PARAMETER)         // 测量点参数
+                || StringUtils.equals(type, TYPE_ANALOGUE_PARAMETER)) {         // 模拟量参数
+            if(StringUtils.equals(action, "write")) {       // 写
+                try {
+                    resultMap = realTimeProxy376.getReturnByWriteParameter(taskId);
                 }
-                else if(StringUtils.equals(action, "read")) {   // 读
-                    try {
-                        resultMap = realTimeProxy376.getReturnByReadParameter(taskId);
-                    }
-                    catch(Exception _e) {
-                        logger.error("send error", _e);
-                        throw new ActionException("ActionException", _e.getCause());
-                    }
+                catch(Exception _e) {
+                    logger.error("send error", _e);
+                    throw new ActionException("ActionException", _e.getCause());
                 }
             }
-            else if(StringUtils.equals(type, TYPE_PROTECTOR_PARAMETER)) {           // 保护器参数
-                
+            else if(StringUtils.equals(action, "read")) {   // 读
+                try {
+                    resultMap = realTimeProxy376.getReturnByReadParameter(taskId);
+                }
+                catch(Exception _e) {
+                    logger.error("send error", _e);
+                    throw new ActionException("ActionException", _e.getCause());
+                }
             }
-            else if(StringUtils.equals(type, TYPE_PROTECTOR_CONTROL)) {             // 保护器控制
-                if(StringUtils.equals(action, "write")) {       // 写
-                    try {
-                        resultMap = realTimeProxy376.getReturnByControl_TransMit(taskId);
-                    }
-                    catch(Exception _e) {
-                        logger.error("send error", _e);
-                        throw new ActionException("ActionException", _e.getCause());
-                    }
+        }
+        else if(StringUtils.equals(type, TYPE_PROTECTOR_PARAMETER)) {           // 保护器参数
+            
+        }
+        else if(StringUtils.equals(type, TYPE_PROTECTOR_CONTROL)) {             // 保护器控制
+            if(StringUtils.equals(action, "write")) {       // 写
+                try {
+                    resultMap = realTimeProxy376.getReturnByControl_TransMit(taskId);
+                }
+                catch(Exception _e) {
+                    logger.error("send error", _e);
+                    throw new ActionException("ActionException", _e.getCause());
                 }
             }
         }
@@ -207,22 +204,6 @@ public abstract class AbstractSimpleInteractionAction extends AbstractSimpleActi
 
     public void setMto376(MTO_376 mto376) {
         this.mto376 = mto376;
-    }
-
-    public String getMtoType() {
-        return mtoType;
-    }
-
-    public void setMtoType(String mtoType) {
-        this.mtoType = mtoType;
-    }
-
-    public String getMeterType() {
-        return meterType;
-    }
-
-    public void setMeterType(String meterType) {
-        this.meterType = meterType;
     }
 
     public String getType() {

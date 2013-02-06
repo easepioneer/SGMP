@@ -140,6 +140,15 @@ Ext.onReady(function() {
                     Ext.getCmp('tgInfoForm').getForm().setValues({id: selectedSoRecord.get('soId')});
                 }
             }
+            else if(record.getId() == 'actionTerminalParameterSetup') {
+                initTpsFilterForm();
+            }
+            else if(record.getId() == 'actionProtectorParameterSetup') {
+                initPpsFilterForm();
+            }
+            else if(record.getId() == 'actionProtectorControlCommandSending') {
+                initPccsFilterForm();
+            }
             else if(record.getId() == 'actionTgMeterDataQuery') {
                 initTmdqFilterForm();
             }
@@ -222,11 +231,11 @@ Ext.onReady(function() {
         Ext.create('Ext.Component', {
             region: 'north',
             id: 'panel-north',
-            height: 00,
+            height: 60,
             autoEl: {
                 tag: 'div',
-                html: '<h1>浙江豪顿电气有限公司</h1><h2>低压配电网络信息一体化平台</h2>'
-                /* html: '<h1>SGMP</h1><h2>Smart Grid Management Platform</h2>' */
+                /* html: '<h1>浙江豪顿电气有限公司</h1><h2>低压配电网络信息一体化平台</h2>' */
+                html: '<h1>SGMP</h1><h2>Smart Grid Management Platform</h2>'
                 /* html: '' */
             }
         }), {

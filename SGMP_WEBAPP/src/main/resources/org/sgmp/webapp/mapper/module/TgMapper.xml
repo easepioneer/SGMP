@@ -64,7 +64,7 @@
           <choose>
               <when test="orgId != null and orgId != 0">and exists (select 1 from (select * from O_ORG start with ORG_ID = #{orgId} connect by P_ORG_ID = prior ORG_ID) O where O.ORG_ID = TG.ORG_ID)</when>
           </choose>
-         order by ORG_ID, TG_ID
+         order by TG_NAME
     </select>
 
     <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">

@@ -197,6 +197,25 @@ function getNameByCode_WiringMode(value) {
     }
 }
 
+// 计量方式
+var codeListStore_MeasMode = Ext.create('Ext.data.Store', {
+    model: 'code-liststore-model',
+    remoteSort: false,
+    data: [ 
+            {"code": "1", "name": "高供高计"},
+            {"code": "2", "name": "高供低计"},
+            {"code": "3", "name": "低供低计"}
+    ]
+});
+function getNameByCode_MeasMode(value) {
+    if(!Ext.isEmpty(value)) {
+        return codeListStore_MeasMode.getById(value).get('name');
+    }
+    else {
+        return '';
+    }
+}
+
 // 产权
 var codeListStore_Pr = Ext.create('Ext.data.Store', {
     model: 'code-liststore-model',
@@ -417,6 +436,19 @@ Ext.define('tg-liststore-model', {
 /**
  * 
  */
+Ext.define('term-liststore-model', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'id', type: 'int'},                                          /* 集中器ID */
+        {name: 'assetNo', type: 'string'},                                  /* 资产编号 */
+        {name: 'logicalAddr', type: 'string'}                               /* 逻辑地址 */
+    ],
+    idProperty: 'id'
+});
+
+/**
+ * 
+ */
 Ext.define('meter-liststore-model', {
     extend: 'Ext.data.Model',
     fields: [
@@ -487,87 +519,3 @@ var tgListStoreWithAll = Ext.create('Ext.data.Store', {
 
 ////////////////////////////////////////////////////////////////////////////////
 var filterOrgnizationListStore = orgnizationListStore;
-
-var filterTgListStore = tgListStore;
-
-var filterTgListStoreWithAll = tgListStoreWithAll;
-
-var filterTerminalListStore = Ext.create('Ext.data.Store', {
-    fields: ['termId', 'logicalAddr'],
-    data: [ 
-            {"termId": "11", "logicalAddr": "96123456"},
-            {"termId": "12", "logicalAddr": "96123457"},
-            {"termId": "13", "logicalAddr": "96123458"}
-    ]
-});
-
-var filterTerminalListStoreWithAll = Ext.create('Ext.data.Store', {
-    fields: ['termId', 'logicalAddr'],
-    data: [ 
-            {"termId": "0", "logicalAddr": "--- 所有集中器 ---"},
-            {"termId": "11", "logicalAddr": "96123456"},
-            {"termId": "12", "logicalAddr": "96123457"},
-            {"termId": "13", "logicalAddr": "96123458"}
-    ]
-});
-
-var filterMeterListStore = Ext.create('Ext.data.Store', {
-    fields: ['gpId', 'mpName'],
-    data: []
-});
-
-var filterMeterListStoreWithAll = Ext.create('Ext.data.Store', {
-    fields: ['gpId', 'mpName'],
-    data: [ 
-            {"gpId": "0", "mpName": "--- 所有考核表 ---"}
-    ]
-});
-
-var filterProtectorListStore = Ext.create('Ext.data.Store', {
-    fields: ['gpId', 'psName'],
-    data: [ 
-            {"gpId": "11", "psName": "葛岭变总保1"},
-            {"gpId": "12", "psName": "葛岭变二级保2"},
-            {"gpId": "13", "psName": "葛岭变二级保3"},
-            {"gpId": "14", "psName": "葛岭变二级保4"},
-            {"gpId": "15", "psName": "葛岭变二级保5"},
-            {"gpId": "16", "psName": "葛岭变二级保6"},
-            {"gpId": "17", "psName": "东兴变总保1"},
-            {"gpId": "18", "psName": "东兴变二级保2"},
-            {"gpId": "19", "psName": "东兴变二级保3"},
-            {"gpId": "20", "psName": "东兴变二级保4"},
-            {"gpId": "21", "psName": "东兴变二级保5"},
-            {"gpId": "22", "psName": "东兴变二级保6"},
-            {"gpId": "23", "psName": "赤锡变总保1"},
-            {"gpId": "24", "psName": "赤锡变二级保2"},
-            {"gpId": "25", "psName": "赤锡变二级保3"},
-            {"gpId": "26", "psName": "赤锡变二级保4"},
-            {"gpId": "27", "psName": "赤锡变二级保5"},
-            {"gpId": "28", "psName": "赤锡变二级保6"}
-    ]
-});
-
-var filterProtectorListStoreWithAll = Ext.create('Ext.data.Store', {
-    fields: ['gpId', 'psName'],
-    data: [ 
-            {"gpId": "0", "psName": "--- 所有保护器 ---"},
-            {"gpId": "11", "psName": "葛岭变总保1"},
-            {"gpId": "12", "psName": "葛岭变二级保2"},
-            {"gpId": "13", "psName": "葛岭变二级保3"},
-            {"gpId": "14", "psName": "葛岭变二级保4"},
-            {"gpId": "15", "psName": "葛岭变二级保5"},
-            {"gpId": "16", "psName": "葛岭变二级保6"},
-            {"gpId": "17", "psName": "东兴变总保1"},
-            {"gpId": "18", "psName": "东兴变二级保2"},
-            {"gpId": "19", "psName": "东兴变二级保3"},
-            {"gpId": "20", "psName": "东兴变二级保4"},
-            {"gpId": "21", "psName": "东兴变二级保5"},
-            {"gpId": "22", "psName": "东兴变二级保6"},
-            {"gpId": "23", "psName": "赤锡变总保1"},
-            {"gpId": "24", "psName": "赤锡变二级保2"},
-            {"gpId": "25", "psName": "赤锡变二级保3"},
-            {"gpId": "26", "psName": "赤锡变二级保4"},
-            {"gpId": "27", "psName": "赤锡变二级保5"},
-            {"gpId": "28", "psName": "赤锡变二级保6"}
-    ]
-});
