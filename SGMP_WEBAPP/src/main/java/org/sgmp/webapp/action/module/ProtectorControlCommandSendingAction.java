@@ -120,6 +120,29 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
                 cot.setMeterAddr("000000000006");
             }
         }
+        else if(StringUtils.equals(getSoGpId(), "121") || StringUtils.equals(getSoGpId(), "122") 
+                || StringUtils.equals(getSoGpId(), "144") || StringUtils.equals(getSoGpId(), "145") 
+                || StringUtils.equals(getSoGpId(), "146") || StringUtils.equals(getSoGpId(), "147")) {
+            cot.setTerminalAddr("96123459");
+            if(StringUtils.equals(getSoGpId(), "121")) {
+                cot.setMeterAddr("000000000001");
+            }
+            else if(StringUtils.equals(getSoGpId(), "122")) {
+                cot.setMeterAddr("000000000002");
+            }
+            else if(StringUtils.equals(getSoGpId(), "144")) {
+                cot.setMeterAddr("000000000003");
+            }
+            else if(StringUtils.equals(getSoGpId(), "145")) {
+                cot.setMeterAddr("000000000004");
+            }
+            else if(StringUtils.equals(getSoGpId(), "146")) {
+                cot.setMeterAddr("000000000005");
+            }
+            else if(StringUtils.equals(getSoGpId(), "147")) {
+                cot.setMeterAddr("000000000006");
+            }
+        }
         cot.setEquipProtocol("100");
         cot.setMeterType(MeterType.Meter645);
         cot.setFuncode((byte) 27);

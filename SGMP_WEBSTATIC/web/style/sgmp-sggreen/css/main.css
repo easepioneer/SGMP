@@ -1,1 +1,17 @@
 @CHARSET "UTF-8";
+
+.sgmp-icon-home {
+    background: url('../img/menu/home.png') no-repeat center center;
+}
+
+.sgmp-icon-tg {
+    background: url('../img/menu/tg.png') no-repeat center center;
+}
+
+.sgmp-icon-setup {
+    background: url('../img/menu/setup.png') no-repeat center center;
+}
+
+.sgmp-icon-query {
+    background: url('../img/menu/query.png') no-repeat center center;
+}

@@ -159,6 +159,61 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
                     ci.setDatacellParam(dcp);
                     co.AddCommandItem(ci);
                 }
+                else if(StringUtils.equals(param, "F10")) {
+                    // 终端电能表/交流采样装置配置参数
+                    CommandItem ci = new CommandItem();
+                    ci.setIdentifier("10040010");
+                    Map<String, String> dcp = new HashMap<String, String>();
+                    if(StringUtils.isNotBlank(value)) {
+                        //String[] pvItems = value.split(";");
+                        for(int i = 0; i < 14; i++) {
+                            if(i == 0) {
+                                dcp.put("1004001001", "1");                     // 本次电能表/交流采样装置配置数量
+                            }
+                            else if(i == 1) {
+                                dcp.put("10040010020001", "2");                 // 本次配置第XXXX块电能表/交流采样装置序号
+                            }
+                            else if(i == 2) {
+                                dcp.put("10040010030001", "2");                 // 本次配置第XXXX块电能表/交流采样装置所属测量点号
+                            }
+                            else if(i == 3) {
+                                dcp.put("10040010040001", "3");                 // 本次配置第XXXX块电能表/交流采样装置通信波特率
+                            }
+                            else if(i == 4) {
+                                dcp.put("10040010050001", "1");                 // 本次配置第XXXX块电能表/交流采样装置通信端口号
+                            }
+                            else if(i == 5) {
+                                dcp.put("10040010060001", "100");               // 本次配置第XXXX块电能表/交流采样装置通信协议类型
+                            }
+                            else if(i == 6) {
+                                dcp.put("10040010070001", "000000000002");      // 本次配置第XXXX块电能表/交流采样装置通信地址
+                            }
+                            else if(i == 7) {
+                                dcp.put("10040010080001", "000000000000");      // 本次配置第XXXX块电能表/交流采样装置通信密码
+                            }
+                            else if(i == 8) {
+                                dcp.put("10040010100001", "000100");            // 本次配置第XXXX块电能表/交流采样装置电能费率个数
+                            }
+                            else if(i == 9) {
+                                dcp.put("10040010120001", "10");                // 本次配置第XXXX块电能表/交流采样装置有功电能示值的整数位个数
+                            }
+                            else if(i == 10) {
+                                dcp.put("10040010130001", "11");                // 本次配置第XXXX块电能表/交流采样装置有功电能示值的小数位个数
+                            }
+                            else if(i == 11) {
+                                dcp.put("10040010140001", "000000000000");      // 本次配置第XXXX块电能表/交流采样装置所属采集器通信地址
+                            }
+                            else if(i == 12) {
+                                dcp.put("10040010150001", "0000");              // 本次配置第XXXX块电能表/交流采样装置所属的用户大类号
+                            }
+                            else if(i == 13) {
+                                dcp.put("10040010160001", "0000");              // 本次配置第XXXX块电能表/交流采样装置所属的用户小类号
+                            }
+                        }
+                    }
+                    ci.setDatacellParam(dcp);
+                    co.AddCommandItem(ci);
+                }
                 else if(StringUtils.equals(param, "F12")) {
                     // 终端状态量输入参数
                     CommandItem ci = new CommandItem();

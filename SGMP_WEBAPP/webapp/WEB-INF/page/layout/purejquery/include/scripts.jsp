@@ -3,6 +3,8 @@
     pageEncoding="UTF-8"%>
 <!-- jQuery library -->
 <script type="text/javascript" src="${ctx_webstatic}/framework/jquery-1.9.1/jquery-1.9.1.min.js"></script>
+<!-- jQuery library -->
+<script type="text/javascript" src="${ctx_webstatic}/framework/jquery-migrate-1.1.1/jquery-migrate-1.1.1.min.js"></script>
 <!-- jQuery EasyUI -->
 <script type="text/javascript" src="${ctx_webstatic}/framework/jquery-easyui-1.3.2/jquery.easyui.min.js"></script>
 <!-- jQuery EasyUI: zh_CN/lang -->

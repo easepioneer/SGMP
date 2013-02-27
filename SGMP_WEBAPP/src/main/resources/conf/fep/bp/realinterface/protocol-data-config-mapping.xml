@@ -1,4 +1,4 @@
-﻿<!DOCTYPE databases PUBLIC
+<!DOCTYPE databases PUBLIC
 "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
 "http://castor.exolab.org/mapping.dtd">
 <mapping>
@@ -17,7 +17,7 @@
         <field name="DataItems" collection="arraylist" type="fep.bp.realinterface.conf.ProtocolDataItem">
             <bind-xml name="DataItem"/>
         </field>
-        <field name="DiffFormat" >
+		<field name="DiffFormat" >
             <bind-xml name="DiffFormat" node="attribute"/>
         </field>
     </class>
@@ -31,17 +31,20 @@
         <field name="Format">
             <bind-xml name="Format" node="attribute"/>
         </field>
-        <field name="BitNumber">
+		<field name="BitNumber">
             <bind-xml name="BitNumber" node="attribute"/>
         </field>
-        <field name="Description">
+		<field name="Description">
             <bind-xml name="Description" node="attribute"/>
         </field>
-        <field name="DefaultValue">
+		<field name="DefaultValue">
             <bind-xml name="DefaultValue" node="attribute"/>
         </field>
-    <field name="IsGroupEnd">
+		<field name="IsGroupEnd">
             <bind-xml name="IsGroupEnd" node="attribute"/>
+        </field>
+		<field name="LowBitBefore">
+            <bind-xml name="LowBitBefore" node="attribute"/>
         </field>
     </class>
 </mapping>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <!-- |台区管理| -->
+    <package name="tm" namespace="/tm" extends="struts-default">
+    </package>
+
+    <!-- |采集管理| -->
+    <package name="cm" namespace="/cm" extends="struts-default">
+        <!-- |终端任务设置| -->
+        <action name="tcts" class="terminalCollectionTaskSetupAction">
+            <result>/WEB-INF/page/layout/purejquery/module/cm/tcts.jsp</result>
+        </action>
+        <!-- |主站任务配置| -->
+        <action name="sctc" class="stationCollectionTaskConfigAction">
+            <result>/WEB-INF/page/layout/purejquery/module/cm/sctc.jsp</result>
+        </action>
+    </package>
+
+    <!-- |数据查询| -->
+    <package name="dq" namespace="/dq" extends="struts-default">
+    </package>
+
+    <!-- |系统管理| -->
+    <package name="sm" namespace="/sm" extends="struts-default">
+    </package>
+
+</struts>

@@ -13,12 +13,18 @@
         "OP_RESULT": ""
     }, {
         "SN": "3",
+        "P_CODE": "F10",
+        "P_NAME": "终端电能表/交流采样装置配置参数",
+        "P_VALUE": "",
+        "OP_RESULT": ""
+    }, {
+        "SN": "4",
         "P_CODE": "F12",
         "P_NAME": "终端状态量输入参数",
         "P_VALUE": "",
         "OP_RESULT": ""
     }, {
-        "SN": "4",
+        "SN": "5",
         "P_CODE": "F61",
         "P_NAME": "直流模拟量接入参数",
         "P_VALUE": "",
