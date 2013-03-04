@@ -1,0 +1,18 @@
+{ 
+    "records": [{
+        "P_CODE": "F81",
+        "P_NAME": "直流模拟量输入变比",
+        "P_VALUE": "",
+        "OP_RESULT": ""
+    }, {
+        "P_CODE": "F82",
+        "P_NAME": "直流模拟量限值",
+        "P_VALUE": "",
+        "OP_RESULT": ""
+    }, {
+        "P_CODE": "F83",
+        "P_NAME": "直流模拟量冻结参数",
+        "P_VALUE": "",
+        "OP_RESULT": ""
+    }]
+}

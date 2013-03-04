@@ -135,7 +135,7 @@ Ext.onReady(function() {
             if(record.getId() == 'actionTgArchivesManagement') {
                 //alert(selectedSoRecord.get('soType'));
                 //alert(selectedSoRecord.get('soId'));
-                if(selectedSoRecord.get('soType') == 'tg') {
+                if(selectedSoRecord && selectedSoRecord.get('soType') == 'tg') {
                     //alert(selectedSoRecord.get('soId'));
                     Ext.getCmp('tgInfoForm').getForm().setValues({id: selectedSoRecord.get('soId')});
                 }
@@ -149,14 +149,32 @@ Ext.onReady(function() {
             else if(record.getId() == 'actionProtectorControlCommandSending') {
                 initPccsFilterForm();
             }
+            else if(record.getId() == 'actionTgMeterDataReading') {
+                initTmdrFilterForm();
+            }
+            else if(record.getId() == 'actionProtectorDataReading') {
+                initPdrFilterForm();
+            }
+            else if(record.getId() == 'actionAnalogueDataReading') {
+                initAdrFilterForm();
+            }
             else if(record.getId() == 'actionTgMeterDataQuery') {
                 initTmdqFilterForm();
             }
             else if(record.getId() == 'actionProtectorDataQuery') {
                 initPdqFilterForm();
             }
+            else if(record.getId() == 'actionAnalogueDataQuery') {
+                initAdqFilterForm();
+            }
             else if(record.getId() == 'actionTgPowerConsumptionQuery') {
                 initTpcqFilterForm();
+            }
+            else if(record.getId() == 'actionTerminalEventsQuery') {
+                initTeqFilterForm();
+            }
+            else if(record.getId() == 'actionProtectorTripEventsQuery') {
+                initPteqFilterForm();
             }
         }
     });
@@ -210,10 +228,7 @@ Ext.onReady(function() {
         selectedSoRecord = record;
         activeItemId = Ext.getCmp('content-panel').layout.getActiveItem().id;
         if(activeItemId == 'actionTgArchivesManagementContentPanel') {
-            //alert(selectedSoRecord.get('soType'));
-            //alert(selectedSoRecord.get('soId'));
             if(selectedSoRecord.get('soType') == 'tg') {
-                //alert(selectedSoRecord.get('soId'));
                 Ext.getCmp('tgInfoForm').getForm().setValues({id: selectedSoRecord.get('soId')});
             }
         }

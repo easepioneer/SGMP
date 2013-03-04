@@ -40,6 +40,10 @@
             text: '保护器数据召测',
             id: 'actionProtectorDataReading',
             leaf: true
+        }, {
+            text: '模拟量数据召测',
+            id: 'actionAnalogueDataReading',
+            leaf: true
         }]
     }, /*{
         text: '在线监测',
@@ -104,7 +108,7 @@
             text: '组织机构管理',
             id: 'actionOrgnizationManagement',
             leaf: true
-        }, {
+        }/*, {
             text: '操作员管理',
             id: 'actionOperatorManagement',
             leaf: true
@@ -112,6 +116,6 @@
             text: '角色管理',
             id: 'actionRoleManagement',
             leaf: true
-        }]
+        }*/]
     }]
 }

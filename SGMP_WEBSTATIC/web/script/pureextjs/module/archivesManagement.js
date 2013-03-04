@@ -82,6 +82,7 @@ function getArchivesManagementFunctions() {
         store: tam_term_gridstore,
         loadMask: true,
         columns: [
+            Ext.create('Ext.grid.RowNumberer'),
             {text: "集中器标识", dataIndex: 'id', sortable: false, hideable: true, hidden: true},
             {text: "资产编号", dataIndex: 'assetNo', width: 100, sortable: true},
             {text: "逻辑地址", dataIndex: 'logicalAddr', width: 100, sortable: true},
@@ -163,6 +164,7 @@ function getArchivesManagementFunctions() {
         store: tam_meter_gridstore,
         loadMask: true,
         columns: [
+            Ext.create('Ext.grid.RowNumberer'),
             {text: "考核表标识", dataIndex: 'id', sortable: false, hideable: true, hidden: true},
             {text: "资产编号", dataIndex: 'assetNo', width: 100, sortable: true},
             {text: "考核表名称", dataIndex: 'mpName', width: 200, sortable: true},
@@ -239,6 +241,7 @@ function getArchivesManagementFunctions() {
         store: tam_ps_gridstore,
         loadMask: true,
         columns: [
+            Ext.create('Ext.grid.RowNumberer'),
             {text: "保护器标识", dataIndex: 'id', sortable: false, hideable: true, hidden: true},
             {text: "资产编号", dataIndex: 'assetNo', width: 150, sortable: true},
             {text: "保护器名称", dataIndex: 'psName', width: 200, sortable: true},
@@ -312,6 +315,7 @@ function getArchivesManagementFunctions() {
         store: tam_ag_gridstore,
         loadMask: true,
         columns: [
+            Ext.create('Ext.grid.RowNumberer'),
             {text: "测量点标识", dataIndex: 'gpId', sortable: false, hideable: true, hidden: true},
             {text: "模拟量端口", dataIndex: 'port', width: 100, sortable: true},
             {text: "模拟量名称", dataIndex: 'analogueName', width: 200, sortable: true},
@@ -382,6 +386,7 @@ function getArchivesManagementFunctions() {
         store: tam_sw_gridstore,
         loadMask: true,
         columns: [
+            Ext.create('Ext.grid.RowNumberer'),
             {text: "开关量标识", dataIndex: 'id', sortable: false, hideable: true, hidden: true},
             {text: "开关量编号", dataIndex: 'switchNo', width: 100, sortable: true},
             {text: "开关量名称", dataIndex: 'switchName', width: 200, sortable: true},

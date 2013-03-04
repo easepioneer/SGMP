@@ -22,6 +22,18 @@
         <action name="pccs" class="protectorControlCommandSendingAction" />
     </package>
 
+    <!-- |采集管理| -->
+    <package name="cm" namespace="/cm" extends="struts-default">
+        <!-- |采集任务管理| -->
+        <action name="ctm" class="collectionTaskManagementAction" />
+        <!-- |台区考核表数据召测| -->
+        <action name="tmdr" class="tgMeterDataReadingAction" />
+        <!-- |保护器数据召测| -->
+        <action name="pdr" class="protectorDataReadingAction" />
+        <!-- |模拟量数据召测| -->
+        <action name="adr" class="analogueDataReadingAction" />
+    </package>
+
     <!-- |数据查询| -->
     <package name="dq" namespace="/dq" extends="struts-default">
         <!-- |台区考核表数据查询| -->

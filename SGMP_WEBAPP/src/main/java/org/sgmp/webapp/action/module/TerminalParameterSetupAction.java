@@ -2,6 +2,7 @@ package org.sgmp.webapp.action.module;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -41,8 +42,8 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
 
     private Terminal terminal;
 
-    private String gpSn;
-    private String port;
+    private Integer gpSn;
+    private Integer port;
 
     @Override
     public void beforeSend() {
@@ -81,8 +82,9 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
             co.setMpSn(mpSn);
 
             int p = paramsAndValues.indexOf(":");
+            int q = paramsAndValues.indexOf("||");
             String param = paramsAndValues.substring(0, p);
-            String value = paramsAndValues.substring(p + 1);
+            String value = paramsAndValues.substring(p + 1, q);
             logger.info("param : " + param);
             logger.info("value : " + value);
 
@@ -140,80 +142,6 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
                     ci.setDatacellParam(dcp);
                     co.AddCommandItem(ci);
                 }
-                else if(StringUtils.equals(param, "F9")) {
-                    // 终端事件记录配置设置
-                    CommandItem ci = new CommandItem();
-                    ci.setIdentifier("10040009");
-                    Map<String, String> dcp = new HashMap<String, String>();
-                    if(StringUtils.isNotBlank(value)) {
-                        String[] pvItems = value.split(";");
-                        for(int i = 0; i < pvItems.length; i++) {
-                            if(i == 0) {
-                                dcp.put("1004000901", pvItems[i]);          // 事件记录有效标志位
-                            }
-                            else if(i == 1) {
-                                dcp.put("1004000902", pvItems[i]);          // 事件重要性等级标志位
-                            }
-                        }
-                    }
-                    ci.setDatacellParam(dcp);
-                    co.AddCommandItem(ci);
-                }
-                else if(StringUtils.equals(param, "F10")) {
-                    // 终端电能表/交流采样装置配置参数
-                    CommandItem ci = new CommandItem();
-                    ci.setIdentifier("10040010");
-                    Map<String, String> dcp = new HashMap<String, String>();
-                    if(StringUtils.isNotBlank(value)) {
-                        //String[] pvItems = value.split(";");
-                        for(int i = 0; i < 14; i++) {
-                            if(i == 0) {
-                                dcp.put("1004001001", "1");                     // 本次电能表/交流采样装置配置数量
-                            }
-                            else if(i == 1) {
-                                dcp.put("10040010020001", "2");                 // 本次配置第XXXX块电能表/交流采样装置序号
-                            }
-                            else if(i == 2) {
-                                dcp.put("10040010030001", "2");                 // 本次配置第XXXX块电能表/交流采样装置所属测量点号
-                            }
-                            else if(i == 3) {
-                                dcp.put("10040010040001", "3");                 // 本次配置第XXXX块电能表/交流采样装置通信波特率
-                            }
-                            else if(i == 4) {
-                                dcp.put("10040010050001", "1");                 // 本次配置第XXXX块电能表/交流采样装置通信端口号
-                            }
-                            else if(i == 5) {
-                                dcp.put("10040010060001", "100");               // 本次配置第XXXX块电能表/交流采样装置通信协议类型
-                            }
-                            else if(i == 6) {
-                                dcp.put("10040010070001", "000000000002");      // 本次配置第XXXX块电能表/交流采样装置通信地址
-                            }
-                            else if(i == 7) {
-                                dcp.put("10040010080001", "000000000000");      // 本次配置第XXXX块电能表/交流采样装置通信密码
-                            }
-                            else if(i == 8) {
-                                dcp.put("10040010100001", "000100");            // 本次配置第XXXX块电能表/交流采样装置电能费率个数
-                            }
-                            else if(i == 9) {
-                                dcp.put("10040010120001", "10");                // 本次配置第XXXX块电能表/交流采样装置有功电能示值的整数位个数
-                            }
-                            else if(i == 10) {
-                                dcp.put("10040010130001", "11");                // 本次配置第XXXX块电能表/交流采样装置有功电能示值的小数位个数
-                            }
-                            else if(i == 11) {
-                                dcp.put("10040010140001", "000000000000");      // 本次配置第XXXX块电能表/交流采样装置所属采集器通信地址
-                            }
-                            else if(i == 12) {
-                                dcp.put("10040010150001", "0000");              // 本次配置第XXXX块电能表/交流采样装置所属的用户大类号
-                            }
-                            else if(i == 13) {
-                                dcp.put("10040010160001", "0000");              // 本次配置第XXXX块电能表/交流采样装置所属的用户小类号
-                            }
-                        }
-                    }
-                    ci.setDatacellParam(dcp);
-                    co.AddCommandItem(ci);
-                }
                 else if(StringUtils.equals(param, "F12")) {
                     // 终端状态量输入参数
                     CommandItem ci = new CommandItem();
@@ -242,7 +170,7 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
                         String[] pvItems = value.split(";");
                         for(int i = 0; i < pvItems.length; i++) {
                             if(i == 0) {
-                                dcp.put("1004006101", pvItems[i]);          // 状态量接入标志位
+                                dcp.put("1004006101", pvItems[i]);          // 直流模拟量接入标志位
                             }
                         }
                     }
@@ -261,12 +189,6 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
                     // 主站IP地址和端口
                     CommandItem ci = new CommandItem();
                     ci.setIdentifier("10040003");
-                    co.AddCommandItem(ci);
-                }
-                else if(StringUtils.equals(param, "F9")) {
-                    // 终端事件记录配置设置
-                    CommandItem ci = new CommandItem();
-                    ci.setIdentifier("10040009");
                     co.AddCommandItem(ci);
                 }
                 else if(StringUtils.equals(param, "F12")) {
@@ -306,12 +228,13 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
             co.setPwContent("8888");
             co.setMpExpressMode(3);
             int[] mpSn = new int[1];
-            mpSn[0] = Integer.parseInt(gpSn);
+            mpSn[0] = gpSn;
             co.setMpSn(mpSn);
 
             int p = paramsAndValues.indexOf(":");
+            int q = paramsAndValues.indexOf("||");
             String param = paramsAndValues.substring(0, p);
-            String value = paramsAndValues.substring(p + 1);
+            String value = paramsAndValues.substring(p + 1, q);
             logger.info("param : " + param);
             logger.info("value : " + value);
 
@@ -495,12 +418,13 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
             co.setPwContent("8888");
             co.setMpExpressMode(3);
             int[] mpSn = new int[1];
-            mpSn[0] = Integer.parseInt(port);
+            mpSn[0] = port;
             co.setMpSn(mpSn);
 
             int p = paramsAndValues.indexOf(":");
+            int q = paramsAndValues.indexOf("||");
             String param = paramsAndValues.substring(0, p);
-            String value = paramsAndValues.substring(p + 1);
+            String value = paramsAndValues.substring(p + 1, q);
             logger.info("param : " + param);
             logger.info("value : " + value);
 
@@ -583,7 +507,7 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
             coList.add(co);
             mto.setCollectObjects(coList);
             setMto376(mto);
-        } 
+        }
     }
 
     @Override
@@ -600,10 +524,279 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
         super.afterSend();
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public void afterReceive() throws ActionException {
-        // TODO Auto-generated method stub
-        super.afterReceive();
+        if(resultMap != null && !resultMap.isEmpty()) {
+            logger.info("resultMap : " + resultMap.toString());
+            Iterator<?> iterator = resultMap.keySet().iterator();
+            if(iterator != null && iterator.hasNext()) {
+                Object key = iterator.next();
+                Object value = resultMap.get(key);
+                //logger.info("receive result [" + key.toString() + ":" + value.toString() + "]");
+                String p = null;
+                String r = null;
+                Map<String, String> m = new HashMap<String, String>();
+                if(StringUtils.equals(type, TYPE_TERMINAL_PARAMETER)) {
+                    // 集中器参数
+                    if(StringUtils.equals(action, "write")) {
+                        // 设置
+                        if(key instanceof String) {
+                            logger.info(key.toString());
+                            String[] ks = ((String) key).split("#");
+                            if(ks.length == 3) {
+                                p = ks[2];
+                            }
+                        }
+
+                        if(value instanceof String) {
+                            logger.info(value.toString());
+                            if(StringUtils.equals(p, "10040001")) {
+                                p = "F1";
+                                r = (String) value;
+                            }
+                            else if(StringUtils.equals(p, "10040003")) {
+                                p = "F3";
+                                r = (String) value;
+                            }
+                            else if(StringUtils.equals(p, "10040012")) {
+                                p = "F12";
+                                r = (String) value;
+                            }
+                            else if(StringUtils.equals(p, "10040061")) {
+                                p = "F61";
+                                r = (String) value;
+                            }
+                        }
+                    }
+                    else if(StringUtils.equals(action, "read")) {
+                        // 读取
+                        if(key instanceof String) {
+                            logger.info(key.toString());
+                            String[] ks = ((String) key).split("#");
+                            if(ks.length == 3) {
+                                p = ks[2];
+                            }
+                        }
+
+                        if(value instanceof Map) {
+                            logger.info(value.toString());
+                            if(StringUtils.equals(p, "10040001")) {
+                                p = "F1";
+                                Object r1 = ((Map) value).get("1004000101");        // 终端数传机延时时间RTS
+                                Object r2 = ((Map) value).get("1004000102");        // 终端作为启动站允许发送传输延时时间
+                                Object r3 = ((Map) value).get("1004000103");        // 终端等待从动站响应的超时时间
+                                Object r4 = ((Map) value).get("1004000104");        // 终端等待从动站响应的重发次数
+                                Object r6 = ((Map) value).get("1004000106");        // 需要主站确认的通信服务（CON=1）的标志
+                                Object r7 = ((Map) value).get("1004000107");        // 心跳周期
+                                r = r1.toString() + ";" + r2.toString() + ";" + r3.toString() + ";" + r4.toString() + ";" + r6.toString() + ";" + r7.toString() + ";";
+                            }
+                            else if(StringUtils.equals(p, "10040003")) {
+                                p = "F3";
+                                Object r1 = ((Map) value).get("1004000301");        // 主用IP地址和端口
+                                Object r2 = ((Map) value).get("1004000302");        // 备用IP地址和端口
+                                Object r3 = ((Map) value).get("1004000303");        // APN
+                                r = r1.toString() + ";" + r2.toString() + ";" + r3.toString() + ";";
+                            }
+                            else if(StringUtils.equals(p, "10040012")) {
+                                p = "F12";
+                                Object r1 = ((Map) value).get("1004001201");        // 状态量接入标志位
+                                Object r2 = ((Map) value).get("1004001202");        // 状态量属性标志位
+                                r = r1.toString() + ";" + r2.toString() + ";";
+                            }
+                            else if(StringUtils.equals(p, "10040061")) {
+                                p = "F61";
+                                Object r1 = ((Map) value).get("1004006101");        // 直流模拟量接入标志位
+                                r = r1.toString() + ";";
+                            }
+                        }
+
+                        if(StringUtils.isNotBlank(p) && StringUtils.isNotBlank(r)) {
+                            m.put("P_CODE", p);
+                            m.put("OP_RESULT", r);
+                            responseJson(m);
+                        }
+                        else {
+                            responseText("......");
+                        }
+                    }
+                }
+                else if(StringUtils.equals(type, TYPE_GATHERPOINT_PARAMETER)) {
+                    // 测量点参数
+                    if(StringUtils.equals(action, "write")) {
+                        // 设置
+                        if(key instanceof String) {
+                            logger.info(key.toString());
+                            String[] ks = ((String) key).split("#");
+                            if(ks.length == 3) {
+                                p = ks[2];
+                            }
+                        }
+
+                        if(value instanceof String) {
+                            logger.info(value.toString());
+                            if(StringUtils.equals(p, "10040025")) {
+                                p = "F25";
+                                r = (String) value;
+                            }
+                            else if(StringUtils.equals(p, "10040026")) {
+                                p = "F26";
+                                r = (String) value;
+                            }
+                        }
+                    }
+                    else if(StringUtils.equals(action, "read")) {
+                        // 读取
+                        if(key instanceof String) {
+                            logger.info(key.toString());
+                            String[] ks = ((String) key).split("#");
+                            if(ks.length == 3) {
+                                p = ks[2];
+                            }
+                        }
+
+                        if(value instanceof Map) {
+                            logger.info(value.toString());
+                            if(StringUtils.equals(p, "10040025")) {
+                                p = "F25";
+                                Object r1 = ((Map) value).get("1004002501");        // 电压互感器倍率
+                                Object r2 = ((Map) value).get("1004002502");        // 电流互感器倍率
+                                Object r3 = ((Map) value).get("1004002503");        // 额定电压
+                                Object r4 = ((Map) value).get("1004002504");        // 额定电流
+                                Object r5 = ((Map) value).get("1004002505");        // 额定负荷
+                                Object r7 = ((Map) value).get("1004002507");        // 单相表接线相
+                                Object r8 = ((Map) value).get("1004002508");        // 电源接线方式
+                                r = r1.toString() + ";" + r2.toString() + ";" + r3.toString() + ";" + r4.toString() + ";" + r5.toString() + ";" + r7.toString() + ";" + r8.toString() + ";";
+                            }
+                            else if(StringUtils.equals(p, "10040026")) {
+                                p = "F26";
+                                Object r1 = ((Map) value).get("1004002601");        // 
+                                Object r2 = ((Map) value).get("1004002602");        // 
+                                Object r3 = ((Map) value).get("1004002603");        // 
+                                Object r4 = ((Map) value).get("1004002604");        // 
+                                Object r5 = ((Map) value).get("1004002605");        // 
+                                Object r6 = ((Map) value).get("1004002606");        // 
+                                Object r7 = ((Map) value).get("1004002607");        // 
+                                Object r8 = ((Map) value).get("1004002608");        // 
+                                Object r9 = ((Map) value).get("1004002609");        // 
+                                Object r10 = ((Map) value).get("1004002610");       // 
+                                Object r11 = ((Map) value).get("1004002611");       // 
+                                Object r12 = ((Map) value).get("1004002612");       // 
+                                Object r13 = ((Map) value).get("1004002613");       // 
+                                Object r14 = ((Map) value).get("1004002614");       // 
+                                Object r15 = ((Map) value).get("1004002615");       // 
+                                Object r16 = ((Map) value).get("1004002616");       // 
+                                Object r17 = ((Map) value).get("1004002617");       // 
+                                Object r18 = ((Map) value).get("1004002618");       // 
+                                Object r19 = ((Map) value).get("1004002619");       // 
+                                Object r20 = ((Map) value).get("1004002620");       // 
+                                Object r21 = ((Map) value).get("1004002621");       // 
+                                Object r22 = ((Map) value).get("1004002622");       // 
+                                Object r23 = ((Map) value).get("1004002623");       // 
+                                Object r24 = ((Map) value).get("1004002624");       // 
+                                Object r25 = ((Map) value).get("1004002625");       // 
+                                Object r26 = ((Map) value).get("1004002626");       // 
+                                Object r27 = ((Map) value).get("1004002627");       // 
+                                Object r28 = ((Map) value).get("1004002628");       // 
+                                Object r29 = ((Map) value).get("1004002629");       // 
+                                Object r30 = ((Map) value).get("1004002630");       // 
+                                r = r1.toString() + ";" + r2.toString() + ";" + r3.toString() + ";" + r4.toString() + ";" + r5.toString() + ";";
+                                r += r6.toString() + ";" + r7.toString() + ";" + r8.toString() + ";" + r9.toString() + ";" + r10.toString() + ";";
+                                r += r11.toString() + ";" + r12.toString() + ";" + r13.toString() + ";" + r14.toString() + ";" + r15.toString() + ";";
+                                r += r16.toString() + ";" + r17.toString() + ";" + r18.toString() + ";" + r19.toString() + ";" + r20.toString() + ";";
+                                r += r21.toString() + ";" + r22.toString() + ";" + r23.toString() + ";" + r24.toString() + ";" + r25.toString() + ";";
+                                r += r26.toString() + ";" + r27.toString() + ";" + r28.toString() + ";" + r29.toString() + ";" + r30.toString() + ";";
+                            }
+                        }
+
+                        if(StringUtils.isNotBlank(p) && StringUtils.isNotBlank(r)) {
+                            m.put("P_CODE", p);
+                            m.put("OP_RESULT", r);
+                            responseJson(m);
+                        }
+                        else {
+                            responseText("......");
+                        }
+                    }
+                }
+                else if(StringUtils.equals(type, TYPE_ANALOGUE_PARAMETER)) {
+                    // 模拟量参数
+                    if(StringUtils.equals(action, "write")) {
+                        // 设置
+                        if(key instanceof String) {
+                            logger.info(key.toString());
+                            String[] ks = ((String) key).split("#");
+                            if(ks.length == 3) {
+                                p = ks[2];
+                            }
+                        }
+
+                        if(value instanceof String) {
+                            logger.info(value.toString());
+                            if(StringUtils.equals(p, "10040081")) {
+                                p = "F81";
+                                r = (String) value;
+                            }
+                            else if(StringUtils.equals(p, "10040082")) {
+                                p = "F82";
+                                r = (String) value;
+                            }
+                            else if(StringUtils.equals(p, "10040083")) {
+                                p = "F83";
+                                r = (String) value;
+                            }
+                        }
+                    }
+                    else if(StringUtils.equals(action, "read")) {
+                        // 读取
+                        if(key instanceof String) {
+                            logger.info(key.toString());
+                            String[] ks = ((String) key).split("#");
+                            if(ks.length == 3) {
+                                p = ks[2];
+                            }
+                        }
+
+                        if(value instanceof Map) {
+                            logger.info(value.toString());
+                            if(StringUtils.equals(p, "10040081")) {
+                                p = "F81";
+                                Object r1 = ((Map) value).get("1004008101");        // 直流模拟量量程起始值
+                                Object r2 = ((Map) value).get("1004008102");        // 直流模拟量量程终止值
+                                r = r1.toString() + ";" + r2.toString() + ";";
+                            }
+                            else if(StringUtils.equals(p, "10040082")) {
+                                p = "F82";
+                                Object r1 = ((Map) value).get("1004008201");        // 直流模拟量上限
+                                Object r2 = ((Map) value).get("1004008202");        // 直流模拟量下限
+                                r = r1.toString() + ";" + r2.toString() + ";";
+                            }
+                            else if(StringUtils.equals(p, "10040083")) {
+                                p = "F83";
+                                Object r1 = ((Map) value).get("1004008301");        // 直流模拟量冻结密度
+                                r = r1.toString() + ";";
+                            }
+                        }
+
+                        if(StringUtils.isNotBlank(p) && StringUtils.isNotBlank(r)) {
+                            m.put("P_CODE", p);
+                            m.put("OP_RESULT", r);
+                            responseJson(m);
+                        }
+                        else {
+                            responseText("......");
+                        }
+                    }
+                }
+                //responseText(value.toString());
+            }
+            else {
+                responseText("......");
+            }
+        }
+        else {
+            responseText("......");
+        }
     }
 
     /**
@@ -615,7 +808,7 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
         List<Map<String, Object>> pvList = new ArrayList<Map<String, Object>>();
         if(StringUtils.isNotBlank(stermid)) {
             Long termId = Long.parseLong(stermid);
-            logger.debug("termId : " + termId);
+            logger.info("termId : " + termId);
 
             Map<String, Object> pv1 = new HashMap<String, Object>();
             pv1.put("P_CODE", "F1");
@@ -626,11 +819,6 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
             pv3.put("P_CODE", "F3");
             pv3.put("P_VALUE", "183.129.186.78:10086;183.129.186.78:10086;CMNET;");     // 01;02;03;
             pvList.add(pv3);
-
-            Map<String, Object> pv9 = new HashMap<String, Object>();
-            pv9.put("P_CODE", "F9");
-            pv9.put("P_VALUE", "1111111111111111111111111111111111111111111111111111111111111111;1111111111111111111111111111111111111111111111111111111111111111;");
-            pvList.add(pv9);
 
             Map<String, Object> pv12 = new HashMap<String, Object>();
             pv12.put("P_CODE", "F12");
@@ -659,12 +847,12 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
         if(StringUtils.isNotBlank(stermid)) {
             Long termId = Long.parseLong(stermid);
             Integer gpSn = Integer.parseInt(sgpsn);
-            logger.debug("termId : " + termId);
-            logger.debug("gpSn   : " + gpSn);
+            logger.info("termId : " + termId);
+            logger.info("gpSn   : " + gpSn);
 
             Map<String, Object> pv25 = new HashMap<String, Object>();
             pv25.put("P_CODE", "F25");
-            pv25.put("P_VALUE", "1;1;220.0;5.0;50.0000;00;00");                          // 01;02;03;04;05;07;08;
+            pv25.put("P_VALUE", "1;1;220.0;5.0;50.0000;00;00;");                        // 01;02;03;04;05;07;08;
             pvList.add(pv25);
 
             Map<String, Object> pv26 = new HashMap<String, Object>();
@@ -676,6 +864,56 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("records", pvList);
         responseJson(result);
+    }
+
+    /**
+     * 
+     * @throws ActionException
+     */
+    public void loadAgParamsValuesByTermId() throws ActionException {
+        String stermid = request.getParameter("termId");
+        String port = request.getParameter("port");
+        List<Map<String, Object>> pvList = new ArrayList<Map<String, Object>>();
+        if(StringUtils.isNotBlank(stermid)) {
+            Long termId = Long.parseLong(stermid);
+            logger.info("termId : " + termId);
+            logger.info("port   : " + port);
+
+            Map<String, Object> pv81 = new HashMap<String, Object>();
+            pv81.put("P_CODE", "F81");
+            pv81.put("P_VALUE", "0.00;200.00;");                            // 01;02;
+            pvList.add(pv81);
+
+            Map<String, Object> pv82 = new HashMap<String, Object>();
+            pv82.put("P_CODE", "F82");
+            pv82.put("P_VALUE", "0.00;50.00;");                             // 01;02;
+            pvList.add(pv82);
+
+            Map<String, Object> pv83 = new HashMap<String, Object>();
+            pv83.put("P_CODE", "F83");
+            pv83.put("P_VALUE", "2;");                                      // 01;
+            pvList.add(pv83);
+        }
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("records", pvList);
+        responseJson(result);
+    }
+
+    public Integer getGpSn() {
+        return gpSn;
+    }
+
+    public void setGpSn(Integer gpSn) {
+        this.gpSn = gpSn;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
     }
 
 }

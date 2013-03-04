@@ -475,6 +475,18 @@ Ext.define('ps-liststore-model', {
     idProperty: 'id'
 });
 
+/**
+ * 
+ */
+Ext.define('ag-liststore-model', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'analogueName', type: 'string'},                             /* 模拟量名称 */
+        {name: 'gpId', type: 'int'}                                         /* 测量点ID */
+    ],
+    idProperty: 'id'
+});
+
 
 ////////////////////////////////////////////////////////////////////////////////
 

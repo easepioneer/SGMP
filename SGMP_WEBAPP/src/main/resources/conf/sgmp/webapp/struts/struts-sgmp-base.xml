@@ -49,9 +49,9 @@
 
     <!-- ======================================== /开发模式/ ======================================== -->
 
-    <!-- <include file="conf/sgmp/webapp/struts/hd/struts-sgmp-mainframe.xml" />
-    <include file="conf/sgmp/webapp/struts/hd/struts-sgmp-module.xml" /> -->
-    <include file="conf/sgmp/webapp/struts/ql/struts-sgmp-mainframe.xml" />
-    <include file="conf/sgmp/webapp/struts/ql/struts-sgmp-module.xml" />
+    <include file="conf/sgmp/webapp/struts/hd/struts-sgmp-mainframe.xml" />
+    <include file="conf/sgmp/webapp/struts/hd/struts-sgmp-module.xml" />
+    <!-- <include file="conf/sgmp/webapp/struts/ql/struts-sgmp-mainframe.xml" />
+    <include file="conf/sgmp/webapp/struts/ql/struts-sgmp-module.xml" /> -->
 
 </struts>

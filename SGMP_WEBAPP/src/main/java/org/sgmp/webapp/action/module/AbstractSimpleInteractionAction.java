@@ -5,6 +5,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.sgmp.webapp.ActionException;
 import org.sgmp.webapp.action.AbstractSimpleAction;
+import org.sgmp.webapp.mapper.module.SimpleInteractionMapper;
 import org.sgmp.webapp.service.module.SimpleInteractionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,9 @@ public abstract class AbstractSimpleInteractionAction extends AbstractSimpleActi
     protected static final String TYPE_ANALOGUE_PARAMETER = "analogue-parameter";               // 模拟量参数
     protected static final String TYPE_PROTECTOR_PARAMETER = "protector-parameter";             // 保护器参数
     protected static final String TYPE_PROTECTOR_CONTROL = "protector-control";                 // 保护器控制
+    protected static final String TYPE_METER_DATA = "meter-data";                               // 考核表数据
+    protected static final String TYPE_PROTECTOR_DATA = "protector-data";                       // 保护器数据
+    protected static final String TYPE_ANALOGUE_DATA = "analogue-data";                         // 模拟量数据
 
     @Autowired
     protected SimpleInteractionService simpleInteractionService;
@@ -46,6 +50,9 @@ public abstract class AbstractSimpleInteractionAction extends AbstractSimpleActi
 
     protected long taskId;
     protected Map<?, ?> resultMap;
+
+    protected Class<? extends SimpleInteractionMapper> mapperClass;
+    protected Map<String, Object> queryParams;
 
     protected String soType;              // selection object type
     protected String soId;                // selection object id
@@ -165,7 +172,6 @@ public abstract class AbstractSimpleInteractionAction extends AbstractSimpleActi
                 }
             }
         }
-        logger.debug(resultMap.toString());
 
         afterReceive();
     }

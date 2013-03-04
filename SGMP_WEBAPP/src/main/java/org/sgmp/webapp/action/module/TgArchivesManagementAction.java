@@ -164,7 +164,7 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
 
             if(tgView.getId() != null && tgView.getId() > 0) {
                 Tg tg = tgService.getById(TgMapper.class, tgView.getId());
-                BeanUtils.copyProperties(tgView, tg);
+                BeanUtils.copyProperties(tgView, tg, new String[] {"orgId"});
                 tgService.update(TgMapper.class, tg);
                 tgId = tg.getId();
                 logger.info("tgId : " + tgId);
@@ -804,7 +804,9 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
      * 
      * @throws ActionException
      */
+    @SuppressWarnings("unchecked")
     public void getAgList() throws ActionException {
+        String withAll = request.getParameter("withAll");
         String orgId = request.getParameter("orgId");                       // 机构标识
         String tgId = request.getParameter("tgId");                         // 台区标识
         String termId = request.getParameter("termId");                     // 集中器标识
@@ -822,18 +824,26 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
             params.put("termId", id);
         }
 
-        try {
-            List<?> records = simpleQueryService.getList(AnalogueInfoQueryMapper.class, params, null, null, null, null);
-            Integer totalCount = simpleQueryService.getCount(AnalogueInfoQueryMapper.class, params);
-            Map<String, Object> result = new HashMap<String, Object>();
-            result.put("records", records);
-            result.put("totalCount", totalCount);
-            responseJson(result);
+        List<AnalogueInfo> records = new ArrayList<AnalogueInfo>();
+        if(StringUtils.equals(withAll, "true")) {
+            AnalogueInfo all = new AnalogueInfo();
+            all.setGpId(0L);
+            all.setAnalogueName(" --- 所有模拟量 --- ");
+            records.add(all);
         }
+
+        try {
+            records.addAll((Collection<? extends AnalogueInfo>) simpleQueryService.getList(AnalogueInfoQueryMapper.class, params, null, null, null, null));
+       }
         catch(ServiceException _se) {
             logger.error("getAgList error", _se);
             throw new ActionException("ActionException", _se.getCause());
         }
+        finally {
+            Map<String, Object> result = new HashMap<String, Object>();
+            result.put("records", records);
+            responseJson(result);
+         }
     }
 
     /**
@@ -923,6 +933,7 @@ public class TgArchivesManagementAction extends AbstractSimpleCURDAction {
                 logger.info(gatherPointView.toString());
 
                 gatherPointView.setLastTimestamp(new Date());
+                gatherPointView.setGpSn(Integer.valueOf(gatherPointView.getPort()));
 
                 if(analogueView.getGpId() != null && analogueView.getGpId() > 0) {
                     Analogue analogue = agService.getById(AnalogueMapper.class, analogueView.getGpId());

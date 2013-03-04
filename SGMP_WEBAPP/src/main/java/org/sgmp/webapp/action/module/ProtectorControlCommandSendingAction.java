@@ -8,15 +8,21 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.sgmp.webapp.ActionException;
+import org.sgmp.webapp.ServiceException;
+import org.sgmp.webapp.mapper.module.ProtectorInfoQueryMapper;
+import org.sgmp.webapp.mapper.module.TerminalMapper;
+import org.sgmp.webapp.pojo.module.ProtectorInfo;
+import org.sgmp.webapp.pojo.module.Terminal;
+import org.sgmp.webapp.service.module.SimpleCURDService;
+import org.sgmp.webapp.service.module.SimpleQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import fep.bp.realinterface.mto.CollectObject_TransMit;
 import fep.bp.realinterface.mto.CommandItem;
 import fep.bp.realinterface.mto.MTO_376;
-import fep.bp.utils.BaudRate;
-import fep.bp.utils.MeterType;
 import fep.bp.utils.SerialPortPara;
 import fep.common.exception.BPException;
 
@@ -36,123 +42,64 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
 
     private static final Logger logger = LoggerFactory.getLogger(ProtectorControlCommandSendingAction.class);
 
+    @Autowired
+    private SimpleCURDService<Terminal> termService;
+    @Autowired
+    private SimpleQueryService simpleQueryService;
+
+    private Terminal terminal;
+    private ProtectorInfo psInfo;
+
+    @SuppressWarnings("unchecked")
     @Override
     public void beforeSend() throws ActionException {
-        logger.info("soType             : " + getSoType());
-        logger.info("soId               : " + getSoId());
-        logger.info("soName             : " + getSoName());
-        logger.info("soOrgId            : " + getSoOrgId());
-        logger.info("soTgId             : " + getSoTgId());
-        logger.info("soTermId           : " + getSoTermId());
-        logger.info("soGpId             : " + getSoGpId());
-        logger.info("type               : " + getType());
-        logger.info("action             : " + getAction());
-        logger.info("paramsAndValues    : " + getParamsAndValues());
+        logger.info("soType             : " + soType);
+        logger.info("soId               : " + soId);
+        logger.info("soName             : " + soName);
+        logger.info("soOrgId            : " + soOrgId);
+        logger.info("soTgId             : " + soTgId);
+        logger.info("soTermId           : " + soTermId);
+        logger.info("soGpId             : " + soGpId);
+        logger.info("type               : " + type);
+        logger.info("action             : " + action);
+        logger.info("paramsAndValues    : " + paramsAndValues);
+
+        Long gpId = Long.parseLong(soGpId);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("gpId", gpId);
+        try {
+            List<ProtectorInfo> psInfoList = (List<ProtectorInfo>) simpleQueryService.getList(ProtectorInfoQueryMapper.class, params, "0", String.valueOf(Integer.MAX_VALUE), null, null);
+            if(psInfoList != null && psInfoList.size() > 0) {
+                psInfo = psInfoList.get(0);
+            }
+        }
+        catch(ServiceException _se) {
+            logger.error("send error", _se);
+        }
+
+        try {
+            terminal = termService.getById(TerminalMapper.class, psInfo.getTermId());
+        }
+        catch(ServiceException _se) {
+            logger.error("send error", _se);
+        }
+
         MTO_376 mto = new MTO_376();
         List<CollectObject_TransMit> cotList = new ArrayList<CollectObject_TransMit>();
         CollectObject_TransMit cot = new CollectObject_TransMit();
-        if(StringUtils.equals(getSoGpId(), "11") || StringUtils.equals(getSoGpId(), "12") 
-                || StringUtils.equals(getSoGpId(), "13") || StringUtils.equals(getSoGpId(), "14") 
-                || StringUtils.equals(getSoGpId(), "15") || StringUtils.equals(getSoGpId(), "16")) {
-            cot.setTerminalAddr("96123456");
-            if(StringUtils.equals(getSoGpId(), "11")) {
-                cot.setMeterAddr("000000000001");
-            }
-            else if(StringUtils.equals(getSoGpId(), "12")) {
-                cot.setMeterAddr("000000000002");
-            }
-            else if(StringUtils.equals(getSoGpId(), "13")) {
-                cot.setMeterAddr("000000000003");
-            }
-            else if(StringUtils.equals(getSoGpId(), "14")) {
-                cot.setMeterAddr("000000000004");
-            }
-            else if(StringUtils.equals(getSoGpId(), "15")) {
-                cot.setMeterAddr("000000000005");
-            }
-            else if(StringUtils.equals(getSoGpId(), "16")) {
-                cot.setMeterAddr("000000000006");
-            }
-        }
-        else if(StringUtils.equals(getSoGpId(), "17") || StringUtils.equals(getSoGpId(), "18") 
-                || StringUtils.equals(getSoGpId(), "19") || StringUtils.equals(getSoGpId(), "20") 
-                || StringUtils.equals(getSoGpId(), "21") || StringUtils.equals(getSoGpId(), "22")) {
-            cot.setTerminalAddr("96123457");
-            if(StringUtils.equals(getSoGpId(), "17")) {
-                cot.setMeterAddr("000000000001");
-            }
-            else if(StringUtils.equals(getSoGpId(), "18")) {
-                cot.setMeterAddr("000000000002");
-            }
-            else if(StringUtils.equals(getSoGpId(), "19")) {
-                cot.setMeterAddr("000000000003");
-            }
-            else if(StringUtils.equals(getSoGpId(), "20")) {
-                cot.setMeterAddr("000000000004");
-            }
-            else if(StringUtils.equals(getSoGpId(), "21")) {
-                cot.setMeterAddr("000000000005");
-            }
-            else if(StringUtils.equals(getSoGpId(), "22")) {
-                cot.setMeterAddr("000000000006");
-            }
-        }
-        else if(StringUtils.equals(getSoGpId(), "23") || StringUtils.equals(getSoGpId(), "24") 
-                || StringUtils.equals(getSoGpId(), "25") || StringUtils.equals(getSoGpId(), "26") 
-                || StringUtils.equals(getSoGpId(), "27") || StringUtils.equals(getSoGpId(), "28")) {
-            cot.setTerminalAddr("96123458");
-            if(StringUtils.equals(getSoGpId(), "23")) {
-                cot.setMeterAddr("000000000001");
-            }
-            else if(StringUtils.equals(getSoGpId(), "24")) {
-                cot.setMeterAddr("000000000002");
-            }
-            else if(StringUtils.equals(getSoGpId(), "25")) {
-                cot.setMeterAddr("000000000003");
-            }
-            else if(StringUtils.equals(getSoGpId(), "26")) {
-                cot.setMeterAddr("000000000004");
-            }
-            else if(StringUtils.equals(getSoGpId(), "27")) {
-                cot.setMeterAddr("000000000005");
-            }
-            else if(StringUtils.equals(getSoGpId(), "28")) {
-                cot.setMeterAddr("000000000006");
-            }
-        }
-        else if(StringUtils.equals(getSoGpId(), "121") || StringUtils.equals(getSoGpId(), "122") 
-                || StringUtils.equals(getSoGpId(), "144") || StringUtils.equals(getSoGpId(), "145") 
-                || StringUtils.equals(getSoGpId(), "146") || StringUtils.equals(getSoGpId(), "147")) {
-            cot.setTerminalAddr("96123459");
-            if(StringUtils.equals(getSoGpId(), "121")) {
-                cot.setMeterAddr("000000000001");
-            }
-            else if(StringUtils.equals(getSoGpId(), "122")) {
-                cot.setMeterAddr("000000000002");
-            }
-            else if(StringUtils.equals(getSoGpId(), "144")) {
-                cot.setMeterAddr("000000000003");
-            }
-            else if(StringUtils.equals(getSoGpId(), "145")) {
-                cot.setMeterAddr("000000000004");
-            }
-            else if(StringUtils.equals(getSoGpId(), "146")) {
-                cot.setMeterAddr("000000000005");
-            }
-            else if(StringUtils.equals(getSoGpId(), "147")) {
-                cot.setMeterAddr("000000000006");
-            }
-        }
-        cot.setEquipProtocol("100");
-        cot.setMeterType(MeterType.Meter645);
+        cot.setTerminalAddr(terminal.getLogicalAddr());
+        cot.setEquipProtocol(terminal.getProtocolNo());
+        cot.setMeterAddr(psInfo.getGpAddr());
+        cot.setMeterProtocol(psInfo.getProtocolNo());
+        cot.setMeterType(Integer.parseInt(psInfo.getProtocolNo()));
         cot.setFuncode((byte) 27);
-        cot.setPort((byte) 1);
+        cot.setPort((byte) Integer.parseInt(psInfo.getPort()));
         SerialPortPara spp = new SerialPortPara();
-        spp.setBaudrate(BaudRate.bps_2400);
         try {
+            spp.setBaudrate(Integer.toBinaryString(Integer.parseInt(psInfo.getBaudrate())));
             spp.setStopbit(1);
-            spp.setCheckbit(0);
-            spp.setOdd_even_bit(1);
+            spp.setCheckbit(1);
+            spp.setOdd_even_bit(0);
             spp.setDatabit(8);
         }
         catch(BPException _bpe) {
@@ -161,21 +108,88 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
         cot.setSerialPortPara(spp);
         try {
             cot.setWaitforPacket((byte) 10);
+            cot.setWaitforByte((byte) 5);
         }
         catch(BPException _bpe) {
             logger.error("send error", _bpe);
         }
-        cot.setWaitforByte((byte) 5);
-        String param = getParamsAndValues().substring(0, 4);
+
+        int p = paramsAndValues.indexOf(":");
+        int q = paramsAndValues.indexOf("||");
+        String param = paramsAndValues.substring(0, p);
+        String value = paramsAndValues.substring(p + 1, q);
+        logger.info("param : " + param);
+        logger.info("value : " + value);
+
         List<CommandItem> ciList = new ArrayList<CommandItem>();
-        CommandItem ci = new CommandItem();
-        ci.setIdentifier("8000" +  param);
-        if(StringUtils.equals(param, "0710") || StringUtils.equals(param, "0720") || StringUtils.equals(param, "0730")) {
-            Map<String, String> datacellParam = new HashMap<String, String>();
-            datacellParam.put(param, "0200");
-            ci.setDatacellParam(datacellParam);
+        if(StringUtils.equals(action, "write") && terminal != null) {
+            if(StringUtils.equals(param, "0710")) {
+                // 预约远程分断控制
+                CommandItem ci = new CommandItem();
+                ci.setIdentifier("80000710");
+                Map<String, String> dcp = new HashMap<String, String>();
+                if(StringUtils.isNotBlank(value)) {
+                    String[] pvItems = value.split(";");
+                    for(int i = 0; i < pvItems.length; i++) {
+                        if(i == 0) {
+                            dcp.put("0710", pvItems[i]);
+                        }
+                    }
+                }
+                ci.setDatacellParam(dcp);
+                ciList.add(ci);
+            }
+            else if(StringUtils.equals(param, "0711")) {
+                // 取消远程分断控制
+                CommandItem ci = new CommandItem();
+                ci.setIdentifier("80000711");
+                ciList.add(ci);
+            }
+            else if(StringUtils.equals(param, "0720")) {
+                // 预约远程合闸控制
+                CommandItem ci = new CommandItem();
+                ci.setIdentifier("80000720");
+                Map<String, String> dcp = new HashMap<String, String>();
+                if(StringUtils.isNotBlank(value)) {
+                    String[] pvItems = value.split(";");
+                    for(int i = 0; i < pvItems.length; i++) {
+                        if(i == 0) {
+                            dcp.put("0720", pvItems[i]);
+                        }
+                    }
+                }
+                ci.setDatacellParam(dcp);
+                ciList.add(ci);
+            }
+            else if(StringUtils.equals(param, "0721")) {
+                // 取消远程合闸控制
+                CommandItem ci = new CommandItem();
+                ci.setIdentifier("80000721");
+                ciList.add(ci);
+            }
+            else if(StringUtils.equals(param, "0730")) {
+                // 预约模拟试跳控制
+                CommandItem ci = new CommandItem();
+                ci.setIdentifier("80000730");
+                Map<String, String> dcp = new HashMap<String, String>();
+                if(StringUtils.isNotBlank(value)) {
+                    String[] pvItems = value.split(";");
+                    for(int i = 0; i < pvItems.length; i++) {
+                        if(i == 0) {
+                            dcp.put("0730", pvItems[i]);
+                        }
+                    }
+                }
+                ci.setDatacellParam(dcp);
+                ciList.add(ci);
+            }
+            else if(StringUtils.equals(param, "0731")) {
+                // 取消模拟试跳控制
+                CommandItem ci = new CommandItem();
+                ci.setIdentifier("80000731");
+                ciList.add(ci);
+            }
         }
-        ciList.add(ci);
         cot.setCommandItems(ciList);
         cotList.add(cot);
         mto.setCollectObjects_Transmit(cotList);
@@ -184,10 +198,10 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
 
     @Override
     public void beforeReceive() throws ActionException {
-        logger.info("taskId             : " + getTaskId());
-        logger.info("type               : " + getType());
-        logger.info("action             : " + getAction());
-        logger.info("paramsAndValues    : " + getParamsAndValues());
+        logger.info("taskId             : " + taskId);
+        logger.info("type               : " + type);
+        logger.info("action             : " + action);
+        logger.info("paramsAndValues    : " + paramsAndValues);
     }
 
     @Override
@@ -199,11 +213,62 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
     @Override
     public void afterReceive() throws ActionException {
         if(resultMap != null && !resultMap.isEmpty()) {
+            logger.info("resultMap : " + resultMap.toString());
             Iterator<?> iterator = resultMap.keySet().iterator();
             if(iterator != null && iterator.hasNext()) {
-                String key = (String) iterator.next();
-                String value = (String) resultMap.get(key);
-                responseText(value);
+                //String key = (String) iterator.next();
+                //String value = (String) resultMap.get(key);
+                //responseText(value);
+                Object key = iterator.next();
+                Object value = resultMap.get(key);
+                String p = null;
+                String r = null;
+                Map<String, String> m = new HashMap<String, String>();
+
+                if(key instanceof String) {
+                    logger.info(key.toString());
+                    String[] ks = ((String) key).split("#");
+                    if(ks.length == 3) {
+                        p = ks[2];
+                    }
+                }
+
+                if(value instanceof String) {
+                    logger.info(value.toString());
+                    if(StringUtils.equals(p, "80000710")) {
+                        p = "0710";
+                        r = (String) value;
+                    }
+                    else if(StringUtils.equals(p, "80000711")) {
+                        p = "0711";
+                        r = (String) value;
+                    }
+                    else if(StringUtils.equals(p, "80000720")) {
+                        p = "0720";
+                        r = (String) value;
+                    }
+                    else if(StringUtils.equals(p, "80000721")) {
+                        p = "0721";
+                        r = (String) value;
+                    }
+                    else if(StringUtils.equals(p, "80000730")) {
+                        p = "0730";
+                        r = (String) value;
+                    }
+                    else if(StringUtils.equals(p, "80000731")) {
+                        p = "0731";
+                        r = (String) value;
+                    }
+
+                    if(StringUtils.isNotBlank(p) && StringUtils.isNotBlank(r)) {
+                        m.put("P_CODE", p);
+                        m.put("OP_RESULT", r);
+                        responseJson(m);
+                    }
+                    else {
+                        responseText("......");
+                    }
+                }
             }
             else {
                 responseText("......");
@@ -214,83 +279,36 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
         }
     }
 
-    /*public void send() throws ActionException {
-        logger.info("soType             : " + getSoType());
-        logger.info("soId               : " + getSoId());
-        logger.info("soName             : " + getSoName());
-        logger.info("soOrgId            : " + getSoOrgId());
-        logger.info("soTgId             : " + getSoTgId());
-        logger.info("soTgId             : " + getSoTgId());
-        logger.info("soTermId           : " + getSoTermId());
-        logger.info("soGpId             : " + getSoGpId());
-        logger.info("action             : " + action);
-        logger.info("paramsAndValues    : " + paramsAndValues);
-        MTO_376 mto = new MTO_376();
-        List<CollectObject_TransMit> cotList = new ArrayList<CollectObject_TransMit>();
-        CollectObject_TransMit cot = new CollectObject_TransMit();
-        cot.setTerminalAddr("96123458");
-        cot.setEquipProtocol("100");
-        cot.setMeterAddr("000000000002");
-        cot.setMeterType(MeterType.Meter645);
-        cot.setFuncode((byte) 27);
-        cot.setPort((byte) 1);
-        SerialPortPara spp = new SerialPortPara();
-        spp.setBaudrate(BaudRate.bps_2400);
-        try {
-            spp.setStopbit(1);
-            spp.setCheckbit(0);
-            spp.setOdd_even_bit(1);
-            spp.setDatabit(8);
-        }
-        catch(BPException _bpe) {
-            logger.error("send error", _bpe);
-            throw new ActionException("ActionException", _bpe.getCause());
-        }
-        cot.setSerialPortPara(spp);
-        try {
-            cot.setWaitforPacket((byte) 10);
-        }
-        catch(BPException _bpe) {
-            logger.error("send error", _bpe);
-            throw new ActionException("ActionException", _bpe.getCause());
-        }
-        cot.setWaitforByte((byte) 5);
-        List<CommandItem> ciList = new ArrayList<CommandItem>();
-        CommandItem ci = new CommandItem();
-        ci.setIdentifier("80000710");
-        Map<String, String> datacellParam = new HashMap<String, String>();
-        datacellParam.put("0710", "0200");
-        ci.setDatacellParam(datacellParam);
-        ciList.add(ci);
-        cot.setCommandItems(ciList);
-        cotList.add(cot);
-        mto.setCollectObjects_Transmit(cotList);
-        long collectId = 0L;
-        try {
-            collectId = realTimeProxy376.transmitMsg(mto);
-        }
-        catch(Exception _e) {
-            logger.error("send error", _e);
-            throw new ActionException("ActionException", _e.getCause());
+    /**
+     * 
+     * @throws ActionException
+     */
+    public void loadPsParamsValuesByGpId() throws ActionException {
+        String sgpid = request.getParameter("gpId");
+        List<Map<String, Object>> pvList = new ArrayList<Map<String, Object>>();
+        if(StringUtils.isNotBlank(sgpid)) {
+            Long gpId = Long.parseLong(sgpid);
+            logger.info("gpId : " + gpId);
+
+            Map<String, Object> pv10 = new HashMap<String, Object>();
+            pv10.put("P_CODE", "0710");
+            pv10.put("P_VALUE", "0200;");
+            pvList.add(pv10);
+
+            Map<String, Object> pv20 = new HashMap<String, Object>();
+            pv20.put("P_CODE", "0720");
+            pv20.put("P_VALUE", "0200;");
+            pvList.add(pv20);
+
+            Map<String, Object> pv30 = new HashMap<String, Object>();
+            pv30.put("P_CODE", "0730");
+            pv30.put("P_VALUE", "0200;");
+            pvList.add(pv30);
         }
 
-        try {
-            Thread.sleep(10000);
-        }
-        catch(InterruptedException _ie) {
-            _ie.printStackTrace();
-        }
-
-        try {
-            Map<String, String> resultMap = realTimeProxy376.getReturnByControl_TransMit(collectId);
-            logger.info("getReturnByControl_TransMit : " + resultMap.toString());
-        }
-        catch(Exception _e) {
-            logger.error("send error", _e);
-            throw new ActionException("ActionException", _e.getCause());
-        }
-
-        responseText(String.valueOf(collectId));
-    }*/
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("records", pvList);
+        responseJson(result);
+    }
 
 }

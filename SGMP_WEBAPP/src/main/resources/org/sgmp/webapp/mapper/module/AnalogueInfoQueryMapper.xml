@@ -36,6 +36,9 @@
               <when test="gpId != null and gpId != 0">and GP.GP_ID = #{gpId}</when>
           </choose>
           <choose>
+              <when test="orgId != null and orgId != 0">and exists (select 1 from (select * from O_ORG start with ORG_ID = #{orgId} connect by P_ORG_ID = prior ORG_ID) O, G_TG TG where O.ORG_ID = TG.ORG_ID and TG.TG_ID = GP.OBJECT_ID and GP.GP_TYPE = '2')</when>
+          </choose>
+          <choose>
               <when test="tgId != null and tgId != 0">and GP.GP_TYPE = '2' and GP.OBJECT_ID = #{tgId}</when>
           </choose>
           <choose>

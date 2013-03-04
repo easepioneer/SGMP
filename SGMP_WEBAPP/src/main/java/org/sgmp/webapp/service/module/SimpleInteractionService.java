@@ -1,5 +1,10 @@
 package org.sgmp.webapp.service.module;
 
+import java.util.List;
+import java.util.Map;
+
+import org.sgmp.webapp.ServiceException;
+import org.sgmp.webapp.mapper.module.SimpleInteractionMapper;
 import org.sgmp.webapp.service.BaseService;
 
 /**
@@ -10,5 +15,36 @@ import org.sgmp.webapp.service.BaseService;
  * 
  */
 public interface SimpleInteractionService extends BaseService {
-    
+
+    /**
+     * 
+     * @param mapperClass
+     * @param params
+     * @param start
+     * @param limit
+     * @param sort
+     * @param dir
+     * @return
+     * @throws ServiceException
+     */
+    public List<?> getInteractionObjectList(Class<? extends SimpleInteractionMapper> mapperClass, Map<?, ?> params, String start, String limit, String sort, String dir) throws ServiceException;
+
+    /**
+     * 
+     * @param mapperClass
+     * @param params
+     * @return
+     * @throws ServiceException
+     */
+    public Integer getInteractionObjectCount(Class<? extends SimpleInteractionMapper> mapperClass, Map<?, ?> params) throws ServiceException;
+
+    /**
+     * 
+     * @param mapperClass
+     * @param params
+     * @return
+     * @throws ServiceException
+     */
+    public Map<?, ?> getInteractionObject(Class<? extends SimpleInteractionMapper> mapperClass, Map<?, ?> params) throws ServiceException;
+
 }

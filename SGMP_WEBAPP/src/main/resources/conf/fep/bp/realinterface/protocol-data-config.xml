@@ -125,18 +125,18 @@
         <DataItem DataItemCode="1004006101" Length="1" Format="BS8" BitNumber="0" Description="直流模拟量接入标志位" DefaultValue="11111111" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
     <CommandItem CommandCode="10040065">
-        <DataItem DataItemCode="1004006501" Length="1" Format="BIN" BitNumber="0" Description="定时上报周期单位" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004006502" Length="1" Format="BIN" BitNumber="0" Description="定时上报周期" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004006503" Length="5" Format="A15" BitNumber="0" Description="上报基准时间" DefaultValue="" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004006501" Length="1" Format="GROUP_BIN" BitNumber="2" Description="定时上报周期单位" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004006502" Length="1" Format="GROUP_BIN" BitNumber="6" Description="定时上报周期" DefaultValue="1" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004006503" Length="6" Format="A1" BitNumber="0" Description="上报基准时间" DefaultValue="" IsGroupEnd="1" LowBitBefore="1"/>
         <DataItem DataItemCode="1004006504" Length="1" Format="BIN" BitNumber="0" Description="曲线数据抽取倍率" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="1004006505" Length="1" Format="BIN" BitNumber="0" Description="数据单元标识个数" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="1004006506" Length="2" Format="BIN" BitNumber="0" Description="数据单元标识PnXXXX" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="1004006507" Length="2" Format="BIN" BitNumber="0" Description="数据单元标识FnXXXX" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
     <CommandItem CommandCode="10040066">
-        <DataItem DataItemCode="1004006601" Length="1" Format="BIN" BitNumber="0" Description="定时上报周期单位" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004006602" Length="1" Format="BIN" BitNumber="0" Description="定时上报周期" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004006603" Length="5" Format="A15" BitNumber="0" Description="上报基准时间" DefaultValue="" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004006601" Length="1" Format="GROUP_BIN" BitNumber="2" Description="定时上报周期单位" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004006602" Length="1" Format="GROUP_BIN" BitNumber="6" Description="定时上报周期" DefaultValue="1" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004006603" Length="6" Format="A1" BitNumber="0" Description="上报基准时间" DefaultValue="" IsGroupEnd="1" LowBitBefore="1"/>
         <DataItem DataItemCode="1004006604" Length="1" Format="BIN" BitNumber="0" Description="曲线数据抽取倍率" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="1004006605" Length="1" Format="BIN" BitNumber="0" Description="数据单元标识个数" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="1004006606" Length="2" Format="BIN" BitNumber="0" Description="数据单元标识PnXXXX" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
@@ -404,8 +404,101 @@
     <CommandItem CommandCode="80000731">
         <DataItem DataItemCode="0731" Length="0" Format="A8" BitNumber="0" Description="取消预约模拟试跳控制" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
     </CommandItem>
-    
-    <CommandItem CommandCode="8000C012">
+
+    <CommandItem CommandCode="8000C02F">
+        <DataItem DataItemCode="8000C02F01" Length="1" Format="GROUP_BS8" BitNumber="1" Description="保留" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="8000C02F02" Length="1" Format="GROUP_BS8" BitNumber="1" Description="告警状态" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="8000C02F03" Length="1" Format="GROUP_BS8" BitNumber="1" Description="闸位状态（合闸/分闸）" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="8000C02F04" Length="1" Format="GROUP_BS8" BitNumber="5" Description="动作类型" DefaultValue="" IsGroupEnd="1" LowBitBefore="0"/>
+        <DataItem DataItemCode="8000C02F05" Length="1" Format="BIN" BitNumber="0" Description="设备运行状态字2(保留)" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem> 
+    <CommandItem CommandCode="8000C03F">
+        <DataItem DataItemCode="C03F01" Length="6" Format="A12" BitNumber="0" Description="通信地址" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="C03F02" Length="6" Format="A12" BitNumber="0" Description="用户号" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F03" Length="32" Format="ASCII" BitNumber="1" Description="资产管理编码" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F04" Length="32" Format="ASCII" BitNumber="1" Description="设备型号" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F05" Length="32" Format="ASCII" BitNumber="1" Description="生产日期" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F06" Length="32" Format="ASCII" BitNumber="1" Description="厂家代码" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F07" Length="10" Format="ASCII" BitNumber="1" Description="辅助工作电源电压" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F08" Length="10" Format="ASCII" BitNumber="1" Description="自动重合闸时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F09" Length="32" Format="ASCII" BitNumber="1" Description="配套交流接触器(或空开)型号" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F10" Length="16" Format="ASCII" BitNumber="1" Description="执行的国家标准编号" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F11" Length="32" Format="ASCII" BitNumber="1" Description="软件版本号" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F12" Length="32" Format="ASCII" BitNumber="1" Description="硬件版本号" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F13" Length="2" Format="A8" BitNumber="1" Description="I档额定剩余电流的低档" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F14" Length="2" Format="A8" BitNumber="1" Description="I档额定剩余电流的中档" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F15" Length="2" Format="A8" BitNumber="1" Description="I档额定剩余电流的高档" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F16" Length="2" Format="A8" BitNumber="1" Description="II档额定剩余电流的低档" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F17" Length="2" Format="A8" BitNumber="1" Description="II档额定剩余电流的中档" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F18" Length="2" Format="A8" BitNumber="1" Description="II档额定剩余电流的高档" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F19" Length="2" Format="A8" BitNumber="1" Description="额定极限不驱动时间低档" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F20" Length="2" Format="A8" BitNumber="1" Description="额定极限不驱动时间中档" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C03F21" Length="2" Format="A8" BitNumber="1" Description="额定极限不驱动时间高档" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+    </CommandItem> 
+    <CommandItem CommandCode="8000C212">
+        <DataItem DataItemCode="C21201" Length="4" Format="A11" BitNumber="1" Description="0级密码" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="C21202" Length="4" Format="A11" BitNumber="1" Description="1级密码" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+   </CommandItem>
+   <CommandItem CommandCode="8000011F">
+        <DataItem DataItemCode="011F01" Length="1" Format="GROUP_BS8" BitNumber="1" Description="现场/远程" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F02" Length="1" Format="GROUP_BS8" BitNumber="1" Description="数据告警" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F03" Length="1" Format="GROUP_BS8" BitNumber="1" Description="报警灯光" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F04" Length="1" Format="GROUP_BS8" BitNumber="1" Description="报警声音" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F05" Length="1" Format="GROUP_BS8" BitNumber="1" Description="定时试跳" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F06" Length="1" Format="GROUP_BS8" BitNumber="1" Description="档位返回" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F07" Length="1" Format="GROUP_BS8" BitNumber="1" Description="重合闸" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F08" Length="1" Format="GROUP_BS8" BitNumber="1" Description="保留" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F09" Length="1" Format="GROUP_BS8" BitNumber="1" Description="欠压保护-数据告警" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F10" Length="1" Format="GROUP_BS8" BitNumber="1" Description="欠压保护-跳闸控制" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F11" Length="1" Format="GROUP_BS8" BitNumber="1" Description="过压保护-数据告警" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F12" Length="1" Format="GROUP_BS8" BitNumber="1" Description="过压保护-跳闸控制" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F13" Length="1" Format="GROUP_BS8" BitNumber="1" Description="缺相保护-数据告警" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F14" Length="1" Format="GROUP_BS8" BitNumber="1" Description="缺相保护-跳闸控制" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F15" Length="1" Format="GROUP_BS8" BitNumber="1" Description="过流保护-数据告警" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F16" Length="1" Format="GROUP_BS8" BitNumber="1" Description="过流保护-跳闸控制" DefaultValue="" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F17" Length="1" Format="GROUP_BS8" BitNumber="3" Description="保留" DefaultValue="000" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F18" Length="1" Format="GROUP_BS8" BitNumber="1" Description="试跳源" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F19" Length="1" Format="GROUP_BS8" BitNumber="1" Description="无效-数据告警" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F20" Length="1" Format="GROUP_BS8" BitNumber="1" Description="无效-跳闸控制" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F21" Length="1" Format="GROUP_BS8" BitNumber="1" Description="缺零保护-数据告警" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F22" Length="1" Format="GROUP_BS8" BitNumber="1" Description="缺零保护-跳闸控制" DefaultValue="" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F23" Length="1" Format="GROUP_BS8" BitNumber="2" Description="II档额定剩余电流" DefaultValue="11" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F24" Length="1" Format="GROUP_BS8" BitNumber="2" Description="I档额定剩余电流" DefaultValue="11" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F25" Length="1" Format="GROUP_BS8" BitNumber="2" Description="极限不驱动时间" DefaultValue="11" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="011F26" Length="1" Format="GROUP_BS8" BitNumber="2" Description="漏电报警时间" DefaultValue="11" IsGroupEnd="1" LowBitBefore="1"/>
+    </CommandItem> 
+    <CommandItem CommandCode="80000121">
+        <DataItem DataItemCode="012101" Length="2" Format="A8" BitNumber="1" Description="漏电流超限报警值" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+   </CommandItem>
+    <CommandItem CommandCode="80000151">
+        <DataItem DataItemCode="015F01" Length="2" Format="A8" BitNumber="1" Description="过压超限电压值" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+   </CommandItem>
+    <CommandItem CommandCode="80000152">
+        <DataItem DataItemCode="015F02" Length="2" Format="A8" BitNumber="1" Description="欠压超限欠压值" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+   </CommandItem>
+    <CommandItem CommandCode="80000153">
+        <DataItem DataItemCode="015F03" Length="2" Format="A8" BitNumber="1" Description="缺相超限电压值" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+   </CommandItem>
+    <CommandItem CommandCode="8000015F">
+        <DataItem DataItemCode="015F01" Length="2" Format="A8" BitNumber="1" Description="过压超限电压值" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="015F02" Length="2" Format="A8" BitNumber="1" Description="欠压超限欠压值" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="015F03" Length="2" Format="A8" BitNumber="1" Description="缺相超限电压值" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+   </CommandItem>
+    <CommandItem CommandCode="80000161">
+        <DataItem DataItemCode="016F01" Length="1" Format="A4" BitNumber="1" Description="电流超限告警值" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+   </CommandItem>
+    <CommandItem CommandCode="80000162">
+        <DataItem DataItemCode="016F02" Length="2" Format="A8" BitNumber="1" Description="过载长延时时间设定" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+   </CommandItem>
+    <CommandItem CommandCode="80000163">
+        <DataItem DataItemCode="016F03" Length="2" Format="A8" BitNumber="1" Description="额定电流" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+   </CommandItem>
+    <CommandItem CommandCode="8000016F">
+        <DataItem DataItemCode="016F01" Length="1" Format="A4" BitNumber="1" Description="电流超限告警值" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="016F02" Length="2" Format="A8" BitNumber="1" Description="过载长延时时间设定" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+        <DataItem DataItemCode="016F03" Length="2" Format="A8" BitNumber="1" Description="额定电流" DefaultValue="" IsGroupEnd="0" LowBitBefore="0"/>
+   </CommandItem>
+   <CommandItem CommandCode="8000C012">
         <DataItem DataItemCode="C012" Length="2" Format="DATE_LOUBAO" BitNumber="0" Description="漏电保护装置校时" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
     <CommandItem CommandCode="8000C040">
