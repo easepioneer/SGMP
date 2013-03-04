@@ -568,6 +568,15 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
                                 r = (String) value;
                             }
                         }
+
+                        if(StringUtils.isNotBlank(p) && StringUtils.isNotBlank(r)) {
+                            m.put("P_CODE", p);
+                            m.put("OP_RESULT", r);
+                            responseJson(m);
+                        }
+                        else {
+                            responseText("......");
+                        }
                     }
                     else if(StringUtils.equals(action, "read")) {
                         // 读取
@@ -643,6 +652,15 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
                                 p = "F26";
                                 r = (String) value;
                             }
+                        }
+
+                        if(StringUtils.isNotBlank(p) && StringUtils.isNotBlank(r)) {
+                            m.put("P_CODE", p);
+                            m.put("OP_RESULT", r);
+                            responseJson(m);
+                        }
+                        else {
+                            responseText("......");
                         }
                     }
                     else if(StringUtils.equals(action, "read")) {
@@ -745,6 +763,15 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
                                 p = "F83";
                                 r = (String) value;
                             }
+                        }
+
+                        if(StringUtils.isNotBlank(p) && StringUtils.isNotBlank(r)) {
+                            m.put("P_CODE", p);
+                            m.put("OP_RESULT", r);
+                            responseJson(m);
+                        }
+                        else {
+                            responseText("......");
                         }
                     }
                     else if(StringUtils.equals(action, "read")) {

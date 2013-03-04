@@ -159,7 +159,24 @@ public abstract class AbstractSimpleInteractionAction extends AbstractSimpleActi
             }
         }
         else if(StringUtils.equals(type, TYPE_PROTECTOR_PARAMETER)) {           // 保护器参数
-            
+            if(StringUtils.equals(action, "write")) {       // 写
+                try {
+                    resultMap = realTimeProxy376.getReturnByWriteParameter_TransMit(taskId);
+                }
+                catch(Exception _e) {
+                    logger.error("send error", _e);
+                    throw new ActionException("ActionException", _e.getCause());
+                }
+            }
+            else if(StringUtils.equals(action, "read")) {   // 读
+                try {
+                    resultMap = realTimeProxy376.readTransmitPara(taskId);
+                }
+                catch(Exception _e) {
+                    logger.error("send error", _e);
+                    throw new ActionException("ActionException", _e.getCause());
+                }
+            }
         }
         else if(StringUtils.equals(type, TYPE_PROTECTOR_CONTROL)) {             // 保护器控制
             if(StringUtils.equals(action, "write")) {       // 写

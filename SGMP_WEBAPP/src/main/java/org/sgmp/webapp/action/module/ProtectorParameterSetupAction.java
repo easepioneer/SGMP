@@ -101,7 +101,32 @@ public class ProtectorParameterSetupAction extends AbstractSimpleInteractionActi
         cot.setPort((byte) Integer.parseInt(psInfo.getPort()));
         SerialPortPara spp = new SerialPortPara();
         try {
-            spp.setBaudrate(Integer.toBinaryString(Integer.parseInt(psInfo.getBaudrate())));
+            //spp.setBaudrate(Integer.toBinaryString(Integer.parseInt(psInfo.getBaudrate())));
+            String baudrate = psInfo.getBaudrate();
+            if(StringUtils.equals(baudrate, "0")) {
+                spp.setBaudrate("000");
+            }
+            else if(StringUtils.equals(baudrate, "1")) {
+                spp.setBaudrate("001");
+            }
+            else if(StringUtils.equals(baudrate, "2")) {
+                spp.setBaudrate("010");
+            }
+            else if(StringUtils.equals(baudrate, "3")) {
+                spp.setBaudrate("011");
+            }
+            else if(StringUtils.equals(baudrate, "4")) {
+                spp.setBaudrate("100");
+            }
+            else if(StringUtils.equals(baudrate, "5")) {
+                spp.setBaudrate("101");
+            }
+            else if(StringUtils.equals(baudrate, "6")) {
+                spp.setBaudrate("110");
+            }
+            else if(StringUtils.equals(baudrate, "7")) {
+                spp.setBaudrate("111");
+            }
             spp.setStopbit(1);
             spp.setCheckbit(1);
             spp.setOdd_even_bit(0);
@@ -489,22 +514,22 @@ public class ProtectorParameterSetupAction extends AbstractSimpleInteractionActi
                             Object r6 = ((Map) value).get("011F06");
                             Object r7 = ((Map) value).get("011F07");
                             Object r9 = ((Map) value).get("011F09");
-                            Object r10 = ((Map) value).get("011F010");
-                            Object r11 = ((Map) value).get("011F011");
-                            Object r12 = ((Map) value).get("011F012");
-                            Object r13 = ((Map) value).get("011F013");
-                            Object r14 = ((Map) value).get("011F014");
-                            Object r15 = ((Map) value).get("011F015");
-                            Object r16 = ((Map) value).get("011F016");
-                            Object r18 = ((Map) value).get("011F018");
-                            Object r19 = ((Map) value).get("011F019");
-                            Object r20 = ((Map) value).get("011F020");
-                            Object r21 = ((Map) value).get("011F021");
-                            Object r22 = ((Map) value).get("011F022");
-                            Object r23 = ((Map) value).get("011F023");
-                            Object r24 = ((Map) value).get("011F024");
-                            Object r25 = ((Map) value).get("011F025");
-                            Object r26 = ((Map) value).get("011F026");
+                            Object r10 = ((Map) value).get("011F10");
+                            Object r11 = ((Map) value).get("011F11");
+                            Object r12 = ((Map) value).get("011F12");
+                            Object r13 = ((Map) value).get("011F13");
+                            Object r14 = ((Map) value).get("011F14");
+                            Object r15 = ((Map) value).get("011F15");
+                            Object r16 = ((Map) value).get("011F16");
+                            Object r18 = ((Map) value).get("011F18");
+                            Object r19 = ((Map) value).get("011F19");
+                            Object r20 = ((Map) value).get("011F20");
+                            Object r21 = ((Map) value).get("011F21");
+                            Object r22 = ((Map) value).get("011F22");
+                            Object r23 = ((Map) value).get("011F23");
+                            Object r24 = ((Map) value).get("011F24");
+                            Object r25 = ((Map) value).get("011F25");
+                            Object r26 = ((Map) value).get("011F26");
                             r = r1.toString() + ";" + r2.toString() + ";" + r3.toString() + ";" + r4.toString() + ";" + r5.toString() + ";" + r6.toString() + ";" + r7.toString() + ";";
                             r += r9.toString() + ";" + r10.toString() + ";" + r11.toString() + ";" + r12.toString() + ";" + r13.toString() + ";" + r14.toString() + ";" + r15.toString() + ";" + ";" + r16.toString() + ";";
                             r += r18.toString() + ";" + r19.toString() + ";" + r20.toString() + ";" + r21.toString() + ";" + r22.toString() + ";";

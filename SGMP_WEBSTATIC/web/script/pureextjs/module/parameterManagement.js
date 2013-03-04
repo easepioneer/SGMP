@@ -1,7 +1,17 @@
+var tps_termparam_grid_selections;
+var tps_termparam_grid_selmodel;
 var tps_termparam_gridstore;
+var tps_gpparam_grid_selections;
+var tps_gpparam_grid_selmodel;
 var tps_gpparam_gridstore;
+var tps_agparam_grid_selections;
+var tps_agparam_grid_selmodel;
 var tps_agparam_gridstore;
+var pps_param_grid_selections;
+var pps_param_grid_selmodel;
 var pps_param_gridstore;
+var pccs_control_grid_selections;
+var pccs_control_grid_selmodel;
 var pccs_control_gridstore;
 
 function initTpsFilterForm() {
@@ -40,13 +50,30 @@ function receiveTerminalParameterSetupResult(type, action, taskId) {
                     if(Ext.isObject(o)) {
                         var code = o.P_CODE;
                         var result = o.OP_RESULT;
+                        if(action == 'write') {
+                            if(result == '1') {
+                                result = '设置成功';
+                            }
+                            else {
+                                result = '设置失败';
+                            }
+                        }
                         if(type == 'terminal-parameter' && tps_termparam_gridstore) {
+                            if(tps_termparam_grid_selmodel) {
+                                tps_termparam_grid_selmodel.deselectAll(true);
+                            }
                             tps_termparam_gridstore.getById(code).set("OP_RESULT", result);
                         }
                         else if(type == 'gatherpoint-parameter' && tps_gpparam_gridstore) {
+                            if(tps_gpparam_grid_selmodel) {
+                                tps_gpparam_grid_selmodel.deselectAll(true);
+                            }
                             tps_gpparam_gridstore.getById(code).set("OP_RESULT", result);
                         }
                         else if(type == 'analogue-parameter' && tps_agparam_gridstore) {
+                            if(tps_agparam_grid_selmodel) {
+                                tps_agparam_grid_selmodel.deselectAll(true);
+                            }
                             tps_agparam_gridstore.getById(code).set("OP_RESULT", result);
                         }
                     }
@@ -98,7 +125,18 @@ function receiveProtectorParameterSetupResult(type, action, taskId) {
                     if(Ext.isObject(o)) {
                         var code = o.P_CODE;
                         var result = o.OP_RESULT;
+                        if(action == 'write') {
+                            if(result == '1') {
+                                result = '设置成功';
+                            }
+                            else {
+                                result = '设置失败';
+                            }
+                        }
                         if(type == 'protector-parameter' && pps_param_gridstore) {
+                            if(pps_param_grid_selmodel) {
+                                pps_param_grid_selmodel.deselectAll(true);
+                            }
                             pps_param_gridstore.getById(code).set("OP_RESULT", result);
                         }
                     }
@@ -151,7 +189,18 @@ function receiveProtectorControlCommandResult(type, action, taskId) {
                     if(Ext.isObject(o)) {
                         var code = o.P_CODE;
                         var result = o.OP_RESULT;
+                        if(action == 'write') {
+                            if(result == '1') {
+                                result = '投入成功';
+                            }
+                            else {
+                                result = '投入失败';
+                            }
+                        }
                         if(type == 'protector-control' && pccs_control_gridstore) {
+                            if(pccs_control_grid_selmodel) {
+                                pccs_control_grid_selmodel.deselectAll(true);
+                            }
                             pccs_control_gridstore.getById(code).set("OP_RESULT", result);
                         }
                     }
@@ -365,6 +414,7 @@ function getParameterManagementFunctions() {
                                                         }
                                                         if(tps_termparam_gridstore) {
                                                             tps_termparam_gridstore.getById(code).set("P_VALUE", value);
+                                                            tps_termparam_gridstore.getById(code).set("OP_RESULT", "");
                                                         }
                                                     }
                                                 }
@@ -406,6 +456,7 @@ function getParameterManagementFunctions() {
                                                         }
                                                         if(tps_gpparam_gridstore) {
                                                             tps_gpparam_gridstore.getById(code).set("P_VALUE", value);
+                                                            tps_gpparam_gridstore.getById(code).set("OP_RESULT", "");
                                                         }
                                                     }
                                                 }
@@ -447,6 +498,7 @@ function getParameterManagementFunctions() {
                                                         }
                                                         if(tps_agparam_gridstore) {
                                                             tps_agparam_gridstore.getById(code).set("P_VALUE", value);
+                                                            tps_agparam_gridstore.getById(code).set("OP_RESULT", "");
                                                         }
                                                     }
                                                 }
@@ -503,8 +555,7 @@ function getParameterManagementFunctions() {
         autoLoad: true
     });
     // 集中器参数列表
-    var tps_termparam_grid_selections = '';
-    var tps_termparam_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
+    tps_termparam_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
         checkOnly: true,
         mode: 'SINGLE',
         showHeaderCheckbox: false,
@@ -575,7 +626,7 @@ function getParameterManagementFunctions() {
                                 method: 'POST',
                                 success: function(response) {
                                     //alert(response.responseText);
-                                    totalReceiveCount = 10;
+                                    totalReceiveCount = 20;
                                     Ext.MessageBox.show({
                                         msg: '正在设置集中器参数, 请等待...',
                                         progressText: '设置中...',
@@ -631,7 +682,7 @@ function getParameterManagementFunctions() {
                                 method: 'POST',
                                 success: function(response) {
                                     //alert(response.responseText);
-                                    totalReceiveCount = 10;
+                                    totalReceiveCount = 20;
                                     Ext.MessageBox.show({
                                         msg: '正在读取集中器参数, 请等待...',
                                         progressText: '读取中...',
@@ -686,8 +737,7 @@ function getParameterManagementFunctions() {
         autoLoad: true
     });
     // 测量点参数列表
-    var tps_gpparam_grid_selections = '';
-    var tps_gpparam_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
+    tps_gpparam_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
         checkOnly: true,
         mode: 'SINGLE',
         showHeaderCheckbox: false,
@@ -759,7 +809,7 @@ function getParameterManagementFunctions() {
                                 method: 'POST',
                                 success: function(response) {
                                     //alert(response.responseText);
-                                    totalReceiveCount = 10;
+                                    totalReceiveCount = 20;
                                     Ext.MessageBox.show({
                                         msg: '正在设置测量点参数, 请等待...',
                                         progressText: '设置中...',
@@ -816,7 +866,7 @@ function getParameterManagementFunctions() {
                                 method: 'POST',
                                 success: function(response) {
                                     //alert(response.responseText);
-                                    totalReceiveCount = 10;
+                                    totalReceiveCount = 20;
                                     Ext.MessageBox.show({
                                         msg: '正在读取测量点参数, 请等待...',
                                         progressText: '读取中...',
@@ -897,7 +947,13 @@ function getParameterManagementFunctions() {
                                                 var code = records[i].P_CODE;
                                                 var value = records[i].P_VALUE;
                                                 //alert(code + " : " + value);
-                                                tps_gpparam_gridstore.getById(code).set("P_VALUE", value);
+                                                if(tps_gpparam_grid_selmodel) {
+                                                    tps_gpparam_grid_selmodel.deselectAll(true);
+                                                }
+                                                if(tps_gpparam_gridstore) {
+                                                    tps_gpparam_gridstore.getById(code).set("P_VALUE", value);
+                                                    tps_gpparam_gridstore.getById(code).set("OP_RESULT", "");
+                                                }
                                             }
                                         }
                                         else {
@@ -951,8 +1007,7 @@ function getParameterManagementFunctions() {
         autoLoad: true
     });
     // 模拟量参数列表
-    var tps_agparam_grid_selections = '';
-    var tps_agparam_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
+    tps_agparam_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
         checkOnly: true,
         mode: 'SINGLE',
         showHeaderCheckbox: false,
@@ -1024,7 +1079,7 @@ function getParameterManagementFunctions() {
                                 method: 'POST',
                                 success: function(response) {
                                     //alert(response.responseText);
-                                    totalReceiveCount = 10;
+                                    totalReceiveCount = 20;
                                     Ext.MessageBox.show({
                                         msg: '正在设置模拟量参数, 请等待...',
                                         progressText: '设置中...',
@@ -1081,7 +1136,7 @@ function getParameterManagementFunctions() {
                                 method: 'POST',
                                 success: function(response) {
                                     //alert(response.responseText);
-                                    totalReceiveCount = 10;
+                                    totalReceiveCount = 20;
                                     Ext.MessageBox.show({
                                         msg: '正在读取模拟量参数, 请等待...',
                                         progressText: '读取中...',
@@ -1154,7 +1209,13 @@ function getParameterManagementFunctions() {
                                                 var code = records[i].P_CODE;
                                                 var value = records[i].P_VALUE;
                                                 //alert(code + " : " + value);
-                                                tps_agparam_gridstore.getById(code).set("P_VALUE", value);
+                                                if(tps_agparam_grid_selmodel) {
+                                                    tps_agparam_grid_selmodel.deselectAll(true);
+                                                }
+                                                if(tps_agparam_gridstore) {
+                                                    tps_agparam_gridstore.getById(code).set("P_VALUE", value);
+                                                    tps_agparam_gridstore.getById(code).set("OP_RESULT", "");
+                                                }
                                             }
                                         }
                                         else {
@@ -1353,6 +1414,7 @@ function getParameterManagementFunctions() {
                                                     }
                                                     if(pps_param_gridstore) {
                                                         pps_param_gridstore.getById(code).set("P_VALUE", value);
+                                                        pps_param_gridstore.getById(code).set("OP_RESULT", "");
                                                     }
                                                 }
                                             }
@@ -1415,8 +1477,7 @@ function getParameterManagementFunctions() {
         autoLoad: true
     });
     // 保护器参数列表
-    var pps_param_grid_selections = '';
-    var pps_param_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
+    pps_param_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
         checkOnly: true,
         mode: 'SINGLE',
         showHeaderCheckbox: false,
@@ -1487,8 +1548,7 @@ function getParameterManagementFunctions() {
                                 method: 'POST',
                                 success: function(response) {
                                     //alert(response.responseText);
-                                    // 
-                                    totalReceiveCount = 10;
+                                    totalReceiveCount = 20;
                                     Ext.MessageBox.show({
                                         msg: '正在设置保护器参数, 请等待...',
                                         progressText: '设置中...',
@@ -1544,7 +1604,7 @@ function getParameterManagementFunctions() {
                                 method: 'POST',
                                 success: function(response) {
                                     //alert(response.responseText);
-                                    totalReceiveCount = 10;
+                                    totalReceiveCount = 20;
                                     Ext.MessageBox.show({
                                         msg: '正在读取保护器参数, 请等待...',
                                         progressText: '读取中...',
@@ -1745,6 +1805,7 @@ function getParameterManagementFunctions() {
                                                     }
                                                     if(pccs_control_gridstore) {
                                                         pccs_control_gridstore.getById(code).set("P_VALUE", value);
+                                                        pccs_control_gridstore.getById(code).set("OP_RESULT", "");
                                                     }
                                                 }
                                             }
@@ -1809,8 +1870,7 @@ function getParameterManagementFunctions() {
         autoLoad: true
     });
     // 保护器控制命令列表
-    var pccs_control_grid_selections = '';
-    var pccs_control_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
+    pccs_control_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
         checkOnly: true,
         mode: 'SINGLE',
         showHeaderCheckbox: false,
@@ -1881,8 +1941,7 @@ function getParameterManagementFunctions() {
                                 method: 'POST',
                                 success: function(response) {
                                     //alert(response.responseText);
-                                    // 
-                                    totalReceiveCount = 10;
+                                    totalReceiveCount = 20;
                                     Ext.MessageBox.show({
                                         msg: '正在投入保护器控制命令, 请等待...',
                                         progressText: '下发中...',
@@ -1951,7 +2010,13 @@ function getParameterManagementFunctions() {
                                                         var code = records[i].P_CODE;
                                                         var value = records[i].P_VALUE;
                                                         //alert(code + " : " + value);
-                                                        tps_termparam_gridstore.getById(code).set("P_VALUE", value);
+                                                        if(tps_termparam_grid_selmodel) {
+                                                            tps_termparam_grid_selmodel.deselectAll(true);
+                                                        }
+                                                        if(tps_termparam_gridstore) {
+                                                            tps_termparam_gridstore.getById(code).set("P_VALUE", value);
+                                                            tps_termparam_gridstore.getById(code).set("OP_RESULT", "");
+                                                        }
                                                     }
                                                 }
                                                 else {
@@ -1987,7 +2052,13 @@ function getParameterManagementFunctions() {
                                                         var code = records[i].P_CODE;
                                                         var value = records[i].P_VALUE;
                                                         //alert(code + " : " + value);
-                                                        tps_gpparam_gridstore.getById(code).set("P_VALUE", value);
+                                                        if(tps_gpparam_grid_selmodel) {
+                                                            tps_gpparam_grid_selmodel.deselectAll(true);
+                                                        }
+                                                        if(tps_gpparam_gridstore) {
+                                                            tps_gpparam_gridstore.getById(code).set("P_VALUE", value);
+                                                            tps_gpparam_gridstore.getById(code).set("OP_RESULT", "");
+                                                        }
                                                     }
                                                 }
                                                 else {
@@ -2023,7 +2094,13 @@ function getParameterManagementFunctions() {
                                                         var code = records[i].P_CODE;
                                                         var value = records[i].P_VALUE;
                                                         //alert(code + " : " + value);
-                                                        tps_agparam_gridstore.getById(code).set("P_VALUE", value);
+                                                        if(tps_agparam_grid_selmodel) {
+                                                            tps_agparam_grid_selmodel.deselectAll(true);
+                                                        }
+                                                        if(tps_agparam_gridstore) {
+                                                            tps_agparam_gridstore.getById(code).set("P_VALUE", value);
+                                                            tps_agparam_gridstore.getById(code).set("OP_RESULT", "");
+                                                        }
                                                     }
                                                 }
                                                 else {

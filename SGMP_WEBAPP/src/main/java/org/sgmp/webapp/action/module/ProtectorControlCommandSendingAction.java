@@ -96,7 +96,32 @@ public class ProtectorControlCommandSendingAction extends AbstractSimpleInteract
         cot.setPort((byte) Integer.parseInt(psInfo.getPort()));
         SerialPortPara spp = new SerialPortPara();
         try {
-            spp.setBaudrate(Integer.toBinaryString(Integer.parseInt(psInfo.getBaudrate())));
+            //spp.setBaudrate(Integer.toBinaryString(Integer.parseInt(psInfo.getBaudrate())));
+            String baudrate = psInfo.getBaudrate();
+            if(StringUtils.equals(baudrate, "0")) {
+                spp.setBaudrate("000");
+            }
+            else if(StringUtils.equals(baudrate, "1")) {
+                spp.setBaudrate("001");
+            }
+            else if(StringUtils.equals(baudrate, "2")) {
+                spp.setBaudrate("010");
+            }
+            else if(StringUtils.equals(baudrate, "3")) {
+                spp.setBaudrate("011");
+            }
+            else if(StringUtils.equals(baudrate, "4")) {
+                spp.setBaudrate("100");
+            }
+            else if(StringUtils.equals(baudrate, "5")) {
+                spp.setBaudrate("101");
+            }
+            else if(StringUtils.equals(baudrate, "6")) {
+                spp.setBaudrate("110");
+            }
+            else if(StringUtils.equals(baudrate, "7")) {
+                spp.setBaudrate("111");
+            }
             spp.setStopbit(1);
             spp.setCheckbit(1);
             spp.setOdd_even_bit(0);
