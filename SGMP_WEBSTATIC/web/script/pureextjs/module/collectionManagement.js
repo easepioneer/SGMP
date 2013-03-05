@@ -290,7 +290,7 @@ function getCollectionManagementFunctions() {
         store: tmdr_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
+            {text: "序号", xtype: 'rownumberer', width: 50},
             {text: "测量点标识", dataIndex: 'GP_ID', sortable: false, hideable: true, hidden: true},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
@@ -616,7 +616,7 @@ function getCollectionManagementFunctions() {
         store: pdr_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
+            {text: "序号", xtype: 'rownumberer', width: 50},
             {text: "测量点标识", dataIndex: 'GP_ID', sortable: false, hideable: true, hidden: true},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
@@ -944,7 +944,7 @@ function getCollectionManagementFunctions() {
         store: adr_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
+            {text: "序号", xtype: 'rownumberer', width: 50},
             {text: "测量点标识", dataIndex: 'GP_ID', sortable: false, hideable: true, hidden: true},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},

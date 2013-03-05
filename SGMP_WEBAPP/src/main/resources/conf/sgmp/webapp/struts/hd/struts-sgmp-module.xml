@@ -40,6 +40,8 @@
         <action name="tmdq" class="tgMeterDataQueryAction" />
         <!-- |保护器数据查询| -->
         <action name="pdq" class="protectorDataQueryAction" />
+        <!-- |模拟量数据查询| -->
+        <action name="adq" class="analogueDataQueryAction" />
         <!-- |台区用电量查询| -->
         <action name="tpcq" class="tgPowerConsumptionQueryAction" />
         <!-- |集中器事件查询| -->

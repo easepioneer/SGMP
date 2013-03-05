@@ -82,7 +82,7 @@ function getArchivesManagementFunctions() {
         store: tam_term_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
+            {text: "序号", xtype: 'rownumberer', width: 40},
             {text: "集中器标识", dataIndex: 'id', sortable: false, hideable: true, hidden: true},
             {text: "资产编号", dataIndex: 'assetNo', width: 100, sortable: true},
             {text: "逻辑地址", dataIndex: 'logicalAddr', width: 100, sortable: true},
@@ -164,7 +164,7 @@ function getArchivesManagementFunctions() {
         store: tam_meter_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
+            {text: "序号", xtype: 'rownumberer', width: 40},
             {text: "考核表标识", dataIndex: 'id', sortable: false, hideable: true, hidden: true},
             {text: "资产编号", dataIndex: 'assetNo', width: 100, sortable: true},
             {text: "考核表名称", dataIndex: 'mpName', width: 200, sortable: true},
@@ -241,7 +241,7 @@ function getArchivesManagementFunctions() {
         store: tam_ps_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
+            {text: "序号", xtype: 'rownumberer', width: 40},
             {text: "保护器标识", dataIndex: 'id', sortable: false, hideable: true, hidden: true},
             {text: "资产编号", dataIndex: 'assetNo', width: 150, sortable: true},
             {text: "保护器名称", dataIndex: 'psName', width: 200, sortable: true},
@@ -315,7 +315,7 @@ function getArchivesManagementFunctions() {
         store: tam_ag_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
+            {text: "序号", xtype: 'rownumberer', width: 40},
             {text: "测量点标识", dataIndex: 'gpId', sortable: false, hideable: true, hidden: true},
             {text: "模拟量端口", dataIndex: 'port', width: 100, sortable: true},
             {text: "模拟量名称", dataIndex: 'analogueName', width: 200, sortable: true},
@@ -386,7 +386,7 @@ function getArchivesManagementFunctions() {
         store: tam_sw_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
+            {text: "序号", xtype: 'rownumberer', width: 40},
             {text: "开关量标识", dataIndex: 'id', sortable: false, hideable: true, hidden: true},
             {text: "开关量编号", dataIndex: 'switchNo', width: 100, sortable: true},
             {text: "开关量名称", dataIndex: 'switchName', width: 200, sortable: true},
@@ -636,9 +636,18 @@ function getArchivesManagementFunctions() {
                             }
                         }
                     }/*, {
-                        text: '取消',
+                        itemId: 'am-tginfo-delete-button',
+                        text: '删除',
+                        disabled: true,
                         handler: function() {
-                            this.up('form').getForm().reset();
+                            Ext.Msg.confirm('提示', '确定要删除该台区？', function(btn) {
+                                if(btn == 'yes') {
+                                    
+                                }
+                                else {
+                                    return;
+                                }
+                            });
                         }
                     }*/]
                 }, {
@@ -856,7 +865,21 @@ function getArchivesManagementFunctions() {
                                         });
                                     }
                                 }
-                            }]
+                            }/*, {
+                                itemId: 'am-terminfo-delete-button',
+                                text: '删除',
+                                disabled: true,
+                                handler: function() {
+                                    Ext.Msg.confirm('提示', '确定要删除该集中器？', function(btn) {
+                                        if(btn == 'yes') {
+                                            
+                                        }
+                                        else {
+                                            return;
+                                        }
+                                    });
+                                }
+                            }*/]
                         }]
                     }, {
                         title: '考核表信息',
@@ -1021,6 +1044,7 @@ function getArchivesManagementFunctions() {
                                                 //alert(Ext.JSON.encode(eOpts));
                                                 //alert(Ext.isString(newValue));
                                                 if(!Ext.isEmpty(newValue) && newValue != '0' && newValue != '-1') {
+                                                    this.up('form').down('#am-meterinfo-setup-button').setDisabled(false);
                                                     this.up('form').down('#am-meterinfo-new-button').setDisabled(false);
                                                     // 加载考核表信息
                                                     Ext.Ajax.request({
@@ -1047,6 +1071,18 @@ function getArchivesManagementFunctions() {
                                 }]
                             }],
                             buttons: [{
+                                itemId: 'am-meterinfo-setup-button',
+                                text: '参数下发',
+                                disabled: true,
+                                handler: function() {
+                                    //this.up('form').getForm().reset();
+                                    Ext.Msg.confirm('提示', '确认要下发参数（F10）？', function(btn) {
+                                        if(btn == 'yes') {
+                                            
+                                        }
+                                    });
+                                }
+                            }, {
                                 itemId: 'am-meterinfo-new-button',
                                 text: '新增',
                                 disabled: true,
@@ -1103,7 +1139,21 @@ function getArchivesManagementFunctions() {
                                         });
                                     }
                                 }
-                            }]
+                            }/*, {
+                                itemId: 'am-meterinfo-delete-button',
+                                text: '删除',
+                                disabled: true,
+                                handler: function() {
+                                    Ext.Msg.confirm('提示', '确定要删除该考核表？', function(btn) {
+                                        if(btn == 'yes') {
+                                            
+                                        }
+                                        else {
+                                            return;
+                                        }
+                                    });
+                                }
+                            }*/]
                         }]
                     }, {
                         title: '保护器信息',
@@ -1235,6 +1285,7 @@ function getArchivesManagementFunctions() {
                                                 //alert(Ext.JSON.encode(eOpts));
                                                 //alert(Ext.isString(newValue));
                                                 if(!Ext.isEmpty(newValue) && newValue != '0' && newValue != '-1') {
+                                                    this.up('form').down('#am-psinfo-setup-button').setDisabled(false);
                                                     this.up('form').down('#am-psinfo-new-button').setDisabled(false);
                                                     // 加载保护器信息
                                                     Ext.Ajax.request({
@@ -1261,6 +1312,18 @@ function getArchivesManagementFunctions() {
                                 }]
                             }],
                             buttons: [{
+                                itemId: 'am-psinfo-setup-button',
+                                text: '参数下发',
+                                disabled: true,
+                                handler: function() {
+                                    //this.up('form').getForm().reset();
+                                    Ext.Msg.confirm('提示', '确认要下发参数（F10）？', function(btn) {
+                                        if(btn == 'yes') {
+                                            
+                                        }
+                                    });
+                                }
+                            }, {
                                 itemId: 'am-psinfo-new-button',
                                 text: '新增',
                                 disabled: true,
@@ -1319,7 +1382,21 @@ function getArchivesManagementFunctions() {
                                         });
                                     }
                                 }
-                            }]
+                            }/*, {
+                                itemId: 'am-psinfo-delete-button',
+                                text: '删除',
+                                disabled: true,
+                                handler: function() {
+                                    Ext.Msg.confirm('提示', '确定要删除该保护器？', function(btn) {
+                                        if(btn == 'yes') {
+                                            
+                                        }
+                                        else {
+                                            return;
+                                        }
+                                    });
+                                }
+                            }*/]
                         }]
                     }, {
                         title: '模拟量信息',
@@ -1508,7 +1585,21 @@ function getArchivesManagementFunctions() {
                                         });
                                     }
                                 }
-                            }]
+                            }/*, {
+                                itemId: 'am-aginfo-delete-button',
+                                text: '删除',
+                                disabled: true,
+                                handler: function() {
+                                    Ext.Msg.confirm('提示', '确定要删除该模拟量？', function(btn) {
+                                        if(btn == 'yes') {
+                                            
+                                        }
+                                        else {
+                                            return;
+                                        }
+                                    });
+                                }
+                            }*/]
                         }]
                     }, {
                         title: '开关量信息',
@@ -1674,7 +1765,21 @@ function getArchivesManagementFunctions() {
                                         });
                                     }
                                 }
-                            }]
+                            }/*, {
+                                itemId: 'am-swinfo-delete-button',
+                                text: '删除',
+                                disabled: true,
+                                handler: function() {
+                                    Ext.Msg.confirm('提示', '确定要删除该开关量？', function(btn) {
+                                        if(btn == 'yes') {
+                                            
+                                        }
+                                        else {
+                                            return;
+                                        }
+                                    });
+                                }
+                            }*/]
                         }]
                     }]
                 }]

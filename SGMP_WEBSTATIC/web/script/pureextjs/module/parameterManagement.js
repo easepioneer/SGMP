@@ -575,10 +575,10 @@ function getParameterManagementFunctions() {
         store: tps_termparam_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
-            {text: "参数编码", dataIndex: 'P_CODE', width: 100, sortable: true},
-            {text: "参数名称", dataIndex: 'P_NAME', width: 200, sortable: true},
-            {text: "参数值", dataIndex: 'P_VALUE', width: 300, sortable: true},
+            {text: "序号", xtype: 'rownumberer', width: 40},
+            {text: "参数编码", dataIndex: 'P_CODE', width: 90, sortable: true},
+            {text: "参数名称", dataIndex: 'P_NAME', width: 170, sortable: true},
+            {text: "参数值", dataIndex: 'P_VALUE', width: 330, sortable: true},
             {text: "操作结果", dataIndex: 'OP_RESULT', flex: 1, sortable: true}
         ],
         columnLines: true,
@@ -757,10 +757,10 @@ function getParameterManagementFunctions() {
         store: tps_gpparam_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
-            {text: "参数编码", dataIndex: 'P_CODE', width: 100, sortable: true},
-            {text: "参数名称", dataIndex: 'P_NAME', width: 200, sortable: true},
-            {text: "参数值", dataIndex: 'P_VALUE', width: 300, sortable: true},
+            {text: "序号", xtype: 'rownumberer', width: 40},
+            {text: "参数编码", dataIndex: 'P_CODE', width: 90, sortable: true},
+            {text: "参数名称", dataIndex: 'P_NAME', width: 170, sortable: true},
+            {text: "参数值", dataIndex: 'P_VALUE', width: 330, sortable: true},
             {text: "操作结果", dataIndex: 'OP_RESULT', flex: 1, sortable: true}
         ],
         columnLines: true,
@@ -1027,10 +1027,10 @@ function getParameterManagementFunctions() {
         store: tps_agparam_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
-            {text: "参数编码", dataIndex: 'P_CODE', width: 100, sortable: true},
-            {text: "参数名称", dataIndex: 'P_NAME', width: 200, sortable: true},
-            {text: "参数值", dataIndex: 'P_VALUE', width: 300, sortable: true},
+            {text: "序号", xtype: 'rownumberer', width: 40},
+            {text: "参数编码", dataIndex: 'P_CODE', width: 90, sortable: true},
+            {text: "参数名称", dataIndex: 'P_NAME', width: 170, sortable: true},
+            {text: "参数值", dataIndex: 'P_VALUE', width: 330, sortable: true},
             {text: "操作结果", dataIndex: 'OP_RESULT', flex: 1, sortable: true}
         ],
         columnLines: true,
@@ -1497,10 +1497,10 @@ function getParameterManagementFunctions() {
         store: pps_param_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
-            {text: "参数编码", dataIndex: 'P_CODE', width: 100, sortable: true},
-            {text: "参数名称", dataIndex: 'P_NAME', width: 200, sortable: true},
-            {text: "参数值", dataIndex: 'P_VALUE', width: 300, sortable: true},
+            {text: "序号", xtype: 'rownumberer', width: 40},
+            {text: "参数编码", dataIndex: 'P_CODE', width: 90, sortable: true},
+            {text: "参数名称", dataIndex: 'P_NAME', width: 170, sortable: true},
+            {text: "参数值", dataIndex: 'P_VALUE', width: 330, sortable: true},
             {text: "操作结果", dataIndex: 'OP_RESULT', flex: 1, sortable: true}
         ],
         columnLines: true,
@@ -1890,10 +1890,10 @@ function getParameterManagementFunctions() {
         store: pccs_control_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
-            {text: "控制命令编码", dataIndex: 'P_CODE', width: 100, sortable: true},
-            {text: "控制命令名称", dataIndex: 'P_NAME', width: 200, sortable: true},
-            {text: "控制命令参数值", dataIndex: 'P_VALUE', width: 300, sortable: true},
+            {text: "序号", xtype: 'rownumberer', width: 40},
+            {text: "控制命令编码", dataIndex: 'P_CODE', width: 90, sortable: true},
+            {text: "控制命令名称", dataIndex: 'P_NAME', width: 170, sortable: true},
+            {text: "控制命令参数值", dataIndex: 'P_VALUE', width: 330, sortable: true},
             {text: "操作结果", dataIndex: 'OP_RESULT', flex: 1, sortable: true}
         ],
         columnLines: true,

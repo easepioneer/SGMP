@@ -344,7 +344,7 @@ function getDataQueryFunctions() {
         store: tmdq_eicurve_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", dataIndex: 'SN', width: 50, sortable: false},
+            {text: "序号", xtype: 'rownumberer', width: 50},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
             {text: "数据时间", dataIndex: 'DATA_TIME', width: 135, sortable: true, xtype: 'datecolumn', format:'Y-m-d H:i:s'},
@@ -468,7 +468,7 @@ function getDataQueryFunctions() {
         store: tmdq_powercurve_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", dataIndex: 'SN', width: 50, sortable: false},
+            {text: "序号", xtype: 'rownumberer', width: 50},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
             {text: "数据时间", dataIndex: 'DATA_TIME', width: 135, sortable: true, xtype: 'datecolumn', format:'Y-m-d H:i:s'},
@@ -592,7 +592,7 @@ function getDataQueryFunctions() {
         store: tmdq_pfcurve_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", dataIndex: 'SN', width: 50, sortable: false},
+            {text: "序号", xtype: 'rownumberer', width: 50},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
             {text: "数据时间", dataIndex: 'DATA_TIME', width: 135, sortable: true, xtype: 'datecolumn', format:'Y-m-d H:i:s'},
@@ -714,7 +714,7 @@ function getDataQueryFunctions() {
         store: tmdq_eccurve_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", dataIndex: 'SN', width: 50, sortable: false},
+            {text: "序号", xtype: 'rownumberer', width: 50},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
             {text: "数据时间", dataIndex: 'DATA_TIME', width: 135, sortable: true, xtype: 'datecolumn', format:'Y-m-d H:i:s'},
@@ -1023,7 +1023,7 @@ function getDataQueryFunctions() {
         store: pdq_data_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", dataIndex: 'SN', width: 50, sortable: false},
+            {text: "序号", xtype: 'rownumberer', width: 50},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
             {text: "数据时间", dataIndex: 'DATA_TIME', width: 135, sortable: true, xtype: 'datecolumn', format:'Y-m-d H:i:s'},
@@ -1323,7 +1323,7 @@ function getDataQueryFunctions() {
         store: adq_data_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
+            {text: "序号", xtype: 'rownumberer', width: 50},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
             {text: "数据时间", dataIndex: 'DATA_TIME', width: 135, sortable: true, xtype: 'datecolumn', format:'Y-m-d H:i:s'},
@@ -1622,7 +1622,7 @@ function getDataQueryFunctions() {
         store: tpcq_data_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", dataIndex: 'SN', width: 50, sortable: false},
+            {text: "序号", xtype: 'rownumberer', width: 50},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
             {text: "数据时间", dataIndex: 'DATA_TIME', width: 120, sortable: true, xtype: 'datecolumn', format:'Y-m-d H:i'},
@@ -1923,7 +1923,7 @@ function getDataQueryFunctions() {
         store: teq_event_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
+            {text: "序号", xtype: 'rownumberer', width: 50},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
             {text: "事件发生时间", dataIndex: 'EX_TIME', width: 135, sortable: true, xtype: 'datecolumn', format:'Y-m-d H:i:s'},
@@ -2222,7 +2222,7 @@ function getDataQueryFunctions() {
         store: pteq_event_gridstore,
         loadMask: true,
         columns: [
-            Ext.create('Ext.grid.RowNumberer'),
+            {text: "序号", xtype: 'rownumberer', width: 50},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
             {text: "跳闸事件时间", dataIndex: 'TRIGTIME', width: 135, sortable: true, xtype: 'datecolumn', format:'Y-m-d H:i:s'},

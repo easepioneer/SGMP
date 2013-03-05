@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.sgmp.webapp.mapper.module.TerminalEventsQueryMapper">
+
+    <sql id="queryFrom">
+        from E_EVENT_DATA E, C_TERMINAL T, C_TERM_OBJ_RELA TOR, G_TG TG, O_ORG O, E_TERM_ECODE EC
+    </sql>
+
+    <sql id="queryWhere">
+        where T.LOGICAL_ADDR = E.LOGICAL_ADDR
+          and T.TERM_ID = TOR.TERM_ID
+          and TG.TG_ID = TOR.OBJ_ID and TOR.OBJ_TYPE = '2'
+          and O.ORG_ID = TG.ORG_ID
+          and EC.EX_CODE = E.EX_CODE_FEP
+          <choose>
+              <when test="soTgId != null and soTgId != 0">and TG.TG_ID = #{soTgId}</when>
+          </choose>
+          <choose>
+              <when test="soTermId != null and soTermId != 0">and T.TERM_ID = #{soTermId}</when>
+          </choose>
+          and E.EX_TIME &gt;= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+          and E.EX_TIME &lt; TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+    </sql>
+
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.Map">
+        <include refid="PagingQuery.queryHeader" />
+        select O.ORG_NAME, TG.TG_NAME, T.LOGICAL_ADDR, T.ASSET_NO, 
+               TO_CHAR(E.EX_TIME, 'YYYY-MM-DD HH24:MI:SS') as EX_TIME, 
+               EC.EX_NAME, E.EX_DETAIL
+          <include refid="queryFrom" />
+          <include refid="queryWhere" />
+          <include refid="PagingQuery.querySort" />
+        <include refid="PagingQuery.queryFooter" />
+    </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(1) as CNT
+          <include refid="queryFrom" />
+          <include refid="queryWhere" />
+    </select>
+
+</mapper>
