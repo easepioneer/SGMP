@@ -6,19 +6,28 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.sgmp.webapp.ActionException;
 import org.sgmp.webapp.ServiceException;
+import org.sgmp.webapp.mapper.module.MeterInfoQueryMapper;
+import org.sgmp.webapp.mapper.module.ProtectorInfoQueryMapper;
 import org.sgmp.webapp.mapper.module.TerminalMapper;
+import org.sgmp.webapp.pojo.module.MeterInfo;
+import org.sgmp.webapp.pojo.module.ProtectorInfo;
 import org.sgmp.webapp.pojo.module.Terminal;
 import org.sgmp.webapp.service.module.SimpleCURDService;
+import org.sgmp.webapp.service.module.SimpleQueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import fep.bp.realinterface.mto.CircleDataItems;
 import fep.bp.realinterface.mto.CollectObject;
 import fep.bp.realinterface.mto.CommandItem;
+import fep.bp.realinterface.mto.DataItem;
+import fep.bp.realinterface.mto.DataItemGroup;
 import fep.bp.realinterface.mto.MTO_376;
 
 /**
@@ -39,12 +48,18 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
 
     @Autowired
     private SimpleCURDService<Terminal> termService;
+    @Autowired
+    private SimpleQueryService simpleQueryService;
 
     private Terminal terminal;
+    private MeterInfo meterInfo;
+    private ProtectorInfo psInfo;
 
+    private Boolean pvFromPage;
     private Integer gpSn;
     private Integer port;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void beforeSend() {
         logger.info("soType             : " + soType);
@@ -54,6 +69,7 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
         logger.info("soTgId             : " + soTgId);
         logger.info("soTermId           : " + soTermId);
         logger.info("soGpId             : " + soGpId);
+        logger.info("pvFromPage         : " + pvFromPage);
         logger.info("gpSn               : " + gpSn);
         logger.info("port               : " + port);
         logger.info("type               : " + type);
@@ -89,93 +105,248 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
             logger.info("value : " + value);
 
             if(StringUtils.equals(action, "write") && terminal != null) {
-                if(StringUtils.equals(param, "F1")) {
-                    // 终端上行通信口通信参数设置
-                    CommandItem ci = new CommandItem();
-                    ci.setIdentifier("10040001");
-                    Map<String, String> dcp = new HashMap<String, String>();
-                    if(StringUtils.isNotBlank(value)) {
-                        String[] pvItems = value.split(";");
-                        for(int i = 0; i < pvItems.length; i++) {
-                            if(i == 0) {
-                                dcp.put("1004000101", pvItems[i]);          // 终端数传机延时时间RTS
-                            }
-                            else if(i == 1) {
-                                dcp.put("1004000102", pvItems[i]);          // 终端作为启动站允许发送传输延时时间
-                            }
-                            else if(i == 2) {
-                                dcp.put("1004000103", pvItems[i]);          // 终端等待从动站响应的超时时间
-                            }
-                            else if(i == 3) {
-                                dcp.put("1004000104", pvItems[i]);          // 终端等待从动站响应的重发次数
-                            }
-                            else if(i == 4) {
-                                dcp.put("1004000106", pvItems[i]);          // 需要主站确认的通信服务（CON=1）的标志
-                            }
-                            else if(i == 5) {
-                                dcp.put("1004000107", pvItems[i]);          // 心跳周期
+                if(BooleanUtils.isNotFalse(pvFromPage)) {
+                    logger.info("pv from page ......");
+                    if(StringUtils.equals(param, "F1")) {
+                        // 终端上行通信口通信参数设置
+                        CommandItem ci = new CommandItem();
+                        ci.setIdentifier("10040001");
+                        Map<String, String> dcp = new HashMap<String, String>();
+                        if(StringUtils.isNotBlank(value)) {
+                            String[] pvItems = value.split(";");
+                            for(int i = 0; i < pvItems.length; i++) {
+                                if(i == 0) {
+                                    dcp.put("1004000101", pvItems[i]);          // 终端数传机延时时间RTS
+                                }
+                                else if(i == 1) {
+                                    dcp.put("1004000102", pvItems[i]);          // 终端作为启动站允许发送传输延时时间
+                                }
+                                else if(i == 2) {
+                                    dcp.put("1004000103", pvItems[i]);          // 终端等待从动站响应的超时时间
+                                }
+                                else if(i == 3) {
+                                    dcp.put("1004000104", pvItems[i]);          // 终端等待从动站响应的重发次数
+                                }
+                                else if(i == 4) {
+                                    dcp.put("1004000106", pvItems[i]);          // 需要主站确认的通信服务（CON=1）的标志
+                                }
+                                else if(i == 5) {
+                                    dcp.put("1004000107", pvItems[i]);          // 心跳周期
+                                }
                             }
                         }
+                        ci.setDatacellParam(dcp);
+                        co.AddCommandItem(ci);
                     }
-                    ci.setDatacellParam(dcp);
-                    co.AddCommandItem(ci);
+                    else if(StringUtils.equals(param, "F3")) {
+                        // 主站IP地址和端口
+                        CommandItem ci = new CommandItem();
+                        ci.setIdentifier("10040003");
+                        Map<String, String> dcp = new HashMap<String, String>();
+                        if(StringUtils.isNotBlank(value)) {
+                            String[] pvItems = value.split(";");
+                            for(int i = 0; i < pvItems.length; i++) {
+                                if(i == 0) {
+                                    dcp.put("1004000301", pvItems[i]);          // 主用IP地址和端口
+                                }
+                                else if(i == 1) {
+                                    dcp.put("1004000302", pvItems[i]);          // 备用IP地址和端口
+                                }
+                                else if(i == 2) {
+                                    dcp.put("1004000303", pvItems[i]);          // APN
+                                }
+                            }
+                        }
+                        ci.setDatacellParam(dcp);
+                        co.AddCommandItem(ci);
+                    }
+                    else if(StringUtils.equals(param, "F12")) {
+                        // 终端状态量输入参数
+                        CommandItem ci = new CommandItem();
+                        ci.setIdentifier("10040012");
+                        Map<String, String> dcp = new HashMap<String, String>();
+                        if(StringUtils.isNotBlank(value)) {
+                            String[] pvItems = value.split(";");
+                            for(int i = 0; i < pvItems.length; i++) {
+                                if(i == 0) {
+                                    dcp.put("1004001201", pvItems[i]);          // 状态量接入标志位
+                                }
+                                else if(i == 1) {
+                                    dcp.put("1004001202", pvItems[i]);          // 状态量属性标志位
+                                }
+                            }
+                        }
+                        ci.setDatacellParam(dcp);
+                        co.AddCommandItem(ci);
+                    }
+                    else if(StringUtils.equals(param, "F61")) {
+                        // 直流模拟量接入参数
+                        CommandItem ci = new CommandItem();
+                        ci.setIdentifier("10040061");
+                        Map<String, String> dcp = new HashMap<String, String>();
+                        if(StringUtils.isNotBlank(value)) {
+                            String[] pvItems = value.split(";");
+                            for(int i = 0; i < pvItems.length; i++) {
+                                if(i == 0) {
+                                    dcp.put("1004006101", pvItems[i]);          // 直流模拟量接入标志位
+                                }
+                            }
+                        }
+                        ci.setDatacellParam(dcp);
+                        co.AddCommandItem(ci);
+                    }
                 }
-                else if(StringUtils.equals(param, "F3")) {
-                    // 主站IP地址和端口
-                    CommandItem ci = new CommandItem();
-                    ci.setIdentifier("10040003");
-                    Map<String, String> dcp = new HashMap<String, String>();
-                    if(StringUtils.isNotBlank(value)) {
-                        String[] pvItems = value.split(";");
-                        for(int i = 0; i < pvItems.length; i++) {
-                            if(i == 0) {
-                                dcp.put("1004000301", pvItems[i]);          // 主用IP地址和端口
+                else {
+                    logger.info("pv from background ......");
+
+                    if(StringUtils.equals(param, "F10")) {
+                        // 终端电能表/交流采样装置配置参数
+                        if(StringUtils.isNotBlank(soGpId)) {
+                            Long gpId = Long.parseLong(soGpId);
+                            Map<String, Object> params = new HashMap<String, Object>();
+                            params.put("gpId", gpId);
+                            try {
+                                List<MeterInfo> meterInfoList = (List<MeterInfo>) simpleQueryService.getList(MeterInfoQueryMapper.class, params, "0", String.valueOf(Integer.MAX_VALUE), null, null);
+                                if(meterInfoList != null && meterInfoList.size() > 0) {
+                                    meterInfo = meterInfoList.get(0);
+                                }
+                                else {
+                                    List<ProtectorInfo> psInfoList = (List<ProtectorInfo>) simpleQueryService.getList(ProtectorInfoQueryMapper.class, params, "0", String.valueOf(Integer.MAX_VALUE), null, null);
+                                    if(psInfoList != null && psInfoList.size() > 0) {
+                                        psInfo = psInfoList.get(0);
+                                    }
+                                }
                             }
-                            else if(i == 1) {
-                                dcp.put("1004000302", pvItems[i]);          // 备用IP地址和端口
-                            }
-                            else if(i == 2) {
-                                dcp.put("1004000303", pvItems[i]);          // APN
-                            }
-                        }
-                    }
-                    ci.setDatacellParam(dcp);
-                    co.AddCommandItem(ci);
-                }
-                else if(StringUtils.equals(param, "F12")) {
-                    // 终端状态量输入参数
-                    CommandItem ci = new CommandItem();
-                    ci.setIdentifier("10040012");
-                    Map<String, String> dcp = new HashMap<String, String>();
-                    if(StringUtils.isNotBlank(value)) {
-                        String[] pvItems = value.split(";");
-                        for(int i = 0; i < pvItems.length; i++) {
-                            if(i == 0) {
-                                dcp.put("1004001201", pvItems[i]);          // 状态量接入标志位
-                            }
-                            else if(i == 1) {
-                                dcp.put("1004001202", pvItems[i]);          // 状态量属性标志位
+                            catch(ServiceException _se) {
+                                logger.error("send error", _se);
                             }
                         }
-                    }
-                    ci.setDatacellParam(dcp);
-                    co.AddCommandItem(ci);
-                }
-                else if(StringUtils.equals(param, "F61")) {
-                    // 直流模拟量接入参数
-                    CommandItem ci = new CommandItem();
-                    ci.setIdentifier("10040061");
-                    Map<String, String> dcp = new HashMap<String, String>();
-                    if(StringUtils.isNotBlank(value)) {
-                        String[] pvItems = value.split(";");
-                        for(int i = 0; i < pvItems.length; i++) {
-                            if(i == 0) {
-                                dcp.put("1004006101", pvItems[i]);          // 直流模拟量接入标志位
+
+                        CommandItem ci = new CommandItem();
+                        ci.setIdentifier("10040010");
+                        ci.setCircleLevel(1);
+                        Map<String, String> dcp = new HashMap<String, String>();
+                        dcp.put("1004001001", "1");                     // 本次电能表/交流采样装置配置数量
+                        ci.setDatacellParam(dcp);
+                        CircleDataItems cdi = new CircleDataItems();
+                        List<DataItemGroup> digList = new ArrayList<DataItemGroup>();
+                        DataItemGroup dig = new DataItemGroup();
+                        //////////
+                        List<DataItem> diList = new ArrayList<DataItem>();
+
+                        DataItem di02 = new DataItem();
+                        di02.setDataItemCode("10040010020001");     // 本次配置第0001块电能表/交流采样装置序号 【默认与所属测量点号相同】
+                        if(meterInfo != null) {
+                            di02.setDataItemValue(String.valueOf(meterInfo.getGpSn()));
+                        }
+                        else {
+                            if(psInfo != null) {
+                                di02.setDataItemValue(String.valueOf(psInfo.getGpSn()));
                             }
                         }
+                        diList.add(di02);
+
+                        DataItem di03 = new DataItem();
+                        di03.setDataItemCode("10040010030001");     // 本次配置第0001块电能表/交流采样装置所属测量点号
+                        if(meterInfo != null) {
+                            di03.setDataItemValue(String.valueOf(meterInfo.getGpSn()));
+                        }
+                        else {
+                            if(psInfo != null) {
+                                di03.setDataItemValue(String.valueOf(psInfo.getGpSn()));
+                            }
+                        }
+                        diList.add(di03);
+
+                        DataItem di04 = new DataItem();
+                        di04.setDataItemCode("10040010040001");     // 本次配置第0001块电能表/交流采样装置通信波特率
+                        if(meterInfo != null) {
+                            di04.setDataItemValue(meterInfo.getBaudrate());
+                        }
+                        else {
+                            if(psInfo != null) {
+                                di04.setDataItemValue(psInfo.getBaudrate());
+                            }
+                        }
+                        diList.add(di04);
+
+                        DataItem di05 = new DataItem();
+                        di05.setDataItemCode("10040010050001");     // 本次配置第0001块电能表/交流采样装置通信端口号
+                        if(meterInfo != null) {
+                            di05.setDataItemValue(meterInfo.getPort());
+                        }
+                        else {
+                            if(psInfo != null) {
+                                di05.setDataItemValue(psInfo.getPort());
+                            }
+                        }
+                        diList.add(di05);
+
+                        DataItem di06 = new DataItem();
+                        di06.setDataItemCode("10040010060001");     // 本次配置第0001块电能表/交流采样装置通信协议类型
+                        if(meterInfo != null) {
+                            di06.setDataItemValue(meterInfo.getProtocolNo());
+                        }
+                        else {
+                            if(psInfo != null) {
+                                di06.setDataItemValue(psInfo.getProtocolNo());
+                            }
+                        }
+                        diList.add(di06);
+
+                        DataItem di07 = new DataItem();
+                        di07.setDataItemCode("10040010070001");     // 本次配置第0001块电能表/交流采样装置通信地址
+                        if(meterInfo != null) {
+                            di07.setDataItemValue(meterInfo.getGpAddr());
+                        }
+                        else {
+                            if(psInfo != null) {
+                                di07.setDataItemValue(psInfo.getGpAddr());
+                            }
+                        }
+                        diList.add(di07);
+
+                        DataItem di08 = new DataItem();
+                        di08.setDataItemCode("10040010080001");     // 本次配置第0001块电能表/交流采样装置通信密码
+                        di08.setDataItemValue("000000000000");
+                        diList.add(di08);
+
+                        DataItem di10 = new DataItem();
+                        di10.setDataItemCode("10040010100001");     // 本次配置第0001块电能表/交流采样装置电能费率个数
+                        di10.setDataItemValue("000100");
+                        diList.add(di10);
+
+                        DataItem di12 = new DataItem();
+                        di12.setDataItemCode("10040010120001");     // 本次配置第0001块电能表/交流采样装置有功电能示值的整数位个数
+                        di12.setDataItemValue("10");
+                        diList.add(di12);
+
+                        DataItem di13 = new DataItem();
+                        di13.setDataItemCode("10040010130001");     // 本次配置第0001块电能表/交流采样装置有功电能示值的小数位个数
+                        di13.setDataItemValue("11");
+                        diList.add(di13);
+
+                        DataItem di14 = new DataItem();
+                        di14.setDataItemCode("10040010140001");     // 本次配置第0001块电能表/交流采样装置所属采集器通信地址
+                        di14.setDataItemValue("000000000000");
+                        diList.add(di14);
+
+                        DataItem di15 = new DataItem();
+                        di15.setDataItemCode("10040010150001");     // 本次配置第0001块电能表/交流采样装置所属的用户大类号
+                        di15.setDataItemValue("0000");
+                        diList.add(di15);
+
+                        DataItem di16 = new DataItem();
+                        di16.setDataItemCode("10040010160001");     // 本次配置第0001块电能表/交流采样装置所属的用户小类号
+                        di16.setDataItemValue("0000");
+                        diList.add(di16);
+                        //////////
+                        dig.setDataItemList(diList);
+                        digList.add(dig);
+                        cdi.setDataItemGroups(digList);
+                        ci.setCircleDataItems(cdi);
+                        co.AddCommandItem(ci);
                     }
-                    ci.setDatacellParam(dcp);
-                    co.AddCommandItem(ci);
                 }
             }
             else if(StringUtils.equals(action, "read") && terminal != null) {
@@ -559,6 +730,10 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
                                 p = "F3";
                                 r = (String) value;
                             }
+                            else if(StringUtils.equals(p, "10040010")) {
+                                p = "F10";
+                                r = (String) value;
+                            }
                             else if(StringUtils.equals(p, "10040012")) {
                                 p = "F12";
                                 r = (String) value;
@@ -925,6 +1100,14 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("records", pvList);
         responseJson(result);
+    }
+
+    public Boolean getPvFromPage() {
+        return pvFromPage;
+    }
+
+    public void setPvFromPage(Boolean pvFromPage) {
+        this.pvFromPage = pvFromPage;
     }
 
     public Integer getGpSn() {

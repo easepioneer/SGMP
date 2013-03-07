@@ -82,7 +82,7 @@ function getArchivesManagementFunctions() {
         store: tam_term_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", xtype: 'rownumberer', width: 40},
+            /*{text: "序号", xtype: 'rownumberer', width: 40},*/
             {text: "集中器标识", dataIndex: 'id', sortable: false, hideable: true, hidden: true},
             {text: "资产编号", dataIndex: 'assetNo', width: 100, sortable: true},
             {text: "逻辑地址", dataIndex: 'logicalAddr', width: 100, sortable: true},
@@ -164,7 +164,7 @@ function getArchivesManagementFunctions() {
         store: tam_meter_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", xtype: 'rownumberer', width: 40},
+            /*{text: "序号", xtype: 'rownumberer', width: 40},*/
             {text: "考核表标识", dataIndex: 'id', sortable: false, hideable: true, hidden: true},
             {text: "资产编号", dataIndex: 'assetNo', width: 100, sortable: true},
             {text: "考核表名称", dataIndex: 'mpName', width: 200, sortable: true},
@@ -241,7 +241,7 @@ function getArchivesManagementFunctions() {
         store: tam_ps_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", xtype: 'rownumberer', width: 40},
+            /*{text: "序号", xtype: 'rownumberer', width: 40},*/
             {text: "保护器标识", dataIndex: 'id', sortable: false, hideable: true, hidden: true},
             {text: "资产编号", dataIndex: 'assetNo', width: 150, sortable: true},
             {text: "保护器名称", dataIndex: 'psName', width: 200, sortable: true},
@@ -315,7 +315,7 @@ function getArchivesManagementFunctions() {
         store: tam_ag_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", xtype: 'rownumberer', width: 40},
+            /*{text: "序号", xtype: 'rownumberer', width: 40},*/
             {text: "测量点标识", dataIndex: 'gpId', sortable: false, hideable: true, hidden: true},
             {text: "模拟量端口", dataIndex: 'port', width: 100, sortable: true},
             {text: "模拟量名称", dataIndex: 'analogueName', width: 200, sortable: true},
@@ -386,7 +386,7 @@ function getArchivesManagementFunctions() {
         store: tam_sw_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", xtype: 'rownumberer', width: 40},
+            /*{text: "序号", xtype: 'rownumberer', width: 40},*/
             {text: "开关量标识", dataIndex: 'id', sortable: false, hideable: true, hidden: true},
             {text: "开关量编号", dataIndex: 'switchNo', width: 100, sortable: true},
             {text: "开关量名称", dataIndex: 'switchName', width: 200, sortable: true},
@@ -1078,7 +1078,48 @@ function getArchivesManagementFunctions() {
                                     //this.up('form').getForm().reset();
                                     Ext.Msg.confirm('提示', '确认要下发参数（F10）？', function(btn) {
                                         if(btn == 'yes') {
-                                            
+                                            var formParams = Ext.getCmp('meterInfoForm').getForm().getValues(false);
+                                            //alert(Ext.JSON.encode(formParams));
+                                            var termId = formParams.termId;
+                                            //alert(termId);
+                                            var gpId = formParams.gpId;
+                                            //alert(gpId);
+                                            if(Ext.isEmpty(gpId)) {
+                                                Ext.MessageBox.alert('提示', '请选择要下发的考核表', function(btn) {
+                                                    return;
+                                                });
+                                            }
+                                            else {
+                                                var params = {
+                                                        type: 'terminal-parameter',
+                                                        action: 'write',
+                                                        pvFromPage: false,
+                                                        soTermId: termId,
+                                                        soGpId: gpId,
+                                                        paramsAndValues: 'F10:||'
+                                                };
+                                                //alert(Ext.JSON.encode(params))
+                                                Ext.Ajax.request({
+                                                    url: ctx_webapp + '/pm/tps!send.do',
+                                                    params: params,
+                                                    method: 'POST',
+                                                    success: function(response) {
+                                                        //alert(response.responseText);
+                                                        totalReceiveCount = 20;
+                                                        Ext.MessageBox.show({
+                                                            msg: '正在下发参数（F10）, 请等待...',
+                                                            progressText: '设置中...',
+                                                            width: 300,
+                                                            wait: true,
+                                                            waitConfig: {interval: 200}
+                                                        });
+                                                        setTimeout("receiveTerminalParameterSetupResult('terminal-parameter','write'," + response.responseText + ",true)", 3000);
+                                                    },
+                                                    failure: function(response) {
+                                                        //alert(response.responseText);
+                                                    }
+                                                });
+                                            }
                                         }
                                     });
                                 }
@@ -1319,7 +1360,48 @@ function getArchivesManagementFunctions() {
                                     //this.up('form').getForm().reset();
                                     Ext.Msg.confirm('提示', '确认要下发参数（F10）？', function(btn) {
                                         if(btn == 'yes') {
-                                            
+                                            var formParams = Ext.getCmp('psInfoForm').getForm().getValues(false);
+                                            //alert(Ext.JSON.encode(formParams));
+                                            var termId = formParams.termId;
+                                            //alert(termId);
+                                            var gpId = formParams.gpId;
+                                            //alert(gpId);
+                                            if(Ext.isEmpty(gpId)) {
+                                                Ext.MessageBox.alert('提示', '请选择要下发的保护器', function(btn) {
+                                                    return;
+                                                });
+                                            }
+                                            else {
+                                                var params = {
+                                                        type: 'terminal-parameter',
+                                                        action: 'write',
+                                                        pvFromPage: false,
+                                                        soTermId: termId,
+                                                        soGpId: gpId,
+                                                        paramsAndValues: 'F10:||'
+                                                };
+                                                //alert(Ext.JSON.encode(params))
+                                                Ext.Ajax.request({
+                                                    url: ctx_webapp + '/pm/tps!send.do',
+                                                    params: params,
+                                                    method: 'POST',
+                                                    success: function(response) {
+                                                        //alert(response.responseText);
+                                                        totalReceiveCount = 20;
+                                                        Ext.MessageBox.show({
+                                                            msg: '正在下发参数（F10）, 请等待...',
+                                                            progressText: '设置中...',
+                                                            width: 300,
+                                                            wait: true,
+                                                            waitConfig: {interval: 200}
+                                                        });
+                                                        setTimeout("receiveTerminalParameterSetupResult('terminal-parameter','write'," + response.responseText + ",true)", 3000);
+                                                    },
+                                                    failure: function(response) {
+                                                        //alert(response.responseText);
+                                                    }
+                                                });
+                                            }
                                         }
                                     });
                                 }

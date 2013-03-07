@@ -15,6 +15,9 @@
           and TG.TG_ID = GP.OBJECT_ID and GP.GP_TYPE = '2'
           and O.ORG_ID = TG.ORG_ID
           <choose>
+              <when test="soOrgId != null and soOrgId != 0">and exists (select 1 from (select * from O_ORG start with ORG_ID = #{soOrgId} connect by P_ORG_ID = prior ORG_ID) O where O.ORG_ID = TG.ORG_ID)</when>
+          </choose>
+          <choose>
               <when test="soTgId != null and soTgId != 0">and TG.TG_ID = #{soTgId}</when>
           </choose>
           <choose>

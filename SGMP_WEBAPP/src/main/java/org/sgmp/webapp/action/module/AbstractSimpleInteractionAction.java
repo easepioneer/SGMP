@@ -1,9 +1,13 @@
 package org.sgmp.webapp.action.module;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.sgmp.webapp.ActionException;
+import org.sgmp.webapp.ServiceException;
 import org.sgmp.webapp.action.AbstractSimpleAction;
 import org.sgmp.webapp.mapper.module.SimpleInteractionMapper;
 import org.sgmp.webapp.service.module.SimpleInteractionService;
@@ -61,6 +65,45 @@ public abstract class AbstractSimpleInteractionAction extends AbstractSimpleActi
     protected String soTgId;              // selection object tgId
     protected String soTermId;            // selection object termId
     protected String soGpId;              // selection object gpId
+    private String start;
+    private String limit;
+    private String sort;
+    private String dir;
+
+    /**
+     * 
+     * @throws ActionException
+     */
+    public void getGrid() throws ActionException {
+        beforeGetGird();
+        queryParams = ObjectUtils.defaultIfNull(queryParams, new HashMap<String, Object>());
+        queryParams.put("soType", soType);
+        queryParams.put("soId", soId);
+        queryParams.put("soName", soName);
+        queryParams.put("soOrgId", soOrgId);
+        queryParams.put("soTgId", soTgId);
+        queryParams.put("soTermId", soTermId);
+        queryParams.put("soGpId", soGpId);
+        try {
+            List<?> records = simpleInteractionService.getInteractionObjectList(mapperClass, queryParams, start, limit, sort, dir);
+            Integer totalCount = simpleInteractionService.getInteractionObjectCount(mapperClass, queryParams);
+            Map<String, Object> result = new HashMap<String, Object>();
+            result.put("records", records);
+            result.put("totalCount", totalCount);
+            responseJson(result);
+        }
+        catch(ServiceException _se) {
+            logger.error("getGrid error", _se);
+            throw new ActionException("ActionException", _se.getCause());
+        }
+    }
+
+    /**
+     * 
+     */
+    public void beforeGetGird() {
+        
+    }
 
     /**
      * 组数据帧，发送至集中器
@@ -269,6 +312,22 @@ public abstract class AbstractSimpleInteractionAction extends AbstractSimpleActi
         this.resultMap = resultMap;
     }
 
+    public Class<? extends SimpleInteractionMapper> getMapperClass() {
+        return mapperClass;
+    }
+
+    public void setMapperClass(Class<? extends SimpleInteractionMapper> mapperClass) {
+        this.mapperClass = mapperClass;
+    }
+
+    public Map<String, Object> getQueryParams() {
+        return queryParams;
+    }
+
+    public void setQueryParams(Map<String, Object> queryParams) {
+        this.queryParams = queryParams;
+    }
+
     public String getSoType() {
         return soType;
     }
@@ -323,6 +382,38 @@ public abstract class AbstractSimpleInteractionAction extends AbstractSimpleActi
 
     public void setSoGpId(String soGpId) {
         this.soGpId = soGpId;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public String getLimit() {
+        return limit;
+    }
+
+    public void setLimit(String limit) {
+        this.limit = limit;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public String getDir() {
+        return dir;
+    }
+
+    public void setDir(String dir) {
+        this.dir = dir;
     }
 
 }

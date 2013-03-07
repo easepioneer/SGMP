@@ -27,7 +27,7 @@ public interface SimpleInteractionService extends BaseService {
      * @return
      * @throws ServiceException
      */
-    public List<?> getInteractionObjectList(Class<? extends SimpleInteractionMapper> mapperClass, Map<?, ?> params, String start, String limit, String sort, String dir) throws ServiceException;
+    public List<?> getInteractionObjectList(Class<? extends SimpleInteractionMapper> mapperClass, Map<String, Object> params, String start, String limit, String sort, String dir) throws ServiceException;
 
     /**
      * 
@@ -36,7 +36,7 @@ public interface SimpleInteractionService extends BaseService {
      * @return
      * @throws ServiceException
      */
-    public Integer getInteractionObjectCount(Class<? extends SimpleInteractionMapper> mapperClass, Map<?, ?> params) throws ServiceException;
+    public Integer getInteractionObjectCount(Class<? extends SimpleInteractionMapper> mapperClass, Map<String, Object> params) throws ServiceException;
 
     /**
      * 
@@ -45,6 +45,6 @@ public interface SimpleInteractionService extends BaseService {
      * @return
      * @throws ServiceException
      */
-    public Map<?, ?> getInteractionObject(Class<? extends SimpleInteractionMapper> mapperClass, Map<?, ?> params) throws ServiceException;
+    public Map<String, Object> getInteractionObject(Class<? extends SimpleInteractionMapper> mapperClass, Map<String, Object> params) throws ServiceException;
 
 }

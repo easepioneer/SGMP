@@ -25,20 +25,20 @@ public class SimpleInteractionServiceImpl implements SimpleInteractionService {
     private SimpleInteractionDao simpleInteractionDao;
 
     @Override
-    public List<?> getInteractionObjectList(Class<? extends SimpleInteractionMapper> mapperClass, Map<?, ?> params, 
+    public List<?> getInteractionObjectList(Class<? extends SimpleInteractionMapper> mapperClass, Map<String, Object> params, 
             String start, String limit, String sort, String dir) throws ServiceException {
         logger.debug(this.getClass().getName() + "." + "getInteractionObjectList");
         return simpleInteractionDao.getInteractionObjectList(mapperClass, params, start, limit, sort, dir);
     }
 
     @Override
-    public Integer getInteractionObjectCount(Class<? extends SimpleInteractionMapper> mapperClass, Map<?, ?> params) throws ServiceException {
+    public Integer getInteractionObjectCount(Class<? extends SimpleInteractionMapper> mapperClass, Map<String, Object> params) throws ServiceException {
         logger.debug(this.getClass().getName() + "." + "getInteractionObjectCount");
         return simpleInteractionDao.getInteractionObjectCount(mapperClass, params);
     }
 
     @Override
-    public Map<?, ?> getInteractionObject(Class<? extends SimpleInteractionMapper> mapperClass, Map<?, ?> params) throws ServiceException {
+    public Map<String, Object> getInteractionObject(Class<? extends SimpleInteractionMapper> mapperClass, Map<String, Object> params) throws ServiceException {
         logger.debug(this.getClass().getName() + "." + "getInteractionObject");
         return simpleInteractionDao.getInteractionObject(mapperClass, params);
     }

@@ -1,3 +1,13 @@
+var tmdr_gridstore;
+var tmdr_grid_selections;
+var tmdr_grid_selmodel;
+var pdr_gridstore;
+var pdr_grid_selections;
+var pdr_grid_selmodel;
+var adr_gridstore;
+var adr_grid_selections;
+var adr_grid_selmodel;
+
 function initTmdrFilterForm() {
     Ext.getCmp('tmdr-filter-formfield-org').setValue(1);
 }
@@ -204,7 +214,7 @@ function getCollectionManagementFunctions() {
         ],
         idProperty: 'GP_ID'
     });
-    var tmdr_gridstore = Ext.create('Ext.data.Store', {
+    tmdr_gridstore = Ext.create('Ext.data.Store', {
         pageSize: defaultPageSize,
         // destroy the store if the grid is destroyed
         autoDestroy: true,
@@ -272,8 +282,8 @@ function getCollectionManagementFunctions() {
         emptyMsg: '查询无记录',
         items: ['-', tmdr_grid_pc]
     });
-    var tmdr_grid_selections = '';
-    var tmdr_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
+    tmdr_grid_selections = '';
+    tmdr_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
         listeners: {
             selectionchange: function(sm, selections) {
                 tmdr_gridpanel.down('#tmdr-bmdata-reading-button').setDisabled(selections.length == 0);
@@ -290,7 +300,7 @@ function getCollectionManagementFunctions() {
         store: tmdr_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", xtype: 'rownumberer', width: 50},
+            /*{text: "序号", xtype: 'rownumberer', width: 50},*/
             {text: "测量点标识", dataIndex: 'GP_ID', sortable: false, hideable: true, hidden: true},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
@@ -306,13 +316,11 @@ function getCollectionManagementFunctions() {
         plugins: [{
             ptype: 'rowexpander',
             rowBodyTpl : [
-                '<p><b>测量点标识:</b> {GP_ID}</p>',
-                '<p><b>考核表名称:</b> {MP_NAME}</p>'
+                '<p>&nbsp;　　　&nbsp;<b>召测状态：</b> <span id="cm_tmdr_rt_{GP_ID}"></span></p>',
+                '<p>&nbsp;　　　&nbsp;<b>召测结果：</b> <span id="cm_tmdr_re_{GP_ID}"></span></p>'
             ]
         }],
-        collapsible: true,
-        animCollapse: false,
-        columnLines: true,
+        columnLines: false,
         selModel: tmdr_grid_selmodel,
         // paging bar on the bottom
         bbar: tmdr_grid_pt,
@@ -327,7 +335,9 @@ function getCollectionManagementFunctions() {
                 iconCls: 'reading',
                 disabled: true,
                 handler: function() {
-                    alert('召测考核表表码数据');
+                    //alert('召测考核表表码数据');
+                    //Ext.get('cm_tmdr_rt_146').setHTML('召测成功');
+                    //Ext.get('cm_tmdr_re_146').setHTML('12345678');
                 }
             }, '-', {
                 itemId: 'tmdr-fhdata-reading-button',
@@ -336,7 +346,7 @@ function getCollectionManagementFunctions() {
                 iconCls: 'reading',
                 disabled: true,
                 handler: function() {
-                    alert('召测考核表负荷数据');
+                    //alert('召测考核表负荷数据');
                 }
             }, '->', '']
         }]
@@ -529,7 +539,7 @@ function getCollectionManagementFunctions() {
         ],
         idProperty: 'GP_ID'
     });
-    var pdr_gridstore = Ext.create('Ext.data.Store', {
+    pdr_gridstore = Ext.create('Ext.data.Store', {
         pageSize: defaultPageSize,
         // destroy the store if the grid is destroyed
         autoDestroy: true,
@@ -597,8 +607,8 @@ function getCollectionManagementFunctions() {
         emptyMsg: '查询无记录',
         items: ['-', pdr_grid_pc]
     });
-    var pdr_grid_selections = '';
-    var pdr_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
+    pdr_grid_selections = '';
+    pdr_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
         listeners: {
             selectionchange: function(sm, selections) {
                 pdr_gridpanel.down('#pdr-dydata-reading-button').setDisabled(selections.length == 0);
@@ -616,7 +626,7 @@ function getCollectionManagementFunctions() {
         store: pdr_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", xtype: 'rownumberer', width: 50},
+            /*{text: "序号", xtype: 'rownumberer', width: 50},*/
             {text: "测量点标识", dataIndex: 'GP_ID', sortable: false, hideable: true, hidden: true},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
@@ -629,12 +639,10 @@ function getCollectionManagementFunctions() {
         plugins: [{
             ptype: 'rowexpander',
             rowBodyTpl : [
-                '<p><b>测量点标识:</b> {GP_ID}</p>',
-                '<p><b>保护器名称:</b> {PS_NAME}</p>'
+                '<p>&nbsp;　　　&nbsp;<b>召测状态：</b> <span id="cm_pdr_rt_{GP_ID}"></span></p>',
+                '<p>&nbsp;　　　&nbsp;<b>召测结果：</b> <span id="cm_pdr_re_{GP_ID}"></span></p>'
             ]
         }],
-        collapsible: true,
-        animCollapse: false,
         columnLines: true,
         selModel: pdr_grid_selmodel,
         // paging bar on the bottom
@@ -650,7 +658,7 @@ function getCollectionManagementFunctions() {
                 iconCls: 'reading',
                 disabled: true,
                 handler: function() {
-                    alert('召测保护器电压数据');
+                    //alert('召测保护器电压数据');
                 }
             }, '-', {
                 itemId: 'pdr-dldata-reading-button',
@@ -659,7 +667,7 @@ function getCollectionManagementFunctions() {
                 iconCls: 'reading',
                 disabled: true,
                 handler: function() {
-                    alert('召测保护器电流数据');
+                    //alert('召测保护器电流数据');
                 }
             }, '-', {
                 itemId: 'pdr-sydldata-reading-button',
@@ -668,7 +676,7 @@ function getCollectionManagementFunctions() {
                 iconCls: 'reading',
                 disabled: true,
                 handler: function() {
-                    alert('召测保护器漏电数据');
+                    //alert('召测保护器漏电数据');
                 }
             }, '->', '']
         }]
@@ -859,7 +867,7 @@ function getCollectionManagementFunctions() {
         ],
         idProperty: 'GP_ID'
     });
-    var adr_gridstore = Ext.create('Ext.data.Store', {
+    adr_gridstore = Ext.create('Ext.data.Store', {
         pageSize: defaultPageSize,
         // destroy the store if the grid is destroyed
         autoDestroy: true,
@@ -927,8 +935,8 @@ function getCollectionManagementFunctions() {
         emptyMsg: '查询无记录',
         items: ['-', adr_grid_pc]
     });
-    var adr_grid_selections = '';
-    var adr_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
+    adr_grid_selections = '';
+    adr_grid_selmodel = Ext.create('Ext.selection.CheckboxModel', {
         listeners: {
             selectionchange: function(sm, selections) {
                 adr_gridpanel.down('#adr-data-reading-button').setDisabled(selections.length == 0);
@@ -944,7 +952,7 @@ function getCollectionManagementFunctions() {
         store: adr_gridstore,
         loadMask: true,
         columns: [
-            {text: "序号", xtype: 'rownumberer', width: 50},
+            /*{text: "序号", xtype: 'rownumberer', width: 50},*/
             {text: "测量点标识", dataIndex: 'GP_ID', sortable: false, hideable: true, hidden: true},
             {text: "所属机构", dataIndex: 'ORG_NAME', width: 120, sortable: true},
             {text: "台区名称", dataIndex: 'TG_NAME', width: 120, sortable: true},
@@ -954,13 +962,11 @@ function getCollectionManagementFunctions() {
         ],
         plugins: [{
             ptype: 'rowexpander',
-            rowBodyTpl : [
-                '<p><b>测量点标识:</b> {GP_ID}</p>',
-                '<p><b>模拟量名称:</b> {ANALOGUE_NAME}</p>'
+            rowBodyTpl: [
+                '<p>&nbsp;　　　&nbsp;<b>召测状态：</b> <span id="cm_adr_rt_{GP_ID}"></span></p>',
+                '<p>&nbsp;　　　&nbsp;<b>召测结果：</b> <span id="cm_adr_re_{GP_ID}"></span></p>'
             ]
         }],
-        collapsible: true,
-        animCollapse: false,
         columnLines: true,
         selModel: adr_grid_selmodel,
         // paging bar on the bottom
@@ -976,7 +982,7 @@ function getCollectionManagementFunctions() {
                 iconCls: 'reading',
                 disabled: true,
                 handler: function() {
-                    alert('召测模拟量当前数据');
+                    // alert('召测模拟量当前数据');
                 }
             }, '->', '']
         }]

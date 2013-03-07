@@ -3,18 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.sgmp.webapp.mapper.module.ProtectorTripEventsQueryMapper">
+<mapper namespace="org.sgmp.webapp.mapper.module.AnalogueDataReadingMapper">
 
     <sql id="queryFrom">
-        from E_LOUBAO_EVENT E, C_GP GP, C_PS PS, G_TG TG, O_ORG O, E_LOUBAO_ECODE EC
+        from C_GP GP, C_ANALOGUE AG, C_TERMINAL T, G_TG TG, O_ORG O
     </sql>
 
     <sql id="queryWhere">
-        where GP.GP_ID = E.GP_ID
-          and GP.GP_ID = PS.GP_ID
+        where GP.GP_ID = AG.GP_ID
           and TG.TG_ID = GP.OBJECT_ID and GP.GP_TYPE = '2'
+          and T.TERM_ID = GP.TERM_ID
           and O.ORG_ID = TG.ORG_ID
-          and EC.EVENTCODE = E.EVENTCODE
           <choose>
               <when test="soOrgId != null and soOrgId != 0">and exists (select 1 from (select * from O_ORG start with ORG_ID = #{soOrgId} connect by P_ORG_ID = prior ORG_ID) O where O.ORG_ID = TG.ORG_ID)</when>
           </choose>
@@ -24,25 +23,25 @@
           <choose>
               <when test="soGpId != null and soGpId != 0">and GP.GP_ID = #{soGpId}</when>
           </choose>
-          and E.TRIGTIME &gt;= TO_DATE(#{startDate}, 'YYYY-MM-DD')
-          and E.TRIGTIME &lt; TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
     </sql>
 
-    <select id="getList" parameterType="java.util.Map" resultType="java.util.Map">
+    <select id="getInteractionObjectList" parameterType="java.util.Map" resultType="java.util.Map">
         <include refid="PagingQuery.queryHeader" />
-        select O.ORG_NAME, TG.TG_NAME, PS.PS_NAME, PS.ASSET_NO, 
-               TO_CHAR(E.TRIGTIME, 'YYYY-MM-DD HH24:MI:SS') as TRIGTIME, 
-               EC.EVENTNAME, E.PHASE, decode(E.HAVEALARM, 1, '有告警', '无告警') as HAVEALARM, decode(E.CLOSED, 1, '合闸', '跳闸') as CLOSED
+        select O.ORG_NAME, TG.TG_NAME, T.LOGICAL_ADDR, AG.ANALOGUE_NAME, 
+               GP.GP_ID, GP.GP_SN, GP.PORT
           <include refid="queryFrom" />
           <include refid="queryWhere" />
           <include refid="PagingQuery.querySort" />
         <include refid="PagingQuery.queryFooter" />
     </select>
 
-    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    <select id="getInteractionObjectCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(1) as CNT
           <include refid="queryFrom" />
           <include refid="queryWhere" />
+    </select>
+
+    <select id="getInteractionObject" parameterType="java.util.Map" resultType="java.util.Map">
     </select>
 
 </mapper>

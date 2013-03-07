@@ -27,7 +27,7 @@ public interface SimpleInteractionDao extends BaseDao {
      * @return
      * @throws DaoException
      */
-    public List<?> getInteractionObjectList(Class<? extends SimpleInteractionMapper> mapperClass, Map<?, ?> params, String start, String limit, String sort, String dir) throws DaoException;
+    public List<?> getInteractionObjectList(Class<? extends SimpleInteractionMapper> mapperClass, Map<String, Object> params, String start, String limit, String sort, String dir) throws DaoException;
 
     /**
      * 
@@ -36,7 +36,7 @@ public interface SimpleInteractionDao extends BaseDao {
      * @return
      * @throws DaoException
      */
-    public Integer getInteractionObjectCount(Class<? extends SimpleInteractionMapper> mapperClass, Map<?, ?> params) throws DaoException;
+    public Integer getInteractionObjectCount(Class<? extends SimpleInteractionMapper> mapperClass, Map<String, Object> params) throws DaoException;
 
     /**
      * 
@@ -44,6 +44,6 @@ public interface SimpleInteractionDao extends BaseDao {
      * @return
      * @throws DaoException
      */
-    public Map<?, ?> getInteractionObject(Class<? extends SimpleInteractionMapper> mapperClass, Map<?, ?> params) throws DaoException;
+    public Map<String, Object> getInteractionObject(Class<? extends SimpleInteractionMapper> mapperClass, Map<String, Object> params) throws DaoException;
 
 }

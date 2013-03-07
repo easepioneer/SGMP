@@ -1,18 +1,18 @@
+var tps_termparam_gridstore;
 var tps_termparam_grid_selections;
 var tps_termparam_grid_selmodel;
-var tps_termparam_gridstore;
+var tps_gpparam_gridstore;
 var tps_gpparam_grid_selections;
 var tps_gpparam_grid_selmodel;
-var tps_gpparam_gridstore;
+var tps_agparam_gridstore;
 var tps_agparam_grid_selections;
 var tps_agparam_grid_selmodel;
-var tps_agparam_gridstore;
+var pps_param_gridstore;
 var pps_param_grid_selections;
 var pps_param_grid_selmodel;
-var pps_param_gridstore;
+var pccs_control_gridstore;
 var pccs_control_grid_selections;
 var pccs_control_grid_selmodel;
-var pccs_control_gridstore;
 
 function initTpsFilterForm() {
     Ext.getCmp('tps-filter-formfield-org').setValue(1);
@@ -28,7 +28,7 @@ function initPccsFilterForm() {
 
 var totalReceiveCount = 20;
 
-function receiveTerminalParameterSetupResult(type, action, taskId) {
+function receiveTerminalParameterSetupResult(type, action, taskId, useExtMsg) {
     totalReceiveCount--;
     Ext.Ajax.request({
         url: ctx_webapp + '/pm/tps!receive.do',
@@ -42,7 +42,7 @@ function receiveTerminalParameterSetupResult(type, action, taskId) {
             var r = response.responseText;
             if(totalReceiveCount > 0) {
                 if(r == '......') {
-                    setTimeout("receiveTerminalParameterSetupResult('" + type + "','" + action + "'," + taskId + ")", 3000);
+                    setTimeout("receiveTerminalParameterSetupResult('" + type + "','" + action + "'," + taskId + "," + useExtMsg + ")", 3000);
                 }
                 else {
                     Ext.MessageBox.hide();
@@ -58,23 +58,30 @@ function receiveTerminalParameterSetupResult(type, action, taskId) {
                                 result = '设置失败';
                             }
                         }
-                        if(type == 'terminal-parameter' && tps_termparam_gridstore) {
-                            if(tps_termparam_grid_selmodel) {
-                                tps_termparam_grid_selmodel.deselectAll(true);
-                            }
-                            tps_termparam_gridstore.getById(code).set("OP_RESULT", result);
+                        if(useExtMsg) {
+                            Ext.MessageBox.alert('提示', result, function(btn) {
+                                return;
+                            });
                         }
-                        else if(type == 'gatherpoint-parameter' && tps_gpparam_gridstore) {
-                            if(tps_gpparam_grid_selmodel) {
-                                tps_gpparam_grid_selmodel.deselectAll(true);
+                        else {
+                            if(type == 'terminal-parameter' && tps_termparam_gridstore) {
+                                if(tps_termparam_grid_selmodel) {
+                                    tps_termparam_grid_selmodel.deselectAll(true);
+                                }
+                                tps_termparam_gridstore.getById(code).set("OP_RESULT", result);
                             }
-                            tps_gpparam_gridstore.getById(code).set("OP_RESULT", result);
-                        }
-                        else if(type == 'analogue-parameter' && tps_agparam_gridstore) {
-                            if(tps_agparam_grid_selmodel) {
-                                tps_agparam_grid_selmodel.deselectAll(true);
+                            else if(type == 'gatherpoint-parameter' && tps_gpparam_gridstore) {
+                                if(tps_gpparam_grid_selmodel) {
+                                    tps_gpparam_grid_selmodel.deselectAll(true);
+                                }
+                                tps_gpparam_gridstore.getById(code).set("OP_RESULT", result);
                             }
-                            tps_agparam_gridstore.getById(code).set("OP_RESULT", result);
+                            else if(type == 'analogue-parameter' && tps_agparam_gridstore) {
+                                if(tps_agparam_grid_selmodel) {
+                                    tps_agparam_grid_selmodel.deselectAll(true);
+                                }
+                                tps_agparam_gridstore.getById(code).set("OP_RESULT", result);
+                            }
                         }
                     }
                 }
@@ -89,7 +96,7 @@ function receiveTerminalParameterSetupResult(type, action, taskId) {
         },
         failure: function(response) {
             if(totalReceiveCount > 0) {
-                setTimeout("receiveTerminalParameterSetupResult('" + type + "','" + action + "'," + taskId + ")", 3000);
+                setTimeout("receiveTerminalParameterSetupResult('" + type + "','" + action + "'," + taskId + "," + useExtMsg + ")", 3000);
             }
             else {
                 Ext.MessageBox.hide();
