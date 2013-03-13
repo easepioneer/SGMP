@@ -410,6 +410,7 @@ var orgnizationListStore = Ext.create('Ext.data.Store', {
         // this page, an HttpProxy would be better
         type: 'ajax',
         url: ctx_webapp + '/sm/orgm!getList.do',
+        timeout: 600000,
         reader: {
             type: 'json',
             root: 'list'
@@ -500,6 +501,7 @@ var tgListStore = Ext.create('Ext.data.Store', {
         // this page, an HttpProxy would be better
         type: 'ajax',
         url: ctx_webapp + '/am/tam!getTgList.do',
+        timeout: 600000,
         reader: {
             type: 'json',
             root: 'records'
@@ -519,6 +521,7 @@ var tgListStoreWithAll = Ext.create('Ext.data.Store', {
         // this page, an HttpProxy would be better
         type: 'ajax',
         url: ctx_webapp + '/am/tam!getTgList.do',
+        timeout: 600000,
         reader: {
             type: 'json',
             root: 'records'

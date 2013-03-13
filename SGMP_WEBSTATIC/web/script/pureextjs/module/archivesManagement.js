@@ -53,6 +53,7 @@ function getArchivesManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getTermListByTgId.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
@@ -135,6 +136,7 @@ function getArchivesManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getMeterListByTgId.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
@@ -212,6 +214,7 @@ function getArchivesManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getPsListByTgId.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
@@ -286,6 +289,7 @@ function getArchivesManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getAgListByTgId.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
@@ -357,6 +361,7 @@ function getArchivesManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getSwListByTgId.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',

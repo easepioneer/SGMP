@@ -21,6 +21,7 @@ function getSystemManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/sm/orgm!getTree.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'tree'

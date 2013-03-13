@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/page/layout/purejquery/include/taglibs.jsp" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<%@ include file="/page/layout/purejquery/include/taglibs.jsp" %>
+<html>
 <head>
-<%@ include file="/WEB-INF/page/layout/purejquery/include/metas.jsp" %>
+<%@ include file="/page/layout/purejquery/include/metas.jsp" %>
 <title>${title_system}</title>
-<%@ include file="/WEB-INF/page/layout/purejquery/include/links.jsp" %>
-<%@ include file="/WEB-INF/page/layout/purejquery/include/scripts.jsp" %>
+<%@ include file="/page/layout/purejquery/include/links.jsp" %>
+<%@ include file="/page/layout/purejquery/include/scripts.jsp" %>
 <script type="text/javascript">
 function menuAction(menuTitle, menuAction, closable) {
     if($('#mainTabs').tabs('exists', menuTitle)){
@@ -62,9 +61,14 @@ function reload() {
             content: content
         }
     });
+    return false;
 }
 
 $(document).ready(function() {
+    if(isIE6_7()) {
+        correctPNG_IE();
+    }
+
     $('#mainTabs').tabs({
         onSelect: function(title, index) {
             //alert(title + "," + index);
@@ -73,14 +77,19 @@ $(document).ready(function() {
             return confirm('确定要关闭“' + title + "”？");
         }
     });
+    $('#mainTabs').tabs('resize');
 
     menuAction('首页', '${ctx_webapp}/home!init.do', false);
+
+    $(window).resize(function() {
+        $('#mainTabs').tabs('resize');
+    });
 });
 </script>
 </head>
 <body class="easyui-layout" style="text-align: left;">
-  <div id="topView" region="north" border="false" style="background: #E0ECFF; height: 88px; color: #E0ECFF; text-align: left;">
-    <div style="background: #0D4D4D; margin: 0; padding: 15px; font-size: 20px; font-weight: bolder;">${title_system}</div>
+  <div id="topView" region="north" border="false" style="background: #E0ECFF; height: 96px; color: #E0ECFF; text-align: left;">
+    <div style="background: #0D4D4D; margin: 0; padding: 7px 1px;"><img alt="${title_system}" src="${cxt_webstyle}/img/logo/system.png" align="middle" width="449" height="49" /></div>
     <div id="menu" style="background: #E0ECFF; padding: 3px;">
       <a href="#" class="easyui-linkbutton" data-options="plain: true,iconCls:'sgmp-icon-home'" onclick="return menuAction('首页', '${ctx_webapp}/home!init.do', false);">首页</a>
       <a href="#" class="easyui-menubutton" data-options="menu:'#mm1',iconCls:'sgmp-icon-tg'">台区管理</a>

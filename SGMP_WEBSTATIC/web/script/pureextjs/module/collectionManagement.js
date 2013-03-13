@@ -35,6 +35,7 @@ function getCollectionManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getTgList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -54,6 +55,7 @@ function getCollectionManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getMeterList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -225,6 +227,7 @@ function getCollectionManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/cm/tmdr!getGrid.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
@@ -365,6 +368,7 @@ function getCollectionManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getTgList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -384,6 +388,7 @@ function getCollectionManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getPsList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -550,6 +555,7 @@ function getCollectionManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/cm/pdr!getGrid.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
@@ -695,6 +701,7 @@ function getCollectionManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getTgList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -714,6 +721,7 @@ function getCollectionManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getAgList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -878,6 +886,7 @@ function getCollectionManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/cm/adr!getGrid.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',

@@ -14,11 +14,11 @@
     <package name="cm" namespace="/cm" extends="struts-default">
         <!-- |终端任务设置| -->
         <action name="tcts" class="terminalCollectionTaskSetupAction">
-            <result>/WEB-INF/page/layout/purejquery/module/cm/tcts.jsp</result>
+            <result>/page/layout/purejquery/module/cm/tcts.jsp</result>
         </action>
         <!-- |主站任务配置| -->
         <action name="sctc" class="stationCollectionTaskConfigAction">
-            <result>/WEB-INF/page/layout/purejquery/module/cm/sctc.jsp</result>
+            <result>/page/layout/purejquery/module/cm/sctc.jsp</result>
         </action>
     </package>
 

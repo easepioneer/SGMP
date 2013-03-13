@@ -286,10 +286,16 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
                         di06.setDataItemCode("10040010060001");     // 本次配置第0001块电能表/交流采样装置通信协议类型
                         if(meterInfo != null) {
                             di06.setDataItemValue(meterInfo.getProtocolNo());
+                            if(StringUtils.equals(meterInfo.getProtocolNo(), "101")) {
+                                di06.setDataItemValue("100");
+                            }
                         }
                         else {
                             if(psInfo != null) {
                                 di06.setDataItemValue(psInfo.getProtocolNo());
+                                if(StringUtils.equals(psInfo.getProtocolNo(), "101")) {
+                                    di06.setDataItemValue("100");
+                                }
                             }
                         }
                         diList.add(di06);
@@ -1029,7 +1035,7 @@ public class TerminalParameterSetupAction extends AbstractSimpleInteractionActio
 
             Map<String, Object> pv61 = new HashMap<String, Object>();
             pv61.put("P_CODE", "F61");
-            pv61.put("P_VALUE", "11111111;");                                           // 01;
+            pv61.put("P_VALUE", "11000000;");                                           // 01;
             pvList.add(pv61);
         }
 

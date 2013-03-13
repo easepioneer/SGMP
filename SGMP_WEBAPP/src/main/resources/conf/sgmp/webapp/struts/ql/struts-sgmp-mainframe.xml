@@ -13,7 +13,7 @@
         </action>
         <!-- |首页| -->
         <action name="home" class="homePageAction">
-            <result>/WEB-INF/page/layout/purejquery/mainframe/home.jsp</result>
+            <result>/page/layout/purejquery/mainframe/home.jsp</result>
         </action>
     </package>
 

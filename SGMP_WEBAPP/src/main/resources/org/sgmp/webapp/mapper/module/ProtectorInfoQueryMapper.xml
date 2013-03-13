@@ -54,7 +54,7 @@
               <when test="termId != null and termId != 0">and GP.TERM_ID = #{termId}</when>
           </choose>
           <choose>
-              <when test="gpId != null and gpId != 0">and PS.GP_ID = #{gpId}</when>
+              <when test="gpId != null and gpId != 0">and GP.GP_ID = #{gpId}</when>
           </choose>
     </sql>
 

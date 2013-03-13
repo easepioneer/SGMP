@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/page/layout/pureextjs/include/taglibs.jsp" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<%@ include file="/page/layout/pureextjs/include/taglibs.jsp" %>
+<html>
 <head>
-<%@ include file="/WEB-INF/page/layout/pureextjs/include/metas.jsp" %>
+<%@ include file="/page/layout/pureextjs/include/metas.jsp" %>
 <title>${title_system}</title>
-<%@ include file="/WEB-INF/page/layout/pureextjs/include/links.jsp" %>
+<%@ include file="/page/layout/pureextjs/include/links.jsp" %>
 <style type="text/css">
 * { 
     font-family: "宋体"; font-size: 12px!important;
@@ -53,7 +52,7 @@ p {
     background-image: url(${cxt_webstyle}/img/icons/page_edit.png);
 }
 </style>
-<%@ include file="/WEB-INF/page/layout/pureextjs/include/scripts.jsp" %>
+<%@ include file="/page/layout/pureextjs/include/scripts.jsp" %>
 <!--  -->
 <script type="text/javascript" src="${ctx_webstatic}/script/pureextjs/module/common.js"></script>
 <script type="text/javascript" src="${ctx_webstatic}/script/pureextjs/module/homepage.js"></script>
@@ -118,7 +117,8 @@ Ext.onReady(function() {
         },
         proxy: {
             type: 'ajax',
-            url: '${ctx_webstatic}/customized/project/hd/data/function-menu-tree-data.json'
+            url: '${ctx_webstatic}/customized/project/hd/data/function-menu-tree-data.json',
+            timeout: 600000
         }
     });
     var functionMenuTreePanel = Ext.create('Ext.tree.Panel', {
@@ -205,6 +205,7 @@ Ext.onReady(function() {
         proxy: {
             type: 'ajax',
             url: ctx_webapp + '/left!getTree.do',
+            timeout: 600000,
             reader: {
                 type: 'json'
             }

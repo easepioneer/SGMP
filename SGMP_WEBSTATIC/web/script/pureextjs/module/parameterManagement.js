@@ -251,6 +251,7 @@ function getParameterManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getTgList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -547,6 +548,7 @@ function getParameterManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webstatic + '/customized/project/hd/data/tps-termparam-grid-data.json',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -729,6 +731,7 @@ function getParameterManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webstatic + '/customized/project/hd/data/tps-gpparam-grid-data.json',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -999,6 +1002,7 @@ function getParameterManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webstatic + '/customized/project/hd/data/tps-agparam-grid-data.json',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -1255,6 +1259,7 @@ function getParameterManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getTgList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -1274,6 +1279,7 @@ function getParameterManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getPsList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -1469,6 +1475,7 @@ function getParameterManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webstatic + '/customized/project/hd/data/pps-param-grid-data.json',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -1645,6 +1652,7 @@ function getParameterManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getTgList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -1664,6 +1672,7 @@ function getParameterManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getPsList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -1861,6 +1870,7 @@ function getParameterManagementFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webstatic + '/customized/project/hd/data/pccs-control-grid-data.json',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',

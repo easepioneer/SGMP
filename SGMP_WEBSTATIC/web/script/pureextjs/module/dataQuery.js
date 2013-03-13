@@ -40,6 +40,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getTgList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -59,6 +60,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getMeterList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -279,6 +281,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/dq/tmdq!getGrid.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
@@ -403,6 +406,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/dq/tmdq!getGrid.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
@@ -527,6 +531,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/dq/tmdq!getGrid.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
@@ -649,6 +654,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/dq/tmdq!getGrid.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
@@ -754,6 +760,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getTgList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -773,6 +780,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getPsList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -958,6 +966,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/dq/pdq!getGrid.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
@@ -1061,6 +1070,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getTgList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -1080,6 +1090,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getAgList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -1258,6 +1269,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/dq/adq!getGrid.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
@@ -1354,6 +1366,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getTgList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -1373,6 +1386,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getMeterList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -1557,6 +1571,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/dq/tpcq!getGrid.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
@@ -1659,6 +1674,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getTgList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -1678,6 +1694,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getTermList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -1858,6 +1875,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/dq/teq!getGrid.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
@@ -1956,6 +1974,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getTgList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -1975,6 +1994,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/am/tam!getPsList.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records'
@@ -2157,6 +2177,7 @@ function getDataQueryFunctions() {
             // this page, an HttpProxy would be better
             type: 'ajax',
             url: ctx_webapp + '/dq/pteq!getGrid.do',
+            timeout: 600000,
             reader: {
                 type: 'json',
                 root: 'records',
